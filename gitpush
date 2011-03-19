@@ -1,0 +1,6 @@
+#!/bin/bash
+# git add FILENAME
+git add .
+git commit -a -m "`date`"
+git push origin master
+
