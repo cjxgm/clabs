@@ -1,0 +1,24 @@
+#!/bin/bash
+
+while [ "$1" != "" ]; do
+	filename="`basename $1`"
+	cat << EOF > $1
+/** $filename
+ * 
+ **
+ * eXerigumo Clanjor
+ **
+ * Under GPLv3 and KING Principle
+ */
+
+#include <stdio.h>
+
+int main(int argc, char *argv[])
+{
+
+	return 0;
+}
+
+EOF
+	shift
+done

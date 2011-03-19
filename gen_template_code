@@ -1,0 +1,31 @@
+#!/bin/bash
+
+while [ "$1" != "" ]; do
+	echo '/** '`basename "$1"` > "$1"
+	cat << EOF >> "$1"
+ * 
+ **
+ * This file is part of PoshX project.
+ * Under GPLv3. See COPYING for more details.
+ * Obey the KING Principle.
+ * NO WARRANTY!
+ **
+ * AUTHORS:
+ *		eXerigumo Clanjor
+ * COPYLEFT(C):
+ *		Clan Open Studio, 2010-2011.
+ */
+
+EOF
+
+	if [ "`echo $1|sed 's/.*\.//g'`" == "h" ]; then
+		macro_name=`basename "$1"|tr '[a-z]' '[A-Z]'|sed 's/\./_/g'`
+		echo "#ifndef __${macro_name}__" >> "$1"
+		echo "#define __${macro_name}__" >> "$1"
+		echo >> "$1"
+		echo >> "$1"
+		echo "#endif" >> "$1"
+		echo >> "$1"
+	fi
+	shift
+done

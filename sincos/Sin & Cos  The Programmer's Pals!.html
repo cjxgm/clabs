@@ -1,0 +1,1410 @@
+
+<!-- saved from url=(0050)http://www.helixsoft.nl/articles/circle/sincos.htm -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Sin &amp; Cos: The Programmer's Pals!</title>
+</head>
+
+<body bgcolor="White" link="#008080" vlink="#008080" alink="#008080" text="Black">
+<h1>
+Sin &amp; Cos: The Programmer's Pals! 
+</h1>
+<a href="mailto:amarillion@yahoo.com">amarillion@yahoo.com</a>
+
+
+<p><b>Introduction</b></p>
+
+<p>In this article I shall discuss several game programming techniques, all revolving around a central theme: the sine and cosine functions. This article will explain sine, cosine, vectors, atan2, and some useful special effects such as how to make homing missiles and how bitmap rotation works. I shall start with the very basics, but later on I'll cover some more advanced programming techniques. This article comes with twelve real-life coded examples, which you can download <a href="http://www.helixsoft.nl/articles/circle/circle_examples.zip">here</a>. They are tested with DJGPP, and a makefile for DJGPP is supplied. If you have DJGPP, all you have to do is unzip the source and the makefile into a directory, and then run "make". You don't need any libraries other than Allegro.</p><p>
+
+<b>Vectors</b>
+
+</p><p>Let's start with something that can sometimes be difficult to understand for beginners, because it is highly abstract - the vector. A vector can be visualized in different ways.
+</p><p>First of all, you can imagine it as an arrow to a point in space. In the case of two-dimensional space, you need two values to define the vector - one for the x-coordinate and one for the y-coordinate. In the case of three-dimensional space, you will need a third value for the z-coordinate. This article will mostly deal with two-dimensional space though. Three-dimensional space is more complicated, and I'm no expert in that. Maybe somebody else feels the urge to write an article on that topic...?
+</p><p><img border="0" src="./Sin & Cos  The Programmer's Pals!_files/fig1.gif">
+</p><p>In the figure above I have drawn a vector with an x-coordinate of 3 and a y-coordinate of 2. But these two values are not the end of the story. For example, if you draw this vector out on paper, you can measure the length of the vector as 3.6 and the angle between the vector and the x-axis as 34 degrees.
+</p><p>If you think about this further, you can see that you don't even need the (x,y) coordinates of the vector if you already know its length and the angle it makes with the x-axis. It is perfectly possible to define a vector fully just by its length and angle.
+</p><p>If you use the x- and y-coordinates, you are using Cartesian coordinates. If you use the angle and length of the vector, you are using polar coordinates.
+</p><p>Let's have an example. Suppose you are writing a top-down racing game (something like Micro Machines). You will need a way to store the velocity (speed and direction) of a racing car. And how do we do that? With a vector. This velocity vector is in fact the change in the racing car's position from one frame to the next (see figure
+below). The question is, should we use Cartesian coordinates or polar coordinates for this vector?
+</p><p><img border="0" src="./Sin & Cos  The Programmer's Pals!_files/fig2.gif">
+</p><p>Well, storing only the Cartesian coordinates has the advantage that it is very easy to calculate the new position of the racing car at each step. Suppose you store the (x,y) coordinates of the velocity vector in the variables vel_x and vel_y, and the position of the racing car in the variables pos_x and pos_y. All you need to do in the game loop is:
+</p><p>
+<code></code></p><pre><code>pos_x += vel_x;
+pos_y += vel_y;
+</code></pre>
+
+<p>
+What could be simpler?
+
+</p><p>On the other hand, storing the length and angle of the velocity vector has its advantages, in that it makes it easier to implement the racing car controls. Think about it - if the player presses LEFT, you want the racing car to turn left. Supposing you store the angle in the integer car_angle, you could use the following code:</p><p>
+
+<code></code></p><pre><code>if (key[KEY_LEFT])
+{
+    car_angle -= 1; // turn one degree to the left
+}
+if (key[KEY_RIGHT])
+{
+    car_angle += 1; // turn one degree to the right
+}</code></pre>
+
+And how would you do that if you only stored x and y? You would need to change both of them, but how? That is a lot more difficult!
+Furthermore, if the player presses UP you want the racing car to go faster. You can achieve this by simply increasing the length of the vector. If you store x and y, you have to change both of them a bit, which is again more complicated.<p>
+
+
+<b>Sin &amp; cos</b>
+
+</p><p>
+Okay, so now we know there are two ways to store a vector - with polar coordinates and with Cartesian coordinates - and that in this case they both have their advantages. So which one do we actually use? Well, it wouldn't be a big problem if we knew a way to calculate the angle and speed from the x- and y-coordinates, and vice versa.</p><p>
+
+And I wouldn't be writing this article if that wasn't possible!</p><p>
+
+First I'll talk about converting from polar to Cartesian coordinates. It is, of course, also possible to convert the other way, but I will talk about that later on.</p><p>
+
+There are two functions available to us to accomplish this. These functions are sine and cosine (sin and cos). Whoa! You didn't see that coming, did you?</p><p>
+
+The sine can be used to calculate the y-coordinate of a vector, and the cosine can be used to calculate the x-coordinate. (Sometimes you see this the other way round, and one or both coordinate values may be negated. I encourage you to think about the effect this would have when you have learned more about the functions.) The sin() and cos() functions take only one parameter: the angle. They return a number between -1 and 1. If you multiply this number by the length of the vector, you will get the exact Cartesian coordinates of the vector. So your code will look like this:</p><p>
+
+<code></code></p><pre><code>speed_x = speed_length * cos (speed_angle);
+speed_y = speed_length * sin (speed_angle);
+</code></pre><p>
+
+So that's it: for a racing game you just store the angle and the length of the velocity vector. You adjust these according to the player's input, and you calculate the x- and y-coordinates when you are ready to update the position of the racing car.</p><p>
+
+
+<b>Drawing a circle</b>
+
+</p><p>Do you want to see a real example? Guess so. But you'll have to wait a bit. First I'll give a more simple example of what sin and cos actually do. In fact, this is probably the simplest program using sin and cos you'll ever see that still does something more or less useful (see circ1.c).</p><p>
+
+<code></code></p><pre><code>void draw_circle ()
+{
+    int x, y;
+    int length = 50;
+    float angle = 0.0;
+    float angle_stepsize = 0.1;
+
+    // go through all angles from 0 to 2 * PI radians
+    while (angle &lt; 2 * PI)
+    {
+        // calculate x, y from a vector with known length and angle
+        x = length * cos (angle);
+        y = length * sin (angle);
+
+        putpixel (screen,
+            x + SCREEN_W / 2, y + SCREEN_H / 2,
+            makecol (255, 255, 255));
+        angle += angle_stepsize;
+    }
+}</code></pre>
+
+
+<p>Output:
+
+</p><p><img border="0" src="./Sin & Cos  The Programmer's Pals!_files/circ1.gif">
+
+</p><p>
+So let's run this function. What does it do? Well, it draws sixty-odd points on the screen, which together form a perfect circle. So how does it work?
+
+
+</p><p>
+As you can see there is a variable called length and a variable called angle. These two represent the length and the angle of a vector! We first calculate the x- and y-coordinates from these variables, in the same way as before, using cos and sin. After that we plot a pixel at the calculated x- and y-coordinates. Finally we increase the angle by a small increment, but we do not change the length. We iterate several times, thus going through a lot of different angles. And what happens if you draw points at a constant distance from a fixed point in different directions? You get a circle!</p><p>
+
+
+<b>About radians</b>
+
+</p><p>
+But what is that? There are some strange things in this piece of code. First of all, why does it say: while (angle &lt; 2 * PI)? What does that mean? And why is the angle_increment such a low value? You would think that with such a low value the points on the circle would be very close to each other, but they aren't. How can we explain that?</p><p>
+
+The answer is that the sin and cos functions don't take regular degrees, which you might be used to, as an argument. There are 360 degrees in a full circle - this number is thought to have come from an old estimate of the number of days in the year, or to have been chosen because it has so many factors. But the sin and cos functions want radians, not degrees. There are 2 * PI
+radians in a circle, PI being a mathematical constant of roughly 3.1415927. So there are roughly 6.282 radians in a circle. Why do they make things so difficult, you may ask? Well, that is all figured out by mathematicians, and mathematicians
+are a mysterious kind of people.</p><p>
+
+To make our lives easier, we can calculate the number of degrees from the number of radians and vice versa. We do it as follows:
+
+<code></code></p><pre><code>degrees = radians * 180 / PI;
+radians = degrees * PI / 180;
+</code></pre>
+<p>
+Let's consider our angle increment of 0.1 radians. 0.1 radians = 0.1 * 180 / 3.142 = 5.7 degrees. If you take a look at the output, you'll notice that this value looks about right for what was drawn.</p><p>
+
+Actually the reason for introducing radians is as follows. The length of the circumference of a unit circle (a circle of radius 1) is exactly 2 * PI. That means that the length of the circumference is exactly equal to the number of radians in a full circle. Do we gain any advantage by this knowledge? No, but mathematicians think it is cool. Programmers, on the other hand, don't - unless they are doing stuff which is much more mathematically advanced than what we're doing. Later on we shall see what good programmers (like Shawn Hargreaves) think is a better way to define an angle for most applications.</p><p>
+
+
+<b>Use fixed, not float</b>
+
+</p><p>But I already hear some people say: you are using floats! Floats are so slooooooooow! Why don't you use fixed-point numbers? On newer computers, there is not much speed difference, but on older computers the speed gain of using fixed numbers is significant. Here I'll present you with exactly the same function, only using fixed point arithmetic. First, however, I'll quickly go over how to manipulate fixed-point numbers with Allegro. Note that if you use C++ you can use the fix class, which is a bit easier to work with, though I shan't explain it here. If you program in C++ and you want to use the fix class, you will have to look it up in the Allegro docs.</p><p>
+
+<b>Rule #1: you can convert between floats and fixeds, and between ints and fixeds, with the functions fixtoi, fixtof, itofix and ftofix.</b></p><p>
+
+<code></code></p><pre><code>fixed_1 = itofix (int_1);
+int_1 = fixtoi (fixed_1);
+float_1 = fixtof (fixed_1);
+</code></pre>
+<p>
+
+<b>Rule #2: you can add and subtract two fixed numbers, but not an int and a fixed. You will need to convert types.</b></p><p>
+
+
+<code></code></p><pre><code>fixed_3 = fixed_1 + fixed_2;
+fixed_3 = fixed_1 - fixed_2;
+fixed_3 = fixed_1 + itofix (int_2);
+</code></pre>
+<p>
+<b>Rule #3: you can divide and multiply by an int, but not by another fixed number. You will need to use the functions fmul() and fdiv() (which are in fact macros, so you don't need to worry about speed).</b></p><p>
+
+<code></code></p><pre><code>fixed_3 = fixed_1 * int_2;
+fixed_3 = fmul (fixed_1, fixed_2);
+fixed_3 = fdiv (fixed_1, fixed_2);
+</code></pre>
+<p>
+Now back to the draw_circle function: Here it is again but now using fixed point arithmetic (circ2.c):</p><p>
+
+<code></code></p><pre><code>void draw_circle_fixed ()
+{
+    fixed x, y;
+    int length = 50;
+    fixed angle = 0;
+    fixed angle_stepsize = itofix (5);
+
+    // go through all angles from 0 to 255
+    while (fixtoi (angle) &lt; 256)
+    {
+        // calculate x, y from a vector with known length and angle
+        x = length * fcos (angle);
+        y = length * fsin (angle);
+
+        putpixel (screen,
+            fixtoi(x) + SCREEN_W / 2, fixtoi(y) + SCREEN_H / 2,
+            makecol (255, 255, 255));
+        angle += angle_stepsize;
+    }
+}
+</code></pre>
+<p>
+Note we have to use fsin() and fcos() when using fixed point math.
+</p><p>
+
+<b>Introducing another way of representing angles</b>
+
+</p><p>But what the...? Now it says: while (fixtoi (angle) &lt; 256). You just went through a lengthy explanation of radians, and now this?</p><p>
+
+Well here you see the way programmers sometimes prefer to handle angles: they make use of a circle that is divided into 256 parts, ranging from 0 to 255. (Strictly speaking we include the numbers between 255 and 256, but not 256 itself.) Let's call these parts Allegro-degrees, for want of a better name (though this system is not an invention of Allegro, as the name would suggest). Why 256 and not 360? Well here is the thing. What will happen when you have an angle of 361 regular degrees? Because a circle is round (by definition), 361 degrees represents the same point as 1 degree. In much the same way, 3 * PI radians is the same as 1 * PI radians, and 257 allegro degrees is the same as 1 allegro degree. To check for out-of-bound angles measured in degrees and convert them to the proper range, you will need to do something like this:</p><p>
+
+<code></code></p><pre><code>int angle_in_degrees;
+while (angle_in_degrees &gt;= 360) angle_in_degrees -= 360;
+while (angle_in_degrees &lt; 0) angle_in_degrees += 360;
+</code></pre>
+<p>
+But because Allegro-degrees range from 0 to 255, and this range can be stored in exactly 8 bits (in the case of an int), we only need reset all the other bits and we can be sure we have a neat angle ranging from 0 to 255. We just have to mask out all bits except the lower 8 bits. We can do this using the bitwise AND operator (&amp;):
+</p><p>
+
+<code></code></p><pre><code>int allegro_degrees;
+allegro_degrees &amp;= 0xFF; // keep the lowest 8 bits
+</code></pre>
+
+For those people who don't exactly understand the bitwise AND (&amp;) operator: just trust me, it is a very easy way to make sure the angle is within range. Just use the code above and you can be absolutely sure the angle is between 0 and 255.<p>
+
+If we use a fixed point number to represent degrees we have to do it a little bit differently, because we also have 16 bits representing the part to the right of the point. So what we need to do is exactly the same, except instead of 8 bits we keep 16 + 8 = 24 bits. Here is what we do:</p><p>
+
+<code></code></p><pre><code>fixed allegro_degrees;
+allegro_degrees &amp;= 0xFFFFFF; // keep the lowest 24 bits
+</code></pre>
+
+If you understand this then you will now understand why a 256-degree scale is often best for game programmers. Remember: normal people use regular degrees, mathematicians use radians and game programmers use Allegro-degrees. Okay, maybe that is a bit oversimplified. If you use floats, it is better to use radians, because the normal functions sin() and cos() take values in radians. If you use fixed, as I do in most examples, it is better to use Allegro-degrees, because the functions fsin() and fcos() use them, and we can keep an angle in range with a simple bitwise AND.<p>
+
+Just as we did with radians and degrees, we can calculate the number of Allegro-degrees from radians and regular degrees. Without further explanation, here is how to do it:</p><p>
+
+<code></code></p><pre><code>allegro_degrees = regular_degrees * 256 / 360;
+allegro_degrees = radians * 128 / PI;
+</code></pre>
+
+
+
+<p>To give you a better idea of what sine and cosine actually do, I have written the following function (circ3.c):
+
+</p><p>
+
+<code></code></p><pre><code>void draw_sine ()
+{
+    int length = 50;
+    fixed x, y;
+    fixed angle = 0;
+    fixed angle_stepsize = itofix (5);
+
+    while (fixtoi(angle) &lt; 256)
+    {
+        // the angle is plotted along the x-axis
+        x = angle;
+        // the sine function is plotted along the y-axis
+        y = length * fsin (angle);
+
+        putpixel (screen,
+            fixtoi (x), fixtoi (y) + SCREEN_H / 2,
+            makecol (255, 255, 255));
+
+        angle += angle_stepsize;
+    }
+}</code></pre>
+
+
+<p>Output:
+
+</p><p><img border="0" src="./Sin & Cos  The Programmer's Pals!_files/circ3.gif">
+
+
+</p><p>
+The function looks more or less the same as the draw_circle function, but it does something different. It just plots the sine function on the screen. As you can see the sine function looks like a wave - hence the name 'sine wave'. You can use the sine function in your games for all kinds of wavy movement, such as aliens moving in waves.
+
+
+</p><p>You can change the code above to plot the cosine function too. The image below was
+created with a modified version of circ3.c. You can see a sine wave plotted in white and
+a cosine wave plotted in red. The functions are continuous and repeating; they don't stop when you
+reach 256 Allegro-degrees. If you look closely you can see that the cosine and sine waves
+have the same shape, the only difference being that the cosine function is displaced a little
+bit. The displacement is exactly 64 Allegro-degrees or 90 normal degrees.
+
+
+</p><p><img border="0" src="./Sin & Cos  The Programmer's Pals!_files/fig8.gif">
+
+
+</p><p>In the table below are some key values from the sine and
+cosine functions. As you can see, both functions reach their maxima and minima at
+multiples of 90 regular degrees.
+
+
+<table border="1" cellpadding="0" cellspacing="0" width="100%">
+  <tbody><tr>
+    <td width="25%">normal degrees</td>
+    <td width="25%">radians</td>
+    <td width="25%">allegro degrees</td>
+    <td width="25%">sine</td>
+    <td width="25%">cosine</td>
+  </tr>
+  <tr>
+    <td width="25%">0</td>
+    <td width="25%">0</td>
+    <td width="25%">0</td>
+    <td width="25%">0</td>
+    <td width="25%">1</td>
+  </tr>
+  <tr>
+    <td width="25%">90</td>
+    <td width="25%">1/2 pi</td>
+    <td width="25%">64</td>
+    <td width="25%">1</td>
+    <td width="25%">0</td>
+  </tr>
+  <tr>
+    <td width="25%">180</td>
+    <td width="25%">pi</td>
+    <td width="25%">128</td>
+    <td width="25%">0</td>
+    <td width="25%">-1</td>
+  </tr>
+  <tr>
+    <td width="25%">270</td>
+    <td width="25%">3/2 pi</td>
+    <td width="25%">192</td>
+    <td width="25%">-1</td>
+    <td width="25%">0</td>
+  </tr>
+  <tr>
+    <td width="25%">360</td>
+    <td width="25%">2 pi</td>
+    <td width="25%">256</td>
+    <td width="25%">0</td>
+    <td width="25%">1</td>
+  </tr>
+</tbody></table></p><p>
+
+<b>A real racing car
+</b>
+
+</p><p>Ok, a small summary of what we have learned so far. We now know two different ways to store vectors, namely polar and Cartesian coordinates. We have also learned how to calculate the
+Cartesian coordinates of a vector if we know its polar coordinates. Finally, we have seen three different ways to store angles: degrees, radians and what we have termed Allegro-degrees.
+
+
+</p><p>But now we go back to the example we started with - the racing car. Actually the racing car here is really a circle with a line representing the direction the car is facing in, but with a little imagination it can be a racing car. Well here you go (circ4.c):
+
+
+</p><p>
+<code></code></p><pre><code>void racing_car ()
+{
+    // length and angle of the racing car's velocity vector
+    fixed angle = itofix (0);
+    fixed length = itofix (0);
+    // x- and y-coordinates of the velocity vector
+    fixed vel_x, vel_y;
+
+    // x- and y-position of the racing car
+    fixed x = itofix (SCREEN_W / 2);
+    fixed y = itofix (SCREEN_H / 2);
+
+    while (!key[KEY_ESC])
+    {
+        // erase the old image
+        circlefill (screen, fixtoi(x), fixtoi(y), 10, makecol (0, 0, 0));
+
+        // check the keys and move the car
+        if (key[KEY_UP] &amp;&amp; length &lt; itofix (2))
+            length += ftofix (0.005);
+        if (key[KEY_DOWN] &amp;&amp; length &gt; itofix (0))
+            length -= ftofix (0.005);
+        if (key[KEY_LEFT])
+            angle = (angle - itofix (1)) &amp; 0xFFFFFF;
+        if (key[KEY_RIGHT])
+            angle = (angle + itofix (1)) &amp; 0xFFFFFF;
+
+        // calculate the x- and y-coordinates of the velocity vector
+        vel_x = fmul (length, fcos (angle));
+        vel_y = fmul (length, fsin (angle));
+
+        // move the car, and make sure it stays within the screen
+        x += vel_x;
+        if (x &gt;= itofix (SCREEN_W)) x -= itofix(SCREEN_W);
+        if (x &lt; itofix (0)) x += itofix(SCREEN_W);
+        y += vel_y;
+        if (y &gt;= itofix (SCREEN_H)) y -= itofix(SCREEN_H);
+        if (y &lt; itofix (0)) y += itofix(SCREEN_H);
+
+        // draw the racing car
+        circle (screen, fixtoi(x), fixtoi(y), 10, makecol (0, 0, 255));
+        line (screen, fixtoi(x), fixtoi(y),
+            fixtoi (x + 9 * fcos (angle)),
+            fixtoi (y + 9 * fsin (angle)),
+            makecol (255, 0, 0));
+
+        // wait for 10 milliseconds, or else we'd go too fast
+        rest (10);
+    }
+}</code></pre>
+
+
+<p>Everything in this program has been explained already. The velocity of the racing car is represented by an angle and a
+length. If the player presses UP, the length of the velocity vector (the speed) is increased; if he
+presses DOWN, the length is decreased. The angle is changed if the player
+presses LEFT or RIGHT. With the 24-bit mask (0xFFFFFF), we make sure that the
+angle remains within the basic range of Allegro-degrees. After the speed and direction have been adjusted, the Cartesian coordinates vel_x and vel_y are calculated with sin() and cos(). In each iteration of the loop, these coordinates are added to the coordinates of the racing car.</p><p>
+
+
+<b>Another useful thing you can do with sin and cos
+</b>
+
+</p><p>If you understand all this, you will have no problems with the following
+program. It is another small example of what you can do with this basic knowledge of sin and cos. This time we'll use sin and cos to animate the orbit of a planet. The planet will be represented by a small dot, which will move around in a circle. Here is the code (circ5.c):
+
+
+</p><p><code></code></p><pre><code>void orbit ()
+{
+    int x = 0, y = 0;
+
+    fixed angle = itofix (0);
+    fixed angle_stepsize = itofix (1);
+
+    // These determine the radius of the orbit.
+    // See what happens if you change length_x to 100 :)
+    int length_x = 50;
+    int length_y = 50;
+
+    // repeat this until a key is pressed
+    while (!keypressed())
+    {
+        // erase the point from the old position
+        putpixel (screen,
+            fixtoi(x) + SCREEN_W / 2, fixtoi(y) + SCREEN_H / 2,
+            makecol (0, 0, 0));
+
+        // calculate the new position
+        x = length_x * fcos (angle);
+        y = length_y * fsin (angle);
+
+        // draw the point in the new position
+        putpixel (screen,
+            fixtoi(x) + SCREEN_W / 2, fixtoi(y) + SCREEN_H / 2,
+            makecol (255, 255, 255));
+
+        // increment the angle so that the point moves around in circles
+        angle += angle_stepsize;
+
+        // make sure angle is in range
+        angle &amp;= 0xFFFFFF;
+
+        // wait 10 milliseconds, or else it'd go too fast
+        rest (10);
+    }
+}
+</code></pre>
+
+
+<p>Try experimenting with different values for length_x and length_y. If these two are different, the result will be that the planet doesn't move in a circle anymore, but in an ellipse. (Note that elliptical orbits do not work like this in real life.)
+
+
+</p><p>If you want to try this out, why not try to make a simulation of the solar system? Making the moon orbit the
+earth while the earth is orbiting the sun is the tricky part.</p><p>
+
+
+<b>Drawing a circle in yet another way
+</b>
+
+</p><p>In the first chapters I explained two different ways to draw a circle, one using floats and one using fixeds. But if you take a look at gfx.c in the allegro/src dir, you will see that the source of
+Allegro's circle() function is nothing like the draw_circle function I've put here. In fact, you won't find a single sin or cos in the entire function! So how is that possible?
+
+</p><p>The code makes use of one useful property of circles: all points in a circle are at the same distance from the center.
+Say you start at the top of the circle. The coordinates of the top are easily calculated: the x-coordinate is 0 and the y-coordinate is equal to the radius of the circle (but negative with screen coordinates). So we
+draw a pixel at these coordinates. For the next pixel we can either go one pixel
+to the right, or one pixel down and then one pixel to the right. So which do we
+choose?
+
+</p><p>The solution is to calculate for each of the two possibilities the distance
+to the center with Pythagoras's Theorem. We draw the pixel whose distance from the center is less different from the radius of the circle.
+
+
+</p><p><img border="0" src="./Sin & Cos  The Programmer's Pals!_files/fig3.gif">
+
+
+</p><p>We only have to do this for one eighth of the circle. The rest of the circle can be drawn by making use of the horizontal, vertical and diagonal axes of symmetry of the circle,
+as you can see in the figure below. Note that you can draw all red and yellow
+sections for the price of one, simply by mirroring it along the green lines.
+
+
+</p><p><img border="0" src="./Sin & Cos  The Programmer's Pals!_files/fig4.gif">
+
+
+</p><p>Here is the actual code from circ6.c:
+
+
+</p><p><code></code></p><pre><code>void my_draw_circle (BITMAP *bmp, int center_x, int center_y, int r, int color)
+{
+    // x and y are the current position in the circle.
+    int x = 0, y = r;
+
+    while (x &lt;= y)
+    {
+        // We make use of 8 axes of symmetry in a circle.
+        // This way we have fewer points to calculate on its circumference.
+        putpixel (bmp, center_x + x, center_y + y, color);
+        putpixel (bmp, center_x - x, center_y + y, color);
+        putpixel (bmp, center_x + x, center_y - y, color);
+        putpixel (bmp, center_x - x, center_y - y, color);
+        putpixel (bmp, center_x + y, center_y + x, color);
+        putpixel (bmp, center_x - y, center_y + x, color);
+        putpixel (bmp, center_x + y, center_y - x, color);
+        putpixel (bmp, center_x - y, center_y - x, color);
+
+        // This is the most important part of the function.
+        // We go to the right in all cases (x++).
+        // We need to decide whether to go down (y--).
+        // This depends on which point is
+        // closest to the path of the circle.
+        // Good old Pythagoras will tell us what to do.
+        x++;
+        if (abs (x*x + y*y - r*r) &gt;
+            abs (x*x + (y-1)*(y-1) - r*r))
+            y--;
+    }
+}</code></pre>
+
+
+<p>This code still doesn't look much like the code in Allegro's gfx.c file, but that is mainly because the statement:
+
+
+</p><p>
+<code></code></p><pre><code>if (abs (x*x + y*y - r*r) &gt;
+    abs (x*x + (y-1)*(y-1) - r*r))
+</code></pre>
+
+
+<p>can still be optimized a lot. In fact, if you do all possible optimizations, you arrive at Allegro's actual circle() function. I shan't discuss these optimizations here though.
+It has all been figured out by a smart guy working at IBM named Bresenham. He
+also figured out a smart way to draw lines quickly, so you might come across his
+name sometimes in FAQs and tutorials.
+
+</p><p>Link for Bresenham Line &amp; Circle Algorithms: <a href="http://www.gamedev.net/reference/articles/article767.asp"> http://www.gamedev.net/reference/articles/article767.asp</a></p><p>
+
+
+<b>Vectors the other way round
+</b>
+
+</p><p>We have seen how to go from polar to Cartesian coordinates with sin and cos
+like this:
+
+
+</p><p><code></code></p><pre><code>x = length * cos (angle)
+y = length * sin (angle)
+</code></pre>
+
+
+<p>Now I will explain how to go the other way. Calculating the length is the easy part, for you only need to know Pythagoras's Theorem: a^2 + b^2 = c^2. Or more practically:
+
+
+</p><p></p><pre>length = sqrt (x * x + y * y)</pre>
+
+
+<p>Calculating the angle is a bit harder. There is a mathematical function called the tangent, implemented in C in the function tan(), which can be used to calculate the ratio of y to x as follows:
+
+
+</p><p></p><pre>tan (angle) = y / x</pre>
+
+
+<p><img border="0" src="./Sin & Cos  The Programmer's Pals!_files/fig5.gif">
+
+
+</p><p>This can in fact be written as:
+
+
+</p><p></p><pre>tan (angle) = sin (angle) / cos (angle)</pre>
+
+
+<p>This means the tan function is a combination of the sin and cos functions.
+
+
+</p><p>The inverse function of the tangent is called the arctangent. The C function for this is atan(). This
+function can be used to calculate an angle if you know the ratio of y to
+x, like this:
+
+
+</p><p></p><pre>angle = atan (y / x)</pre>
+
+
+<p>But there is a minor problem: this will sometimes give you an incorrect
+result. In the figure below, you see two vectors, a red one and a yellow one. They
+both have the same y-to-x ratio. That means, if you calculate the arctangents of
+them, you will get the same result, which is 45 degrees. This is correct only for
+the yellow vector. In addition, you have to check for cases in which x is 0, to
+avert division by zero.
+
+
+</p><p><img border="0" src="./Sin & Cos  The Programmer's Pals!_files/fig6.gif">
+
+
+</p><p>A partial work-around is possible like this (partial because we don't check for the case where x is 0):
+
+
+</p><p><code></code></p><pre><code>if (x &gt; 0)
+    angle = atan (y / x);
+else
+    angle = PI + atan (y / x);
+</code></pre>
+
+<p>But to simplify things the function atan2() is available for
+programmers. Here is an example:
+
+
+</p><p></p><pre>angle = atan2 (y, x)</pre>
+
+
+<p>This function will always produce the correct angle for any x,y pair. Of
+course, for fixed-point mathematics Allegro provides the counterpart fatan2().</p><p>
+
+
+<b>Using atan2(): homing missiles
+</b>
+
+</p><p>Suppose you are writing a game in which the player can fire homing missiles. You decide to do it as follows. First you calculate the direction of the target as seen from the missile. Then you compare this angle with the current angle of the missile. If the target angle is greater than the current angle, the angle should be increased, and vice versa.
+
+
+</p><p>This is a pretty good idea, but how do you calculate the direction of the target as seen from the missile? You can visualize this as a vector from the missile to the target. The x- and y-coordinates of this vector can be calculated very easily - just subtract the coordinates of the missile from the coordinates of the target. Given the x- and y-coordinates of the vector, you can calculate its angle and length, using the atan2() function as described above. The length is not so important (it is a measure of the distance to the target) but the angle is just what we need.
+
+
+</p><p><img border="0" src="./Sin & Cos  The Programmer's Pals!_files/fig7.gif">
+
+
+</p><p>In the code below, the position of the missile is represented by the
+variables x and y. The velocity of the missile is represented by length and angle.
+First, the program determines whether there is already a target set, and if there
+isn't one the program chooses one at random. After that the missile is moved
+and drawn to the screen. Finally the program determines which way the angle of the
+missile should change. The angle to the target is calculated in this line:
+
+
+</p><p></p><pre>        target_angle = fatan2 (target_y - y, target_x - x);</pre>
+
+
+<p>The program uses this calculated angle to determine whether the missile's direction angle should
+increase or decrease. It calculates the difference between the target angle and
+the current angle (angle - target_angle). After that it makes sure this difference
+is in the proper range: (angle - target_angle) &amp; 0xFFFFFF. If
+this angle is less than 128 Allegro-degrees (180 normal degrees), the direction angle is
+decreased. Otherwise it is increased.
+
+
+</p><p><code></code></p><pre><code>        if (((angle-target_angle) &amp; 0xFFFFFF) &lt; itofix(128))
+            angle = (angle - angle_stepsize) &amp; 0xFFFFFF;
+        else
+            angle = (angle + angle_stepsize) &amp; 0xFFFFFF;
+
+</code></pre><p>
+
+Here is the whole piece of code (circ7.c):
+
+
+</p><p></p><pre>void home_in ()
+{
+    // the x, y position of the homing missile
+    fixed x = itofix(SCREEN_W / 2);
+    fixed y = itofix(SCREEN_H / 2);
+    // the angle and length of the missile's velocity vector
+    fixed angle = 0;
+    int length = 1;
+    fixed angle_stepsize = itofix (3);
+    // determines whether the missile has reached
+    // the target and a new one should be chosen
+    int new_target = TRUE;
+    // angle to the target
+    fixed target_angle;
+    // position of the target
+    fixed target_x, target_y;
+
+    while (!keypressed())
+    {
+        clear (screen);
+        // choose new target randomly when needed
+        if (new_target)
+        {
+            target_x = itofix((SCREEN_W + rand() % (2 * SCREEN_W)) / 4);
+            target_y = itofix((SCREEN_H + rand() % (2 * SCREEN_H)) / 4);
+            new_target = FALSE;
+        }
+
+        // move the missile
+        x += length * fcos (angle);
+        y += length * fsin (angle);
+
+        // if we are very close to the target, set a new target
+        if (abs (x - target_x) + abs (y - target_y) &lt; itofix(10))
+            new_target = TRUE;
+
+        // draw a pixel where the target is
+        putpixel (screen, fixtoi(target_x), fixtoi(target_y),
+            makecol (255, 255, 255));
+
+        // draw the missile
+        // (actually a circle with a line representing the angle)
+        circle (screen, fixtoi(x), fixtoi(y), 10, makecol (0, 0, 255));
+        line (screen, fixtoi(x), fixtoi(y),
+            fixtoi(x) + fixtoi (9 * fcos (angle)),
+            fixtoi(y) + fixtoi (9 * fsin (angle)),
+            makecol (255, 0, 0));
+
+        // calculate the angle from the missile to the target
+        target_angle = fatan2 (target_y - y, target_x - x);
+
+        // Determine whether we should turn left or right.
+        // Note that itofix (128) represents half a circle.
+        // We use &amp; 0xFFFFFF as a trick to get an angle
+        // between 0 and 256.
+        if (((angle-target_angle) &amp; 0xFFFFFF) &lt; itofix(128))
+            angle = (angle - angle_stepsize) &amp; 0xFFFFFF;
+        else
+            angle = (angle + angle_stepsize) &amp; 0xFFFFFF;
+
+        rest (10);
+    }
+}</pre>
+
+
+<p>Here is a screenshot. As you can see, the missile is represented by a blue
+circle with a red line in it. The current target is represented by a white dot.
+
+</p><p><img border="0" src="./Sin & Cos  The Programmer's Pals!_files/circ6.gif"></p><p>
+
+
+<b>Using the dot product
+</b>
+
+</p><p>The solution above tackles the problem very well but that doesn't mean there aren't any other possible solutions. In mathematics textbooks you can find the following
+formula to calculate the angle between two vectors a and b:
+
+
+</p><p></p><pre>cos (angle) = (xa * xb + ya * yb) / (length (a) * length (b))</pre>
+
+
+<p>The subexpression (xa * xb + ya * yb) is called the dot product, and is equal to the product of the lengths multiplied by the cosine of the angle between the vectors. We want our homing missile to go one way if the angle between its current direction and the
+target is between 0 and 180 degrees, and the other way if the angle
+between the current direction and the target is between 180 and 360 degrees.
+
+
+</p><p>Because of its nature, arccosine cannot be used to determine the difference between the range
+below 180 degrees and the range above 180 degrees. You can determine
+the difference between the range below 90 and above 270, and the range between
+90 and 270, because the cosine is positive in the first case and negative in the
+second. If you can't see this, take a look at the picture of the cosine wave
+again.
+
+
+</p><p>If we rotate one vector by 90 degrees, we can simply check if the result of
+the dot product is below or above 0, to see whether we should turn left or right. To
+do this, we make use of a simple trick: we swap the coordinates and change the sign of one of them. In other words, we replace xa by ya and ya by -xa:
+
+
+</p><p></p><pre>cos (angle) = (ya * xb - xa * yb) / (length (a) * length (b))</pre>
+
+
+<p>Because we need to know if the result is positive or negative, and we
+don't need to know the actual value of the result, we can leave out the
+calculation of the lengths of the vectors:
+
+</p><p></p><pre>result = ya * xb - xa * yb</pre>
+
+<p>If the result is positive, we turn one way; if the result is negative, we
+turn the other way. The result is the following piece of code:
+
+</p><p>
+<code></code></p><pre><code>        if (fmul(dy,(target_x - x)) + fmul(-dx,(target_y - y)) &gt; 0)
+            angle = (angle - angle_stepsize) &amp; 0xFFFFFF;
+        else
+            angle = (angle + angle_stepsize) &amp; 0xFFFFFF;
+</code></pre>
+
+
+<p>In this code, dx and dy represent the missile velocity vector and
+target_x-x and target_y-y represent the vector to the target. Here is the entire
+example (circ8.c):
+
+<code></code></p><pre><code>void dot_product_home_in ()
+{
+    // the position of the homing missile
+    fixed x = itofix(SCREEN_W / 2);
+    fixed y = itofix(SCREEN_H / 2);
+    // the angle and length of the missile's velocity vector
+    fixed angle = 0;
+    int length = 1;
+    fixed angle_stepsize = itofix (3);
+    // determines whether the missile has reached
+    // the target and a new one should be chosen
+    int new_target = TRUE;
+    // position of the target
+    fixed target_x, target_y;
+    // vector of missile movement
+    fixed dx, dy;
+
+    while (!keypressed())
+    {
+        clear (screen);
+        // choose new target randomly when needed
+        if (new_target)
+        {
+            target_x = itofix((SCREEN_W + rand() % (2 * SCREEN_W)) / 4);
+            target_y = itofix((SCREEN_H + rand() % (2 * SCREEN_H)) / 4);
+            new_target = FALSE;
+        }
+
+        // Move the missile.
+        // We store dx and dy in variables so that
+        // we can use them later on in the dot product.
+        dx = length * fcos (angle);
+        dy = length * fsin (angle);
+        x += dx;
+        y += dy;
+
+        // if we are very close to the target, set a new target
+        if (abs (x - target_x) + abs (y - target_y) &lt; itofix(10))
+            new_target = TRUE;
+
+        // draw a pixel where the target is
+        putpixel (screen, fixtoi(target_x), fixtoi(target_y),
+            makecol (255, 255, 255));
+
+        // draw the missile
+        // (actually a circle with a line representing the angle)
+        circle (screen, fixtoi(x), fixtoi(y), 10, makecol (0, 0, 255));
+        line (screen, fixtoi(x), fixtoi(y),
+            fixtoi(x) + fixtoi (9 * fcos (angle)),
+            fixtoi(y) + fixtoi (9 * fsin (angle)),
+            makecol (255, 0, 0));
+
+        // Determine whether we should turn left or right
+        // using the dot product.
+        // We use &amp; 0xFFFFFF as a trick to get an angle
+        // between 0 and 256.
+        if (fmul(dy,(target_x - x)) + fmul(-dx,(target_y - y)) &gt; 0)
+            angle = (angle - angle_stepsize) &amp; 0xFFFFFF;
+        else
+            angle = (angle + angle_stepsize) &amp; 0xFFFFFF;
+
+        rest (10);
+    }
+}</code></pre>
+
+
+<p>(Thanks to Ben "entheh" Davis for pointing this out to me in EFNet #allegro.)
+
+
+</p><p>For some reason I can't quite put my finger on, some experienced game
+programmers are reluctant to use atan2() and prefer the dot product. Maybe it is
+because atan2() can introduce rounding errors? I don't know for sure. In the case
+of homing missiles, both methods work equally well, and it is a matter of
+personal preference which one you should use.
+
+</p><p><i>Proof-reader's note: Since I am the aforementioned "entheh", I couldn't resist the temptation to explain why I, and some other programmers, prefer the dot product. The dot product provides a method involving nothing more complex than multiplication. Most implementations of atan2() implicate a couple of comparisons (for the special cases), a division and the trigonometric function atan(), all of which are slower than multiplication. It is clear to see which method is both faster and more elegant. Besides, we proggers like to show off with obscure methods :)</i></p><p>
+
+
+<b>Sin, cos and bitmaps: rotate_sprite
+</b>
+
+</p><p>If you have read through this article, you should by now be a master of sin and cos. But this doesn't mean you're familiar with their widespread applications. In fact, there is no end to the possibilities offered by these two functions. I'll give you yet another example: rotating sprites.
+
+
+</p><p>Don't think, 'This is probably complicated and the Allegro library provides me with a sprite rotation function already so I don't need this.' Instead, think of all the useful modifications you can make if you know how the sprite rotation function works - rotating tilemaps, for example. Or maybe you need the masked_rotate_flip_mirror_alpha_blit function. The Allegro library doesn't provide it, so you would have to write your own.
+
+
+</p><p>So how does it work then? There are two ways to approach the problem. One way, the most obvious, is to loop through all pixels of the sprite you want to rotate, calculate for each pixel where on the screen it should go, and then copy the pixel. This is certainly possible, but there will not be a one-to-one correspondence to the pixels on the screen. The final picture of the rotated sprite will contain gaps, while some pixels will be drawn twice to the screen. So we should look for another way.
+
+
+</p><p>Here is the alternative. We loop through all pixels on the target bitmap (often the screen) and calculate which pixel from the sprite should go there. This way we are sure that every pixel on the screen is filled, and no pixel is copied twice to the screen.
+
+
+</p><p>Let's start at screen position (0,0). Which pixel from the bitmap should go
+there? To make things easier we put sprite position (0,0) there. We have to
+start somewhere, don't we? Then we move one to the right on the screen, to
+position (1,0). Which pixel from the sprite should go there? That depends on the
+angle we want to rotate. If we rotate 0 degrees, we should put sprite pixel
+(1,0) there. If we rotate 270 degrees, we should put pixel (0,1) there. Here is
+how to calculate that for any angle:
+
+
+</p><p></p><pre>sprite_x = cos (angle);
+sprite_y = sin (angle);
+</pre>
+
+
+<p>Then we go one more to the right. The position in the sprite we have to use
+now is:
+
+
+</p><p></p><pre>sprite_x = 2 * cos (angle);
+sprite_y = 2 * sin (angle);
+</pre>
+
+
+<p>And so on. Since we are proceeding in a linear fashion, we can simply
+calculate the sin and cos once, and add them to the position in the sprite each time we
+go one pixel to the right on the destination. Take a look at the source below (circ9.c):
+
+
+</p><p><code></code></p><pre><code>void my_rotate_sprite (BITMAP *dest_bmp, BITMAP *src_bmp,
+    fixed angle, fixed scale)
+{
+    // current position in the source bitmap
+    fixed src_x, src_y;
+
+    // current position in the destination bitmap
+    int dest_x, dest_y;
+
+    // src_x and src_y will change each time by dx and dy
+    fixed dx, dy;
+
+    // src_x and src_y will be initialized to start_x and start_y
+    // at the beginning of each new line
+    fixed start_x = 0, start_y = 0;
+
+    // We create a bit mask to make sure x and y are in bounds.
+    // Unexpected things will happen
+    // if the width or height are not powers of 2.
+    int x_mask = src_bmp-&gt;w - 1;
+    int y_mask = src_bmp-&gt;h - 1;
+
+    // calculate increments for the coordinates in the source bitmap
+    // for when we move right one pixel on the destination bitmap
+    dx = fmul (fcos (angle), scale);
+    dy = fmul (fsin (angle), scale);
+
+    for (dest_y = 0; dest_y &lt; dest_bmp-&gt;h; dest_y++)
+    {
+        // set the position in the source bitmap to the
+        // beginning of this line
+        src_x = start_x;
+        src_y = start_y;
+
+        for (dest_x = 0; dest_x &lt; dest_bmp-&gt;w; dest_x++)
+        {
+            // Copy a pixel.
+            // This can be optimized a lot by using
+            // direct bitmap access.
+            putpixel (dest_bmp, dest_x, dest_y,
+                getpixel (src_bmp,
+                    fixtoi (src_x) &amp; x_mask,
+                    fixtoi (src_y) &amp; y_mask));
+
+            // advance the position in the source bitmap
+            src_x += dx;
+            src_y += dy;
+        }
+
+        // for the next line we have a different starting position
+        start_x -= dy;
+        start_y += dx;
+    }
+}
+</code></pre>
+
+
+<p>Screenshot:
+
+
+</p><p><img border="0" src="./Sin & Cos  The Programmer's Pals!_files/circ8.gif">
+
+
+</p><p>If you take a look at these lines:
+
+
+</p><p></p><pre>    dx = fmul (fcos (angle), scale);
+    dy = fmul (fsin (angle), scale);
+</pre>
+
+
+<p>Here we calculate the sin and cos of the angle. The 'd' in
+'dx' and 'dy' stands for 'delta'. These represent the change in
+position in the sprite as we go to the next pixel on the screen. As you
+can see, a scale factor is introduced, so we can zoom in and out.
+
+
+</p><p>In the following lines:
+
+
+</p><p></p><pre>            putpixel (dest_bmp, dest_x, dest_y,
+                getpixel (src_bmp,
+                    fixtoi (src_x) &amp; x_mask,
+                    fixtoi (src_y) &amp; y_mask));
+</pre>
+
+
+<p>...the pixel is copied from the source bitmap (the sprite) to the target bitmap
+(often the screen). Of course, 'dest' stands for 'destination' and
+'src' stands for 'source'. A mask is used to make sure the
+position in the source bitmap is valid, so we won't get a pixel that is outside
+the source bitmap. This method only works if the dimensions of the source
+bitmap are powers of 2. For example, bitmaps of 32x32 or 64x256 would work, but
+a bitmap of 100x100 wouldn't, because 100 is not a power of 2.
+
+
+</p><p>With the following lines, we move to the next position on the screen. dest_x
+is incremented in the for loop, and src_x and src_y are increased by the
+previously calculated dx and dy:
+
+
+</p><p></p><pre>            src_x += dx;
+            src_y += dy;
+</pre>
+
+
+<p>After the whole line is completed, the position on the source bitmap is
+reset to the start position stored in start_x and start_y. Of course,
+start_x and start_y have to be changed in order to go one line down. Because a
+position down one 'pixel' is perpendicular to a position one to the
+right, we use the same trick we used further up with the dot product method: we replace dx with -dy and dy with dx. So here is how the start
+position is changed:
+
+</p><p></p><pre>        start_x -= dy;
+        start_y += dx;
+</pre>
+<p>
+
+<b>Rotation
+</b>
+
+</p><p>Suppose in a certain game you want to rotate a point around another point. For example the player can
+jump on to a rope and swing from one platform to another. You can implement
+the swinging motion as a rotation of the player around the point where the rope
+is attached. In order to do this, you need to calculate the vector going from the
+player to the center of rotation (where the rope is attached), take the angle of this
+vector, increase it a bit, and recalculate the player's position.
+
+
+</p><p>This is not so practical in this case though, because you most likely store
+the player's position in Cartesian coordinates. You have to calculate the angle of the vector
+from the player to the center of rotation with atan2(). After you have increased the angle, you
+can calculate the new x- and y-coordinates with sin and cos. Here is
+an example:
+
+
+</p><p></p><pre>angle = atan2 (y, x);
+length = sqrt (x * x + y * y);
+angle += 1;
+new_x = length * cos (angle);
+new_y = length * sin (angle);
+</pre>
+
+
+<p>Because you convert from Cartesian coordinates to polar coordinates and then back again, you can lose precision. There is a better way: you can make use of a rotation matrix. Rotation matrices ('matrices' being the plural of 'matrix') are widely used in the 3D graphics world, but they can be used in 2D just as well. In short, they provide a way to rotate a
+vector without converting to polar coordinates. Here I present the equations:
+
+
+</p><p></p><pre>new_x = x * cos (angle) - y * sin (angle)
+new_y = x * sin (angle) + y * cos (angle)
+</pre>
+
+
+<p>In this case, 'angle' is the angle by which you want to rotate the
+vector. 'x' and 'y' are the old Cartesian coordinates of the vector, and 'new_x' and
+'new_y' are the new Cartesian coordinates of this vector. As I said before, some
+people find the atan2 function awkward and like to use it as little as possible.
+With this method, you can perform rotations without using atan2. It is sensible to precalculate cos (angle) and sin (angle), since you need each one twice.
+
+
+</p><p>Here is a complete example using this method (circ10.c). All it does is rotate four points around the center of the screen.
+
+
+</p><p><code></code></p><pre><code>void projection_test()
+{
+    // initialize the coordinates of four dots
+    fixed dot_x[4] = {itofix(-50), itofix(-50), itofix(50), itofix(50)};
+    fixed dot_y[4] = {itofix(-50), itofix(50), itofix(50), itofix(-50)};
+
+    fixed angle = 0;
+    fixed angle_stepsize = itofix (1);
+
+    // proj_x and proj_y will contain the projection of the dots
+    fixed proj_x[4];
+    fixed proj_y[4];
+
+    int i;
+
+    // repeat this loop until Esc is pressed
+    while (!key[KEY_ESC])
+    {
+        // project all the dots to their new positions after rotation
+        for (i = 0; i &lt; 4; i++)
+        {
+            proj_x[i] = fmul (dot_x[i], fcos (angle)) -
+                fmul (dot_y[i], fsin (angle));
+            proj_y[i] = fmul (dot_x[i], fsin (angle)) +
+                fmul (dot_y[i], fcos (angle));
+        }
+
+        // draw the four dots
+        for (i = 0; i &lt; 4; i++)
+        {
+            putpixel (screen,
+                fixtoi (proj_x[i]) + SCREEN_W / 2,
+                fixtoi (proj_y[i]) + SCREEN_H / 2,
+                makecol (255 ,255, 255));
+        }
+
+        rest (10);
+        clear (screen);
+
+        angle += angle_stepsize;
+    }
+}</code></pre>
+
+
+<p>For information on rotation matrices look at this link: <a href="http://www.student.hk-r.se/~pt93mm/thesis/techniques/3d_tutorial/3d.html">http://www.student.hk-r.se/~pt93mm/thesis/techniques/3d_tutorial/3d.html</a>.
+This also contains information on 3D projection, which is used in the next section.
+
+
+</p><p>There is a special case of this rotation matrix: a rotation by 90 degrees.
+Here is how to do that: suppose you have a point with the coordinates (4, 8) and
+you want to rotate it by 90 degrees around the origin. You use the formulae:
+
+
+</p><p></p><pre>new_x = x * cos (90) - y * sin (90)
+new_y = x * sin (90) + y * cos (90)
+</pre>
+
+
+<p>cos (90) is 0 and sin (90) is 1, so we can simplify this equation to the following:
+
+
+</p><p></p><pre>new_x = -y
+new_y = x
+</pre>
+
+
+<p>So the new coordinates are -8, 4. We have already used this trick twice; now you know why it works!
+
+
+</p><p>If you want to rotate the point (4, 8) by 180 degrees around the origin, you get the following:
+
+
+</p><p></p><pre>new_x = x * cos (180) - y * sin (180)
+new_y = x * sin (180) + y * cos (180)
+</pre>
+
+<p>Or:
+
+</p><p></p><pre>new_x = -x
+new_y = -y
+</pre>
+
+<p>So the new coordinates are (-4, -8).
+
+</p><p>In the table below you can look up how to rotate by 90, 180 and 270 degrees
+in this way.
+
+<table border="1" cellpadding="0" cellspacing="0" width="100%">
+  <tbody><tr>
+    <td width="20%">&nbsp;</td>
+    <td width="20%">90 degrees</td>
+    <td width="20%">180 degrees</td>
+    <td width="20%">270 degrees</td>
+    <td width="20%">360 degrees</td>
+  </tr>
+  <tr>
+    <td width="20%">new x value</td>
+    <td width="20%">-y</td>
+    <td width="20%">-x</td>
+    <td width="20%">y</td>
+    <td width="20%">x</td>
+  </tr>
+  <tr>
+    <td width="20%">new y value</td>
+    <td width="20%">x</td>
+    <td width="20%">-y</td>
+    <td width="20%">-x</td>
+    <td width="20%">y</td>
+  </tr>
+</tbody></table></p><p>
+
+<b>Super Nintendo Mode 7</b>
+
+</p><p>
+Some games make use of a cool trick to draw a bitmap in 3D. This trick can be used to draw textured floors or ceilings, or any plane as long as it is horizontal or vertical. It is used by games like Jazz Jackrabit and Wacky Racers. The Super Nintendo even has a special graphics mode to draw graphics this way and that is why there are lots of Super Nintendo games that use this trick. Amongst them are Mario Kart, F-Zero and even the Squaresoft classic Secret of Mana. Nintendo calls this trick "Mode 7" and that is what I shall be calling it too. The only Allegro game that I know of that makes use of Mode 7 is <a href="http://bdavis.netfirms.com/sheep/">Sheep</a>, written by Ben Davis.
+
+</p><p>F-Zero on the Super Nintendo:
+
+</p><p><img border="0" src="./Sin & Cos  The Programmer's Pals!_files/Fzero4.gif">
+
+</p><p>How does it work? It is almost the same as drawing a rotated sprite, except that we have to scale each horizontal line to make lines that are farther away smaller. The only difficult thing is that we have to know how much we want to scale each line. For this we have to understand 3D projection a bit.
+
+</p><p>3D projection is only as difficult as you want it to be. What it all comes down to is that you start with coordinates in 3D space (space_x, space_y and space_z) and you want to turn them into coordinates on the screen (screen_x and screen_y). That means you have to make one number disappear, namely space_z. How can you do that? By dividing everything by space_z!
+
+</p><p></p><pre>space_x / space_z = screen_x
+space_y / spaze_z = screen_y
+space_z / space_z = 1
+</pre>
+
+<p>It seems strange but it works! space_z is the distance to the point in space, and in the case of Mode 7, space_y is the height of the camera above the plane.
+
+</p><p>In Mode 7 you draw each horizontal line scaled down according to distance. So you need to know which space_z goes with a certain screen_y. This means we have to turn the equation around:
+
+</p><p></p><pre>space_z = space_y / screen_y</pre>
+
+<p>So we know the distance of a certain line we want to draw. How do we know how much to scale this line then? You have to calculate the distance in space between two points on this line. This means you want to calculate what the difference is in space_x if you change screen_x by 1. Here is the equation:
+
+</p><p></p><pre>space_x = screen_x * space_z = 1 * space_z = 1 * space_y / screen_y
+</pre>
+
+<p>There is another small problem: what is the relationship between a space coordinate and a screen coordinate? In other words: if space_x is 12, how many pixels is that? To solve this problem we have to introduce an extra pair of variables: scale_x and scale_y. These will scale the screen_x and screen_y the right way. I have found that a scale_x and a scale_y of 200.0 are right for my purposes.
+
+</p><p>Link for Mode 7: <a href="http://members.madasafish.com/~kefka/mode7.htm"> http://members.madasafish.com/~kefka/mode7.htm</a>
+
+</p><p>Here is the code (circ11.c). To test your intelligence, I use not space_y but space_z to
+represent the upward direction.
+
+
+</p><p><code></code></p><pre><code>/* MODE_7_PARAMS is a struct containing all the different parameters
+that are relevant for Mode 7, so you can pass them to the functions
+as a single unit */
+typedef struct MODE_7_PARAMS
+{
+    fixed space_z; // this is the height of the camera above the plane
+    int horizon; // this is the number of pixels line 0 is below the horizon
+    fixed scale_x, scale_y; // this determines the scale of space coordinates
+    // to screen coordinates
+} MODE_7_PARAMS;
+
+void mode_7 (BITMAP *bmp, BITMAP *tile, fixed angle, fixed cx, fixed cy, MODE_7_PARAMS params)
+{
+    // current screen position
+    int screen_x, screen_y;
+
+    // the distance and horizontal scale of the line we are drawing
+    fixed distance, horizontal_scale;
+
+    // masks to make sure we don't read pixels outside the tile
+    int mask_x = (tile-&gt;w - 1);
+    int mask_y = (tile-&gt;h - 1);
+
+    // step for points in space between two pixels on a horizontal line
+    fixed line_dx, line_dy;
+
+    // current space position
+    fixed space_x, space_y;
+
+    for (screen_y = 0; screen_y &lt; bmp-&gt;h; screen_y++)
+    {
+        // first calculate the distance of the line we are drawing
+        distance = fmul (params.space_z, params.scale_y) /
+            (screen_y + params.horizon);
+        // then calculate the horizontal scale, or the distance between
+        // space points on this horizontal line
+        horizontal_scale = fdiv (distance, params.scale_x);
+
+        // calculate the dx and dy of points in space when we step
+        // through all points on this line
+        line_dx = fmul (-fsin(angle), horizontal_scale);
+        line_dy = fmul (fcos(angle), horizontal_scale);
+
+        // calculate the starting position
+        space_x = cx + fmul (distance, fcos(angle)) - bmp-&gt;w/2 * line_dx;
+        space_y = cy + fmul (distance, fsin(angle)) - bmp-&gt;w/2 * line_dy;
+
+        // go through all points in this screen line
+        for (screen_x = 0; screen_x &lt; bmp-&gt;w; screen_x++)
+        {
+            // get a pixel from the tile and put it on the screen
+            putpixel (bmp, screen_x, screen_y,
+                getpixel (tile,
+                    fixtoi (space_x) &amp; mask_x,
+                    fixtoi (space_y) &amp; mask_y));
+            // advance to the next position in space
+            space_x += line_dx;
+            space_y += line_dy;
+        }
+    }
+}</code></pre>
+
+
+<p>Screenshot:
+
+
+</p><p><img border="0" src="./Sin & Cos  The Programmer's Pals!_files/circ9.gif">
+
+
+</p><p>In this example, first a struct is defined that holds all parameters that are
+needed to draw a Mode 7 plane. This struct is called MODE_7_PARAMS. This
+struct holds the scale of the view, the height of the camera above the plane,
+and the height of the horizon on the screen.
+
+
+</p><p>As in the rotate_sprite example, we use two mask variables to make
+sure that we remain inside the texture bitmap and do not attempt to copy a pixel from
+outside. This of course only works if the texture bitmap has
+dimensions that are powers of 2, so 32x16 and 8x8 are fine, but 100x50 is out of
+the question.
+
+
+</p><p>In contrast to the rotate_sprite function, we can't calculate the dx and dy
+only once. We have to do that for each line, because each line has a
+different scale factor. The scale factor depends on the distance of the line from the camera, so
+we have to calculate that first:
+
+
+</p><p></p><pre>        distance = fmul (params.space_z, params.scale_y) /
+            (screen_y + params.horizon);
+
+        horizontal_scale = fdiv (distance, params.scale_x);
+
+        line_dx = fmul (-fsin(angle), horizontal_scale);
+        line_dy = fmul (fcos(angle), horizontal_scale);
+</pre>
+
+<p>Now line_dx and line_dy contain the dx and dy for this line, that is, the
+difference in position on the sprite if we go from one screen position to the
+next.
+
+
+</p><p>After that we have to calculate the starting position on the bitmap, which is
+stored in space_x and space_y. We then copy a point from the source bitmap to
+the destination bitmap:
+
+
+</p><p></p><pre>            putpixel (bmp, screen_x, screen_y,
+                getpixel (tile,
+                    fixtoi (space_x) &amp; mask_x,
+                    fixtoi (space_y) &amp; mask_y));
+</pre>
+
+
+<p>...and each time round, we increment space_x and space_y by the calculated line_dx
+and line_dy. You can see clearly that this Mode 7 effect has a lot in common with the
+sprite rotation effect.</p><p>
+
+
+<b>Mode 7 with objects
+</b>
+
+</p><p>We also want to draw objects, or sprites, in our projection. For example, in Mario Kart, the sprites are the 'karts'. These objects become smaller when they are farther away.
+Also the coordinates of the object on the bitmap have to be transformed into screen coordinates with respect to the camera. You can accomplish this with a rotation matrix as described earlier.
+
+
+</p><p>We need to introduce an extra pair of variables to MODE_7_PARAMS in order to be able
+to scale the sprites. These variables are named obj_scale_x and obj_scale_y. If
+you run the program circ12.c, you can see a blue sphere sitting in a position on
+the bitmap.
+
+
+</p><p>Here is the code (circ12.c):
+
+
+</p><p><code></code></p><pre><code>/* MODE_7_PARAMS is a struct containing all the different parameters
+that are relevant for Mode 7, so you can pass them to the functions
+as a single unit */
+typedef struct MODE_7_PARAMS
+{
+    fixed space_z; // this is the height of the camera above the plane
+    int horizon; // this is the number of pixels line 0 is below the horizon
+    fixed scale_x, scale_y; // this determines the scale of space coordinates
+    // to screen coordinates
+    fixed obj_scale_x, obj_scale_y; // this determines the relative size of
+    // the objects
+} MODE_7_PARAMS;
+
+/* draw_object just draws a single object at a fixed position, although
+this can easily be modified to allow for more objects.
+bmp = bitmap to draw to. obj = sprite for the object.
+angle, cx, cy define the camera position.
+*/
+void draw_object (BITMAP *bmp, BITMAP *obj, fixed angle, fixed cx, fixed cy, MODE_7_PARAMS params)
+{
+    int width, height;
+    int screen_y, screen_x;
+
+    // The object in this case is at a fixed position of (160, 100).
+    // Calculate the position relative to the camera.
+    fixed obj_x = itofix(160) - cx;
+    fixed obj_y = itofix(100) - cy;
+
+    // use a rotation transformation to rotate the object by the camera
+    // angle
+    fixed space_x = fmul (obj_x, fcos (angle)) + fmul (obj_y, fsin (angle));
+    fixed space_y = -fmul (obj_x, fsin (angle)) + fmul (obj_y, fcos (angle));
+
+    // calculate the screen coordinates that go with these space coordinates
+    // by dividing everything by space_x (the distance)
+    screen_x = bmp-&gt;w/2 + fixtoi (fmul (fdiv (params.scale_x, space_x), space_y));
+    screen_y = fixtoi (fdiv (fmul (params.space_z, params.scale_y), space_x)) - params.horizon;
+
+    // the size of the object has to be scaled according to the distance
+    height = fixtoi (obj-&gt;h * fdiv(params.obj_scale_y, space_x));
+    width = fixtoi (obj-&gt;w * fdiv(params.obj_scale_x, space_x));
+
+    // draw the object
+    stretch_sprite (bmp, obj, screen_x - width / 2, screen_y - height, width, height);
+}</code></pre>
+
+<p>Screenshot:
+
+</p><p><img border="0" src="./Sin & Cos  The Programmer's Pals!_files/circ12.gif" width="320" height="200"></p><p>
+
+
+<b>Conclusion</b>
+
+</p><p>In this article I set out to answer some of the most common questions on
+sine and cosine, or trigonometry in general. I could give you a more
+mathematical explanation of sine and cosine, but I wanted this article to be of
+practical use to game programmers, especially to Allegro game programmers, not
+to give an encyclopedic description of abstract mathematics. I hope that this
+has been of some use to you, my dear reader. Please send me an e-mail if you have
+something to say about this article, whether you like it, dislike it, find it
+useful, or just want to say hi. If you have any questions you can ask them
+on the forums at <a href="http://www.allegro.cc/">http://www.allegro.cc</a>. It
+is very likely that I'll see it there. And if you ever write an effect in a demo or
+game using the explanations in this article, I would very much like to see the
+result.
+
+</p><p>Amarillion
+<br>E-mail: <a href="mailto:amarillion@yahoo.com">amarillion@yahoo.com</a>
+<br>Home page: <a href="http://www.helixsoft.nl/">http://www.helixsoft.nl/</a>
+</p><p>
+
+<script src="./Sin & Cos  The Programmer's Pals!_files/urchin.js" type="text/javascript">
+
+</script>
+<script type="text/javascript">
+_uacct = "UA-1160636-4";
+urchinTracker();
+</script>
+
+
+
+</p></body></html>

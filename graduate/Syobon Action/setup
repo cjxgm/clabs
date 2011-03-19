@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Link fonts
+ln -s "`find /usr/share/fonts/truetype/ -name wqy*.*|head -n 1`" ./font.ttf

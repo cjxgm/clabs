@@ -1,0 +1,2 @@
+# Create an empty floppy image
+dd bs=512 count=2880 if=/dev/zero of=myfirst.flp

@@ -1,0 +1,4 @@
+#!/bin/bash
+
+DEBUG='-g -F stabs'
+nasm -f elf $DEBUG $1

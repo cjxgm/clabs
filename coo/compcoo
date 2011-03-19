@@ -1,0 +1,7 @@
+#!/bin/bash
+
+./coopp $2
+FILEC="`echo \"$2\"|sed 's/\(.*\)\.coo/\1.c/g'`"
+gcc -o "$1" "$FILEC"
+rm $FILEC
+

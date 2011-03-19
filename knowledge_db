@@ -1,0 +1,29 @@
+This is in fact something like notes...
+
+- PROGRAMMING
++	zimbu: A no-nonsense programming language
+		> Project hosted at: http://code.google.com/p/zimbu/
+		> Homepage: http://www.zimbu.org/
+		> Why Zimbu?
+		>
+		> Suppose you want to write a new program, something like a text
+		> editor. What language would you write it in?
+		> 	-	It has to be as fast as possible, so interpreted
+		> 		languages are out.
+		> 	-	You don't want to micro manage memory, so C is out.
+		> 	-	You don't want to require programmers to have a
+		> 		degree, so C++ is out.
+		> 	-	You want fast startup and not depend on a big runtime,
+		> 		so Java is out.
+		> 	-	It has to run on most systems, anything with a C
+		> 		compiler, so D is out.
+		> 	-	You want to have fun making something new.
+		> No existing language really meets these demands, so let's
+		> create a new one that does!
+		>
+		> Zimbu is an experimental programming language.  It is a very
+		> practical, no-nonsense kind of language.  It mixes the good
+		> things of many existing languages and avoids their
+		> deficiencies.  And then throws in a few brand new ideas.
++	NeHe OpenGL Tutorials: Some good examples and tutorials about OpenGL.
+		> At: http://nehe.gamedev.net/

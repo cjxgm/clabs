@@ -1,0 +1,39 @@
+coo - C with OO (Object-Oriented)
+
+TODO
+	class A {
+		int a;
+	};
+	::A::void new(){
+		this->a = 123;
+	}
+	::A::void delete(){
+		printf("this->a = %d\n", this->a);
+	}
+	::A::void say_hello(const char *name){
+		printf("Hello, %s!\n", name);
+	}
+
+	A *a = new A;
+	a->say_hello("cjxgm");
+	delete a;
+
+	struct _class_A {
+		int a;
+	};
+	void _class_A_new(struct _class_A *this,){
+		this->a = 123;
+	}
+	void _class_A_delete(struct _class_A *this,){
+		printf("this->a = %d\n", this->a);
+	}
+	void _class_A_say_hello(struct _class_A *this, const char *name){
+		printf("Hello, %s!\n", name);
+	}
+
+	struct _class_A *a = malloc(sizeof(struct _class_A));
+	_class_A_new(a,);
+	_class_A_say_hello(a, "cjxgm");
+	_class_A_delete(a,);
+	free(a);
+	

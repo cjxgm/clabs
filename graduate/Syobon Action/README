@@ -1,0 +1,12 @@
+32位版已经编译好，64位的自己编译
+
+注意：
+	一定要先运行 $ ./setup 来配置字体，不然会 Assert。
+	（setup 脚本会在 /usr/share/fonts/truetype 中搜索wqy*.*，并创建软链接(./font.ttf)）
+
+依赖：
+	SDL    SDL_mixer    SDL_image    SDL_gfx    SDL_ttf
+	对于 Ubuntu 用户：
+		$ sudo apt-get install libsdl1.2debian-alsa libsdl-mixer1.2 libsdl-gfx1.2-4 libsdl-image1.2 libsdl-ttf2.0-0
+	(具体名称视版本而定)
+
