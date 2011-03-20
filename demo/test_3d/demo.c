@@ -47,7 +47,7 @@ void rotate_z(vector3d_t points[], int len, float a);
 
 int main(void)
 {
-	demo_main(DEMO_TITLE, DEMO_WIN_SIZE, 30);
+	demo_main(DEMO_TITLE, DEMO_WIN_SIZE, 100, 100, 100, 30);
 	return 0;
 }
 
@@ -166,6 +166,14 @@ void rotate_z(vector3d_t points[], int len, float a)
 		float ny = points[i].y*cos(a) + points[i].x*sin(a);
 		points[i].x = nx;
 		points[i].y = ny;
+	}
+}
+
+void keypress(byte key, int x, int y)
+{
+	switch (key){
+		case 27: // Esc
+			exit(0);
 	}
 }
 

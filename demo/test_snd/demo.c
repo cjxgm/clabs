@@ -17,7 +17,7 @@ void draw(void);
 
 int main(void)
 {
-	demo_main(DEMO_TITLE, DEMO_WIN_SIZE, 30);
+	demo_main(DEMO_TITLE, DEMO_WIN_SIZE, 100, 100, 100, 30);
 	snd_destroy();
 	return 0;
 }
@@ -74,3 +74,12 @@ void draw(void)
 	draw_string("Sine Generator");
 	POP;
 }
+
+void keypress(byte key, int x, int y)
+{
+	switch (key){
+		case 27: // Esc
+			exit(0);
+	}
+}
+

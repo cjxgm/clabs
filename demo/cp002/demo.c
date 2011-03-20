@@ -114,7 +114,15 @@ void init(void)
 
 int main(void)
 {
-	demo_main(DEMO_TITLE, DEMO_WIN_SIZE, 30);
+	demo_main(DEMO_TITLE, DEMO_WIN_SIZE, 100, 100, 100, 30);
 	return 0;
+}
+
+void keypress(byte key, int x, int y)
+{
+	switch (key){
+		case 27: // Esc
+			exit(0);
+	}
 }
 

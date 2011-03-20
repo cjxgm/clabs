@@ -13,13 +13,17 @@
 #define false	0
 #endif
 
+#ifndef byte
+#define byte	unsigned char
+#endif
+
 // Constant
 #ifndef PI
 #define PI 3.1415927
 #endif
 
 // Uilities
-#define CLEAR glClear(GL_COLOR_BUFFER_BIT)
+#define CLEAR glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 #define RGB(R, G, B) (float)(R)/255.0f, (float)(G)/255.0f, (float)(B)/255.0f
 #define RGBA(R, G, B, A) RGB(R, G, B), (float)(A)/255.0f
 #define SET_COLOR_RGB(R, G, B) glColor3f(RGB(R, G, B))

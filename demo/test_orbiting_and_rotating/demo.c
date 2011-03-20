@@ -12,7 +12,7 @@ void draw(void);
 
 int main(void)
 {
-	demo_main(DEMO_TITLE, DEMO_WIN_SIZE, 30);
+	demo_main(DEMO_TITLE, DEMO_WIN_SIZE, 100, 100, 100, 30);
 	return 0;
 }
 
@@ -59,5 +59,13 @@ void draw_pie(float rx, float ry)
 		glVertex2f(cos(a)*rx, sin(a)*ry);
 	glVertex2f(cos(2*PI-0.1)*rx, sin(2*PI-0.1)*ry);
 	glEnd();
+}
+
+void keypress(byte key, int x, int y)
+{
+	switch (key){
+		case 27: // Esc
+			exit(0);
+	}
 }
 
