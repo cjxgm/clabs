@@ -1,0 +1,16 @@
+
+#include <ctypes.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+int lookahead;
+
+int main(void)
+{
+	lookahead = getchar();
+	expr();
+	putchar('\n');
+
+	return 0;
+}
+

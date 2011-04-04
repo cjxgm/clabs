@@ -1,0 +1,228 @@
+This file documents the most important changes for each release of
+Karmen.  For a complete list of changes, refer to the SVN repository.
+
+Changes in version 0.15 (2008-12-28)
+====================================
+
+	* Buttons look nicer when pressed.
+
+	* Reliable signal handling using the "self-pipe" trick.
+
+	* Improved menu positioning.
+
+Changes in version 0.14 (2008-05-25)
+====================================
+
+	* Fix bug that left stale resize information window if the
+	  resized window was destroyed.
+
+	* Do not define a mouse cursor for the root window.
+	  People may want to do this themselves (think left-handed).
+
+
+Changes in version 0.13 (2007-09-04)
+====================================
+
+	* "Smart" window placement:  The algorithm tries hard not
+	  to let new windows cover existing ones.  Hopefully this
+	  is less annoying than random placement.  
+
+	* The menu will now stay open on mouse click, like most
+	  modern menus do.  It also looks nicer.
+
+	* Define mouse cursor for the root window.
+
+
+Changes in version 0.12 (2007-08-19)
+====================================
+
+	* New menu look.
+
+	* Optimize repainting of widgets.
+
+	* Add options -display, -font, -help and -version.
+
+	* Fix a long-standing bug causing some windows not to
+	  be managed correctly when Karmen starts.
+
+	* Allow windows to be as small as 1x1 pixel.
+
+	* Improved text positioning in window titles and menus.
+
+
+Changes in version 0.11 (2007-04-03)
+====================================
+
+	* Remove the "Lower" window button.
+
+	* Move the "Delete" window button to the right hand side.
+
+
+Changes in version 0.10 (2007-02-07)
+====================================
+
+	* When hiding a window, move its menu item to the bottom
+	  of the Windows menu.
+
+	* Pressing the Shift key while clicking a window's title
+	  bar toggles the stay-on-top property.  The key binding
+	  is Meta-Space.
+
+	* Moving related windows is now done by holding down the
+	  Control key instead of the Shift key.
+
+	* Honor window gravity in ConfigureRequest events.  This is
+	  required by ICCCM/EWMH.  Unfortunately, this change breaks
+	  full screen mode for some applications (notably Firefox),
+	  since Karmen doesn't (yet) support undecorated windows.
+	  However, it solves some other strangeness.
+
+	* If a window does not provide an icon name, display the
+	  window name in the Windows menu.
+
+	* Fix bug that caused Karmen to exit on the SIGCONT signal.
+	  This was triggered by the following case:
+
+	    $ karmen
+	    ^Z
+	    Stopped (SIGSTOP)
+	    $ bg
+	    [ karmen exits ]
+
+	* Define mouse pointers for all widgets.
+
+
+Changes in version 0.9 (2006-12-14)
+====================================
+
+	* Finally fix a serious and long-lasting bug that caused
+	  configure requests to not being handled correctly.  This
+	  problem was visible in XMMS and recent versions of MPlayer.
+
+	* Fix bug in window stack code that sometimes caused an
+	  assertion when unmanaging windows.
+
+	* Fixed a bug in the handling of transient windows.
+
+	* Transient windows no longer have lower and unmap buttons.
+
+	* The window group is only raised if the newly selected window was
+	  not already in the active window group.
+
+	* Properly remove the size window if the menu is brought up
+	  during a resize operation.
+
+	* Find a new active window if a window is lowered that is either
+	  a transient for the active window, or the window for which the
+	  active window is a transient.
+
+
+Changes in version 0.8a (2006-11-16)
+====================================
+
+	* Fancy window borders.
+
+	* Move window group and transient windows if Shift is held
+	  down while moving a window.
+
+	* When a window is activated, make sure it's not completely
+	  off screen.
+
+	* Use random placement for new windows instead of centering them.
+	  Please raise your voice if you can't live with this.
+
+	* Basic support for colormaps.
+
+	* Fix memory leak when restacking windows.
+
+	* Unmap transients when a window is unmapped.
+
+	* Lower transients when a window is lowered.
+
+	* Fix memory leak when unmanaging windows.
+
+	* Fix bug that caused some ignored X errors to be reported.
+
+
+Changes in version 0.7a (2006-10-04)
+====================================
+
+	* Implement a modular interface of "hooks" that makes
+	  it possible to support standards beyond ICCCM.
+
+	* Implement basic support for Extended Window Manager Hints
+	  using the new hooks interface.  The support is optional,
+	  use --disable-ewmh to turn it off.
+
+	* Highlight transient and group member windows of the
+	  active window.
+
+	* Improve window restacking operations by keeping an
+	  internal record of the stacking order.
+
+	* Improved ICCCM compliance.
+
+	* Bug fixes.
+
+
+Changes in version 0.6a (2006-09-24)
+====================================
+
+	* Switch to the MIT license.
+
+	* Meta-Shift-Tab cycles backward in the Windows menu.
+
+	* Fix bug that caused Karmen to ignore when windows
+	  request to be hidden/shown.  Reported and fixed by
+	  Alejandro Liu.
+
+	* Improved signal/event handling.
+
+	* Fix problems with keyboard shortcuts and mouse buttons
+	  not working while Caps Lock, Num Lock and/or Scroll
+	  Lock are active.  Reported by Alejandro Liu.
+
+
+Changes in version 0.5a (2006-09-11)
+====================================
+
+	* Rewrite the menu to include all (not only hidden) windows.
+
+	* Implement Windows-style window cycling.  See the manual
+	  page for more info.
+
+	* Change some key bindings.  See the manual page for
+	  details.
+
+	* Don't kill windows that won't close properly when the
+	  delete button (X) is pressed.  Eventually, a shift-click
+	  operation will be implemented for killing the program.
+
+
+Changes in version 0.4a (2006-07-23)
+====================================
+
+	* Fix a bug that caused Karmen to sometimes mix up managed
+	  and unmanaged windows.
+
+
+Changes in version 0.3a (2006-06-22)
+====================================
+
+	* Document some keyboard shortcuts.  See the manual page.
+	  More shortcuts will be added in time.  Please make
+	  suggestions on the Sourceforge project page (Feature
+	  Requests).
+
+
+Changes in version 0.2a (2006-06-15)
+====================================
+
+	* Move from Imake to the GNU Autotools build framework. 
+
+	* Fix a bug that crashed Karmen if it could not open a display.
+
+Changes in version 0.1a (2006-06-13)
+====================================
+
+	* First release.

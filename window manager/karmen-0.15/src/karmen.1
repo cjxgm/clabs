@@ -1,0 +1,278 @@
+.\" Copyright 2006-2007 Johan Veenhuizen
+.\" 
+.\" Permission is hereby granted, free of charge, to any person obtaining a
+.\" copy of this software and associated documentation files (the "Software"),
+.\" to deal in the Software without restriction, including without limitation
+.\" the rights to use, copy, modify, merge, publish, distribute, sublicense,
+.\" and/or sell copies of the Software, and to permit persons to whom the
+.\" Software is furnished to do so, subject to the following conditions:
+.\"
+.\" The above copyright notice and this permission notice shall be included
+.\" in all copies or substantial portions of the Software.
+.\"
+.\" THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+.\" IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+.\" FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+.\" THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+.\" LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+.\" FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+.\" DEALINGS IN THE SOFTWARE.
+.TH KARMEN 1
+.SH NAME
+karmen \(em window manager for X
+.
+.SH SYNOPSIS
+.
+.B karmen
+.RB [ -display
+.IR name ]
+.RB [ -font
+.IR name ]
+.RB [ -help ]
+.RB [ -version ]
+.
+.SH DESCRIPTION
+.
+.P
+.B Karmen
+is a window manager for the X Window System.
+It is normally started from your
+.I .xinitrc
+or
+.I .xsession
+file, e.g.:
+.P
+.RS
+.nf
+# My .xsession
+
+xsetroot -cursor_name left_ptr
+karmen &
+exec xterm
+.fi
+.RE
+.P
+You can also start
+.B karmen
+manually by typing the following command in your shell:
+.P
+.RS
+$ karmen &
+.RE
+.P
+Note that you can only have one window manager running at a time.
+You will have to find out how to disable your current window manager
+if you want to replace it with
+.BR karmen .
+How to do this depends on your system's configuration.
+.P
+To quit
+.BR karmen ,
+type
+.P
+.RS
+$ pkill karmen
+.RE
+.P
+in a console, or simply log out.
+.SH OPTIONS
+.P
+The following options are recognized:
+.TP
+.BI "-display " name
+Manage windows on display
+.IR name .
+.TP
+.BI "-font " name
+Use the font
+.I name
+to draw text.
+.TP
+.B -help
+Print usage information and exit.
+.TP
+.B -version
+Print version and exit.
+.
+.SH WINDOW MANAGEMENT
+.
+.P
+Each window is decorated with a title bar,
+two buttons, and a surrounding border.
+.P
+Clicking a window's title bar will
+.B activate
+the window,
+raising it and giving it the keyboard focus.
+Clicking anywhere within an inactive window will have the same effect.
+.P
+To
+.B move
+a window,
+press the left mouse button in the title bar and drag it to
+the desired location.
+If the title bar is not visible,
+you can hold down the
+.I Meta
+key (usually the key labeled
+.IR Alt )
+and press the left mouse button anywhere inside the window to drag it.
+If
+.I Control
+is held down while moving the window,
+all related windows will be moved as well.
+.P
+To
+.B resize
+a window,
+grab one of its borders and drag it to the desired size.
+.P
+Double-click the title bar to
+.B maximize
+a window.
+Another double-click will restore the original size and position.
+.P
+All managed windows are listed in the
+.I Windows
+menu.
+This menu is accessed by right-clicking either in the root window or
+in any of the window decorations.
+.P
+Click the X button to
+.B close
+a window.
+.P
+Click the minus button to
+.B hide
+a window.
+A hidden window can be restored by selecting it from the
+.I Windows
+menu.
+.P
+A window can be told to
+.B "stay on top"
+of other windows by clicking its title bar with
+.I Shift
+held down.
+Another
+.IR Shift -click
+will disable the stay-on-top property.
+.
+.SH KEY BINDINGS
+.
+.P
+To make window management more efficient,
+some window actions may be performed from the keyboard.
+The following list describes the available keyboard actions.
+The
+.I Meta-key
+notation means that you should hold down the
+.I Meta
+key while pressing
+.IR key .
+On most keyboards,
+the
+.I Meta
+key is labeled
+.IR Alt .
+.TP
+.I Meta-Tab
+Open and cycle through the
+.I "Windows"
+menu.
+.I Meta-Shift-Tab
+cycles backward.
+When the
+.I Meta
+key is released,
+the currently highlighted window will be raised and activated.
+Pressing
+.I Escape
+before releasing the
+.I Meta
+key aborts the window cycling operation.
+.TP
+.I Meta-Escape
+Hide the current window.
+.TP
+.I Meta-Enter
+Maximize (or restore) the current window.
+.TP
+.I Meta-BackSpace
+Delete the current window.
+If the window refuses to close,
+pressing
+.I Shift-Meta-BackSpace
+will kill it once and for all.
+.TP
+.I Meta-Space
+Toggle the stay-on-top property of the current window.
+.
+.SH SIGNALS
+.
+.P
+.B Karmen
+terminates gracefully upon receipt of one of the signals
+SIGTERM, SIGINT or SIGHUP.
+.
+.SH BUGS
+.
+.P
+.B Karmen
+is not (yet) fully ICCCM and EWMH/NetWM compliant.
+.P
+Some applications don't work well with
+.BR Karmen ,
+e.g. XMMS.
+.
+.SH AUTHOR
+.
+.P
+Johan Veenhuizen,
+.I veenhuizen@users.sourceforge.net
+.
+.SH SEE ALSO
+.
+.P
+.BR twm (1),
+.BR Xserver (1),
+.BR xdm (1),
+.BR X (7)
+.P
+.I http://karmen.sourceforge.net/
+.SH LICENSE
+.P
+.na
+.nh
+Copyright 2006\-2007 Johan Veenhuizen
+.P
+.na
+.nh
+Permission is hereby granted,
+free of charge,
+to any person
+obtaining a copy of this software and associated documentation
+files (the\ ``Software''),
+to deal in the Software without restriction,
+including without limitation the rights to use, copy, modify, merge,
+publish, distribute, sublicense, and/or sell copies of the Software,
+and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+.P
+.na
+.nh
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+.P
+.na
+.nh
+THE SOFTWARE IS PROVIDED ``AS IS'',
+WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED,
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.

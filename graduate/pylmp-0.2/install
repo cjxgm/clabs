@@ -1,0 +1,45 @@
+#!/bin/bash
+#
+#    The install program for pylmp.
+#
+#    Copyright 2010 cjxgm (À¼Íþ¾Ù) <cjxgm@126.com>
+#
+#    This file is part of pylmp.
+#
+#    Pylmp is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    pylmp is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with pylmp.  If not, see <http://www.gnu.org/licenses/>.
+
+dest=/usr/bin
+if [ "$1" == "--help" ]; then
+    echo "$0 [option]"
+    echo "  OPTION:"
+    echo "    None for installing pylmp."
+    echo "    --help    Show this help."
+    echo "    --remove  Remove pylmp"
+elif [ "$1" == "--remove" ]; then
+    rm -r $dest/lrc.pyc $dest/player.pyc $dest/ui_cn.pyc $dest/pylmp
+elif [ "$1" == "" ]; then
+    cp lrc.pyc $dest
+    cp player.pyc $dest
+    cp ui_cn.pyc $dest
+    cp pylmp $dest
+    chmod +x $dest/pylmp
+    echo "Succeeded in copying files."
+    echo "You have to install pyao and pymad manually if you don't."
+    echo "For Ubuntu users, you can type following commands to install them:"
+    echo "  $ sudo apt-get install python-pyao python-pymad"
+else
+    echo "Please type $0 --help for help."
+fi
+
+

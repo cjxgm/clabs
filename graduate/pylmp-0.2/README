@@ -1,0 +1,59 @@
+pylmp - 用 Python 写的文本界面的 LRC MP3 播放器  使用说明
+pylmp - the commandline LRC MP3 Player written in Python  README
+
+本软件(pylmp)是在 GPLv3 的许可下发行的，它将永远免费和开源。
+如果您要修改它，请公布您修改的代码。详细请见 COPYING 文件。
+任何英文部分有疑义的，请参照中文文档。
+This software (pylmp) is published under GPLv3,
+It will be free and opensource forever.
+For more details, please read the file COPYING.
+If there are any problems in English document,
+please follow the Chinese version of it.
+
+* 简介
+* INTRODUCTION
+- 本软件用 Python 写成，是基于命令行界面的能显示LRC歌词的轻量级MP3播放器。
+- This software is written in Python, it is based on command-line interface.
+  It is a light-weight MP3 Player which can show LRC lyrics.
+- 它不仅能在终端中运行，更是能在tty下运行。
+- It can run under not only terminals but also tty.
+- 歌词文件支持 ANSI、UTF-8、GB2312 以及 GBK 编码。
+- It supports following encodings for the lyric file: ANSI, UTF-8, GB2312 and GBK.
+
+* 安装
+* INSTALLATION
+- 打开终端（GNOME终端或xterm等）输入以下命令解压缩:
+- Run a terminal (gnome-terminal or xterm, etc.), 
+  and type following command to untar and unzip:
+$ tar xvfz pylmp-0.1.tar.gz
+- 要使用本软件，您还需要安装以下库文件:
+- To use this software, you also need to install the following libraries:
+! pyao, pymad
+- 如果您在使用 Ubuntu, 安装过程将会很简单。只需打开终端，然后输入一下命令即可。
+- If you are using Ubuntu, it will be easy to install them.
+  Just run a terminal and type following command:
+$ sudo apt-get install python-pyao python-pymad
+- 当然，您也可以使用新利得软件包管理器搜索并装上 python-pyao 及 python-pymad。
+- Of course you can use synaptic to search and install python-pyao and python-pymad.
+- (可选)如果你希望能想普通命令一样使用pylmp，那么执行:
+- (OPTIONAL)If you want to use pylmp just like a normal command, execute:
+$ sudo ./install
+
+* 使用
+* USAGE
+- 您可以这样使用它:
+- You can use it like this:
+$ pylmp a.mp3 [b.mp3 [c.mp3 ...]]
+- 对于 a.mp3，软件会去寻找 a.lrc，对于b.mp3，软件会去寻找 b.lrc，以此类推。
+- For a.mp3, the software will find a.lrc, and b.lrc for b.mp3, etc.
+- 这样会在软件中产生一个播放列表。
+- It will generate a playlist in the software if you do so.
+- 至于具体如何操作，请看软件中的说明。
+- For more details, please read the instructions in the software.
+
+＊ 注意
+＊ CAUTION
+- 您的屏幕必须足够大（至少 50 × 9 个字符），否则软件将会引发错误（断言异常）！
+- Your screen should be big enough (at least 50 * 9 characters),
+  or it will cause an AssertionError!
+

@@ -1,0 +1,7 @@
+2011-04-04	pylmp 0.2
+	+ gnome-osd support (use command line parameter --osd to enable it)
+	@ Minimal terminal size change to 74x9.
+
+2010-08-19
+	pylmp 0.1 first released.
+

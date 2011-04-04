@@ -27,3 +27,9 @@ This is in fact something like notes...
 		> deficiencies.  And then throws in a few brand new ideas.
 +	NeHe OpenGL Tutorials: Some good examples and tutorials about OpenGL.
 		> At: http://nehe.gamedev.net/
+- GRAPHICS
++	graphviz: Graph Visualization Software
+		> At: http://www.graphviz.org/
+- SKILLS
++	ConqueTerm: Shell in VIM
+		> Usage: :ConqueTerm command<CR>

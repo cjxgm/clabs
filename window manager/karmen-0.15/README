@@ -1,0 +1,97 @@
+
+                     The Karmen Window Manager
+
+                        By Johan Veenhuizen
+                  veenhuizen@users.sourceforge.net
+
+                   http://karmen.sourceforge.net/
+
+INTRODUCTION
+
+   Karmen is an easy-to-use window manager for X. It is designed to
+"just work". There is no configuration file and no library
+dependencies except Xlib. Window selection is done in click-to-focus
+style.
+
+   Karmen comes with a UNIX-style manual page. After installation,
+you should be able to view it by typing "man karmen" from your shell.
+
+   The latest version of Karmen can be downloaded from the homepage.
+The URL is provided at the top of this file.
+
+   Karmen is released under the MIT license, which is an open source
+license approved by the Open Source Initiative [http://opensource.org].
+See the file LICENSE for details.
+
+   The NEWS file documents the history of significant changes in each
+version of Karmen.
+
+
+GOALS
+
+   The following goals are set for the future Karmen 1.0 release:
+
+   * Intuitive, efficient window management
+
+   * Provide high-quality look and feel
+
+   * Standards compliance (ICCCM and EWMH/NetWM)
+
+   * Work well as a stand-alone window manager
+
+   * Work well with other desktop utilities and environments
+
+   * Focus on window management and let other tools do the rest
+
+
+NORMAL BUILD INSTRUCTIONS
+
+   Karmen uses the GNU Autotools build framework. Read the INSTALL
+file in the root directory of the distribution for details and
+options. In most cases it's just a matter of typing:
+
+	$ ./configure
+	$ make
+	$ make install
+
+   This will build and install the program and manual page under the
+/usr/local directory.
+
+
+MAILING LIST
+
+   There is a mailing list for Karmen. To post a message to all the
+list members, send email to <karmen-users@lists.sourceforge.net>.
+To subscribe to the list, visit
+
+	https://lists.sourceforge.net/lists/listinfo/karmen-users
+
+
+REPORTING BUGS
+
+   If you find a bug or have suggestions for future versions of
+Karmen, there are three ways to contact me. Either send email to
+my personal address (see the top of this file for my address), use
+the karmen-users mailing list, or submit a bug report or feature
+request at the Sourceforge project homepage:
+
+	http://www.sourceforge.org/projects/karmen/
+
+
+SUBVERSION REPOSITORY ACCESS
+
+   To check out the current development version of Karmen, make sure
+you have the Subversion client installed and type the command:
+
+	$ svn co https://svn.sourceforge.net:/svnroot/karmen/trunk karmen
+    
+This will put the latest development version of Karmen in the
+directory named "karmen". In order to build Karmen from these
+sources, you must first bootstrap the Autotools. This means you
+must have GNU Autoconf and Automake installed on your system. In
+the root directory of the distribution, type the command:
+
+	$ autoreconf -i
+
+   Now the build tools are setup, and you can configure and build
+Karmen as described in the normal build instructions.
