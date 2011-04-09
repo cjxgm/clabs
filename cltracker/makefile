@@ -1,7 +1,8 @@
 CC = gcc
-CFLAGS = -lncurses
+CFLAGS = -lncurses -lpthread
+
+all: t1 win
 
 debug: all
 	./win
 
-all: t1 win
