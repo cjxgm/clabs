@@ -1,0 +1,46 @@
+{
+   "browser": {
+      "last_known_google_url": "http://www.google.com.hk/",
+      "last_prompted_google_url": "http://www.google.com.hk/",
+      "last_redirect_origin": ""
+   },
+   "local_state": {
+      "multiple_profile_prefs_version": 3
+   },
+   "safe_browsing": {
+      "client_key": "p4hUUnz1uTuO7SRrfyvTLg==",
+      "wrapped_key": "AKEgNivWee-H0XxkEA9A9vv8K15uua1JGhpKg6AstqXGzVYmnwwK_w8g_ilbN3eWlTv4IUWml38ZknyzW9FJY0XFg-sVOAo4XQ=="
+   },
+   "show-minimal-first-run-bubble": true,
+   "show-welcome-page": true,
+   "shutdown": {
+      "num_processes": 0,
+      "num_processes_slow": 0,
+      "type": 0
+   },
+   "uninstall_metrics": {
+      "installation_date2": "1301140621",
+      "launch_count": "455"
+   },
+   "user_experience_metrics": {
+      "session_id": 454,
+      "stability": {
+         "breakpad_registration_fail": 149,
+         "breakpad_registration_ok": 0,
+         "crash_count": 0,
+         "debugger_not_present": 149,
+         "debugger_present": 0,
+         "exited_cleanly": true,
+         "incomplete_session_end_count": 0,
+         "last_timestamp_sec": "1301983901",
+         "launch_count": 149,
+         "launch_time_sec": "1301983759",
+         "page_load_count": 0,
+         "renderer_crash_count": 0,
+         "renderer_hang_count": 0,
+         "session_end_completed": true,
+         "stats_buildtime": "1300847131",
+         "stats_version": "12.0.712.0"
+      }
+   }
+}

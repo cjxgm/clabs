@@ -1,0 +1,88 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>素年锦时</title>
+<link rel="stylesheet" type="text/css" href="magazine.css" />
+
+<!--<a href="javascript:window.close();">退出</a>-->
+
+<body style="background-color: #000;" onload="ready();">
+<canvas id=c width=1000 height=740 style="position: absolute; left: 12; top: 14;">
+</canvas>
+<div id="ds" class="mag_con" style="visibility: hidden;"></div>
+</body>
+
+<script type="text/javascript" src="magazine.js"></script>
+<script type="text/javascript" src="content.js"></script>
+
+<!--
+<title>Magazine</title>
+<link rel="stylesheet" type="text/css" href="magazine.css"/>
+<div id="lic">
+<a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">
+<img alt="Creative Commons License" style="border-width:0" src="./88x31.png"/>
+</a><br />
+This work is licensed under a Creative Commons Attribution-NonCommercial 3.0 Unported License.
+</div>
+<form id="login">
+<h1>内测版，请登录</h1>
+<font color=red><h2 id="info"></h2></font>
+用户名:&nbsp;<input type="text" id="usr"/><br>
+密&nbsp;&nbsp;&nbsp;码:&nbsp;<input type="password" id="pwd"/><br>
+<input type="submit" id="btn_login" value="登录">
+</form>
+<div id="ds" style="visibility: hidden;">
+<div id="menu" class="menu"><i><center>目录</center></i></div>
+</div>
+<script type="text/javascript">
+var pages = new Array();
+var sel_item = 0;
+function item_sel(item)
+{
+	pages[sel_item].div.style.visibility = 'hidden';
+	pages[sel_item].item.className = 'item';
+	pages[item].div.style.visibility = 'visible';
+	pages[item].item.className = 'item_sel';
+	sel_item = item;
+}
+
+function new_page(title, txt)
+{
+	pages[pages.length] = {
+		title: title,
+		html: txt,
+		div: document.createElement("div"),
+		item: document.createElement("div")
+	};
+	pages[pages.length-1].div.className = 'mag_con';
+	pages[pages.length-1].div.style.visibility = 'hidden';
+	pages[pages.length-1].div.innerHTML = pages[pages.length-1].html;
+	ds.appendChild(pages[pages.length-1].div);
+
+	pages[pages.length-1].item.className = 'item';
+	pages[pages.length-1].item.innerHTML = '<a onclick="' +\
+			'item_sel('+(pages.length-1)+');'+ '">' +\
+			pages[pages.length-1].title + '</a>';
+	menu.appendChild(pages[pages.length-1].item);
+}
+new_page("首页", "<div style='font-size: 30px; position: absolute;"+\
+		"left: 300px; top: 220px; width:400px;'>"+\
+		"<center><i>浙江省衢州二中"+\
+		"高一(4)班</i><br><b>作文汇编</b></center></div>");
+
+login.onsubmit = function()
+{
+	if (usr.value != ""){
+		info.innerHTML="无此用户！";
+		return false;
+	}
+	if (pwd.value != ""){
+		info.innerHTML="密码错误！";
+		return false;
+	}
+	login.style.visibility = "hidden";
+	ds.style.visibility = "visible";
+	pages[0].div.style.visibility = "visible";
+	pages[0].div.className = "";
+	pages[0].item.className = "item_sel";
+	return false;
+}
+-->

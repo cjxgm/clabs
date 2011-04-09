@@ -2,5 +2,6 @@ CC = gcc
 CFLAGS = -lcurses
 
 debug: all
-	./test1
-all: test1
+	./voice
+
+all: test1 voice

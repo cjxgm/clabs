@@ -1,0 +1,64 @@
+#!/bin/bash
+
+BASEDIR=''
+OUTFILE='content.js'
+
+while [ "$1" != "" ]; do
+	case $1 in
+		'-o')
+			shift
+			OUTFILE="$1"
+			shift
+			;;
+		'--help')
+			echo "$0 dir [-o outfile]"
+			exit 1
+			;;
+		*)
+			BASEDIR="`echo \"$1\"|sed 's/\/$//g'`"
+			shift
+			;;
+	esac
+done
+
+if [ "$BASEDIR" == "" ]; then
+	echo "$0 dir [-o outfile]"
+	exit 1
+elif [ "$OUTFILE" == "" ]; then
+	echo "$0 dir [-o outfile]"
+	exit 1
+fi
+
+cat << END > /tmp/mag.py
+# coding: utf-8
+#print '<div class="mag_con">',
+lines = [line for line in file("/tmp/mag")]
+#print '<div class="mag_title">%s</div>' % lines[0].strip(),
+print '<div class="mag_title">&nbsp;</div>',
+del lines[0]
+print '<div class="mag_author">%s</div>' % lines[0].strip(),
+del lines[0]
+for line in lines:
+	if line.startswith('  '): # paragraph
+		print '<div class="mag_text">　　%s</div>' % line.strip(),
+	elif line.startswith('-'): # sub-title
+		print '<div class="mag_subtitle">%s</div>' % \
+		line.replace('-', ''),
+	elif line.startswith('~'): # cap
+		print '<div class="mag_cap">%s</div>' % \
+		line.replace('~', ''),
+	elif line.startswith('*'): # comment
+		pass
+	else: print line,
+#print '</div>',
+END
+echo -n > "$OUTFILE"
+for file in `find $BASEDIR -name '*.txt'`; do
+	echo $file
+	cat "$file" | sed 's/\r//g' |
+		iconv -f gbk -t utf8 > /tmp/mag
+	python /tmp/mag.py > /tmp/mag2
+	echo -n "new_page('`cat /tmp/mag | head -n 1`', '" >> "$OUTFILE"
+	cat /tmp/mag2 | awk '{printf $0 "<br>";}' >> "$OUTFILE"
+	echo "');"  >> "$OUTFILE"
+done

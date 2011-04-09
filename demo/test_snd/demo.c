@@ -6,9 +6,10 @@
 #define PI 3.1415927
 
 static float alpha = 0;
-static float k = 0.1;
 static int loop = 0;
 static int tick = 0;
+static float k = 1;
+static int p = 0;
 int snd_len = 0;
 Uint8 snd_data[2048] = {0};
 
@@ -30,15 +31,23 @@ void init(void)
 
 void timer(int value)
 {
+	/*                  12 ___
+		1.059463 ~= 1 +  ./ 2
+	 */
+	k = 1;
+	int data[] = { 40, 42, 44, 45, 47, 49, 51, 52};
+	loop = data[p];
+	while(loop--) k *= 1.059463;
 	for (loop = 0; loop<2048; loop++){
-		snd_data[loop] = (sin(alpha)+1)*10;
+		snd_data[loop] = (sin(k*alpha)+1)*10;
 		if (snd_len != 2048) snd_len++;
-		alpha += k;
-		if (alpha > 2*PI) alpha -= 2*PI;
+		alpha += 2.0 * PI / 2048.0;
+		if (alpha > 2.0 * PI / k) alpha -= 2.0 * PI / k;
 	}
-	if (tick == 30){
-		k = (sin(alpha)+1)/2*1.8/10+0.02;
+	if (tick == 10){
 		tick = 0;
+		p++;
+		p %= 8;
 	}
 	tick++;
 }
@@ -70,8 +79,10 @@ void draw(void)
 	SET_COLOR_RGB(128, 64, 255);
 	PUSH;
 	glTranslatef(-80, -80, 0);
-	glScalef(8, 8, 1);
-	draw_string("Sine Generator");
+	glScalef(4, 4, 1);
+	char text[80] = "";
+	sprintf(text, "Sine Generator\n%f %d\t%f", k, p, alpha);
+	draw_string(text);
 	POP;
 }
 

@@ -1,4 +1,0 @@
-openbox/actions/openbox_openbox-all.o: openbox/actions/all.c \
-  openbox/actions/all.h
-
-openbox/actions/all.h:

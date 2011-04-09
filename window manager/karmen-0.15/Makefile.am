@@ -1,3 +1,0 @@
-SUBDIRS = src
-dist_doc_DATA = LICENSE NEWS README
-#EXTRA_DIST =

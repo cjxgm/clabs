@@ -1,7 +1,7 @@
-
 CC = gcc
-CFLAGS = -lm
+CFLAGS = -lncurses
 
 debug: all
-	./reader
-all: sin reader
+	./win
+
+all: t1 win
