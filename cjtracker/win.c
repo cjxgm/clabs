@@ -2,6 +2,11 @@
 #include <string.h>
 #include <stdlib.h>
 #include <pthread.h>
+#include <math.h>
+
+#ifndef PI
+#define PI 3.1415927
+#endif
 
 typedef struct _win {
 	WINDOW *win;
@@ -18,14 +23,24 @@ void redraw_win(win_t *win);
 
 void draw_volumn_bar(WINDOW *win, unsigned char vol);
 void* volumn_thread(void*);
+void* playing_thread(void*);
+
+double saw(double angle);
 
 FILE *dspin;
+FILE *dspout;
 unsigned char volumn = 127;
+double (*snd_func)(double angle) = &sin;
+
+int note = 0;
+int upnote = 0;
 
 int main()
 {
-	printf("Trying to open /dev/dsp ...\n");
+	printf("Trying to open /dev/dsp for reading ...\n");
 	while ((dspin = fopen("/dev/dsp", "r")) == NULL);
+	printf("Trying to open /dev/dsp for writing ...\n");
+	while ((dspout = fopen("/dev/dsp", "w")) == NULL);
 	printf("Done.\n");
 
 	initscr();
@@ -54,7 +69,10 @@ int main()
 			getmaxy(stdscr)-1,	getmaxx(stdscr)-1-16);
 
 	pthread_t th_volumn;
+	pthread_t th_playing;
+
 	pthread_create(&th_volumn, NULL, &volumn_thread, NULL);
+	pthread_create(&th_playing, NULL, &playing_thread, NULL);
 
 	for (;;) {
 		// Redraw volumn bar
@@ -63,29 +81,48 @@ int main()
 
 		// Process key
 		switch (getch()) {
+			case EOF: break;
 			case 'q': goto _end;
 			case ' ':
+					  note = 0;
+					  upnote = 0;
 					  redraw_win(win_main);
 					  break;
 			case '1': 
+					  upnote = 1;
 					  redraw_win(win_main);
 					  redraw_win(win1);
 					  break;
 			case '2': 
+					  upnote = 2;
 					  redraw_win(win_main);
 					  redraw_win(win2);
 					  break;
 			case '3': 
+					  upnote = 3;
 					  redraw_win(win_main);
 					  redraw_win(win3);
 					  break;
+
+			case 's': snd_func = &sin; break;
+			case 'S': snd_func = &saw; break;
+
+			case 'z': note = 40; break;
+			case 'x': note = 42; break;
+			case 'c': note = 44; break;
+			case 'v': note = 45; break;
+			case 'b': note = 47; break;
+			case 'n': note = 49; break;
+			case 'm': note = 51; break;
 		}
 	}
 
 _end:
 	pthread_cancel(th_volumn);
-	endwin();
+	pthread_cancel(th_playing);
+	fclose(dspout);
 	fclose(dspin);
+	endwin();
 
 	return 0;
 }
@@ -162,6 +199,7 @@ void redraw_win(win_t *win)
 {
 	draw_win(win->win, win->title);
 	wrefresh(win->win);
+	refresh();
 }
 
 void draw_volumn_bar(WINDOW *win, unsigned char vol)
@@ -200,10 +238,47 @@ void* volumn_thread(void* never_use)
 
 		int i;
 		for (i=0; i<2048; i++)
-		if (vols[i] - 127 > maxvol)
-			maxvol = vols[i] - 127;
+			if (vols[i] - 127 > maxvol)
+				maxvol = vols[i] - 127;
 
 		volumn = maxvol + 127;
 	}
+}
+
+void* playing_thread(void* never_use)
+{
+	float frame = 0;
+	unsigned char snd;
+	float f;
+	int loop;
+	int vol = 50;
+
+	for (;;) {
+		if (note == 0) {
+			frame = 0;
+			continue;
+		}
+
+		/*                  12 ___
+			1.059463 ~= 1 +  ./ 2
+		 */
+		f = 1.0;
+		loop = note + 12 * upnote;
+		while (loop--) f *= 1.059463;
+		vol = 30 + sin(frame / 4.0) * 30;
+		snd = snd_func(f * frame) * vol + 127;
+		fwrite(&snd, 1, 1, dspout);
+
+		frame += 2.0 * PI / 2048.0;
+		if (frame > 2.0 * PI) frame -= 2.0 * PI;
+	}
+}
+
+double saw(double angle)
+{
+	while (angle >= 2.0 * PI) angle -= 2.0 * PI;
+	if (angle >= PI) return -saw(angle - PI);
+	if (angle >= PI / 2.0) angle = PI - angle;
+	return angle / (PI / 2.0 ) * 2.0 - 1.0;
 }
 
