@@ -270,7 +270,7 @@ void* playing_thread(void* never_use)
 		fwrite(&snd, 1, 1, dspout);
 
 		frame += 2.0 * PI / 2048.0;
-		if (frame > 2.0 * PI) frame -= 2.0 * PI;
+		if (frame > 2.0 * PI / f) frame -= 2.0 * PI / f;
 	}
 }
 
