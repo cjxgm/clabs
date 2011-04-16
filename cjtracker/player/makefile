@@ -8,6 +8,7 @@ debug: all
 	./cjtmplay
 clean:
 	rm *.o
+	rm cjtmplay
 
 cjtmplay: cjtmplay.o instrument.o player.o loader.o
 cjtmplay.o: cjtmplay.c type.h
