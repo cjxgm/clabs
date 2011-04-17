@@ -36,7 +36,7 @@ void mix_instrument(byte ins_id, float angle, byte vol)
 			snd = value * 32 + 127;
 			break;
 		case 2:
-			value = (rand() % 256) / 255.0;
+			value = ((rand() % 256) - 128) / 255.0;
 			snd = value * 64 + 127;
 			break;
 	}
