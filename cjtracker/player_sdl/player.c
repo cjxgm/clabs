@@ -17,6 +17,7 @@
 		byte	 snd_data = 0;
 static	byte	 snds[2048] = {0};
 static	byte	 playable = 0;
+static	int		 tm = 0;
 
 void mixaudio(void *unused, Uint8 *stream, int len);
 
@@ -54,8 +55,9 @@ int player_init(void)
 void play(mod_t *mod)
 {
 	int p, c;
-	int time = 0, tm = 0;
+	int time = 0;
 	note_t *note_playing[4] = {NULL};
+	tm = 0;
 
 	SDL_PauseAudio(0);
 
@@ -82,7 +84,6 @@ void play(mod_t *mod)
 
 		snds[tm++] = snd_data;
 		if (tm == 2048) {
-			//sleep(1);
 			playable = 1;
 			while (playable);
 			tm = 0;
@@ -94,12 +95,17 @@ void play(mod_t *mod)
 			p++;
 		}
 	}
+
+	if (tm != 0) {
+		playable = 1;
+		while (playable);
+	}
 }
 
 void mixaudio(void *unused, Uint8 *stream, int len)
 {
 	if (!playable) return;
-	SDL_MixAudio(stream, snds, 2048, SDL_MIX_MAXVOLUME);
+	SDL_MixAudio(stream, snds, tm, SDL_MIX_MAXVOLUME);
 	playable = 0;
 }
 
