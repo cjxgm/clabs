@@ -1,51 +1,67 @@
 ; Boot Sector
 ; by eXerigumo Clanjor
-; Copyleft (C) Clan Open Studio, 2010-2011.
 
 	org		07c00h
+
+APP_BASE	equ		09000h
+APP_OFFSET	equ		0100h
+
+	jmp		_start
+
+%include	"fd.asm"
+
+_start:
+	; Init segment registers
 	mov		ax, cs
 	mov		ds, ax
+
 	mov		ax, 0b800h			; vga
-	mov		es, ax
+	mov		gs, ax
 
 	call 	cls
 
-	xor		bx, bx
+	xor		bx, bx				; bx = 0
+	mov		ah, 00001010b		; color
+	mov		si, boot_msg
+	mov		cx, boot_msg_size
+	call	disp_str
+
+	mov		cx, 128
+.0:
+	call	fd_reset
+	mov		ax, APP_BASE
+	mov		es, ax
+	mov		bx, APP_OFFSET
+	add		bx, [p]
+	mov		ax, cx
+	call	fd_read_sector
+	call	fd_kill_motor
+
+	add		word [p], 512
 
 	mov		ah, 00001010b		; color
-	mov		si, BootMsg
-	mov		cx, BootMsgLen
-	call	DispStr
+	mov		bx, boot_msg_size*2
+	mov		si, dot
+	call	disp_str
 
-abc:
-	mov		al, '.'
-	mov		[es:bx], ax
-	add		bx, 2
+	loop	.0
 
-	mov		dl, [es:80*2]
-	inc		dl
-	mov		[es:80*2], dl
+	jmp		APP_BASE:APP_OFFSET
 
-	inc		ah
-	cmp		ah, 00001111b
-	jb		.4
-	xor		ah, ah
-.4:
-	cmp		bx, 80*25*2
-	jb		.3
-	mov		bx, 10000b*2
-.3:
-	call	draw
-	jmp		abc
+	jmp		$
 
 ; === Funcs ===
 
-DispStr:
+disp_str:
+	; ah: color
+	; bx: Position
+	; cx: Length
+	; si: The string
 	mov		al, [si]
-	mov		[es:bx], ax
+	mov		[gs:bx], ax
 	inc		si
 	add		bx, 2
-	loop	DispStr
+	loop	disp_str
 	ret
 
 cls:
@@ -53,18 +69,15 @@ cls:
 .1:
 	xor		ax, ax
 	mov		bx, cx
-	mov		[es:bx], ax
+	mov		[gs:bx], ax
 	loop	.1
 	ret
 
-draw:
-	ret
-
 ; === Data ===
-BootMsg					db		"Booting"
-BootMsgLen				equ		$-BootMsg
-x						dw		1
-y						dw		1
+boot_msg					db		"Booting"
+boot_msg_size				equ		$ - boot_msg
+dot							db		"."
+p							dw		0
 
 ; === Signature ===
 times	510-($-$$)		db		0

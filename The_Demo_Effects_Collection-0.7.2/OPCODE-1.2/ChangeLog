@@ -1,0 +1,5 @@
+01-28-2003 Added a check to the configure script for the compiler version. 
+Compiling the file OPC_TreeCollider.cpp with gcc >= 3.0 and optimization -O2 results in run-time errors.
+At the moment it is not clear if this is an OPCODE bug or a gcc bug.
+Therefore when configure encounters gcc >= 3.0, the file is compiled with -O1.
+Older versions of gcc compile the file with -O2. 

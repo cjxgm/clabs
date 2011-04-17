@@ -1,0 +1,47 @@
+WP_Ray2D.o: WP_Ray2D.C WP_Ray2D.h WP_Def.h /usr/include/GL/gl.h \
+  /usr/include/GL/glext.h \
+  /usr/lib/gcc/i486-linux-gnu/4.3.3/include/stddef.h \
+  /usr/include/inttypes.h /usr/include/features.h \
+  /usr/include/sys/cdefs.h /usr/include/bits/wordsize.h \
+  /usr/include/gnu/stubs.h /usr/include/gnu/stubs-32.h \
+  /usr/include/stdint.h /usr/include/bits/wchar.h /usr/include/GL/glu.h \
+  /usr/include/GL/glut.h /usr/include/GL/freeglut_std.h WP_Point2D.h \
+  WP_Vector2D.h WP_Line2D.h
+
+WP_Ray2D.h:
+
+WP_Def.h:
+
+/usr/include/GL/gl.h:
+
+/usr/include/GL/glext.h:
+
+/usr/lib/gcc/i486-linux-gnu/4.3.3/include/stddef.h:
+
+/usr/include/inttypes.h:
+
+/usr/include/features.h:
+
+/usr/include/sys/cdefs.h:
+
+/usr/include/bits/wordsize.h:
+
+/usr/include/gnu/stubs.h:
+
+/usr/include/gnu/stubs-32.h:
+
+/usr/include/stdint.h:
+
+/usr/include/bits/wchar.h:
+
+/usr/include/GL/glu.h:
+
+/usr/include/GL/glut.h:
+
+/usr/include/GL/freeglut_std.h:
+
+WP_Point2D.h:
+
+WP_Vector2D.h:
+
+WP_Line2D.h:

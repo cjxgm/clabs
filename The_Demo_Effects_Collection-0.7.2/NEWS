@@ -1,0 +1,28 @@
+04-29-03 TDEC's plugin system can now add effects defined in for instance a database or in a script by using a 
+parameter list to init effects. New effect and filter plugins were added to demonstrate the ease of implementation.
+Bugs were fixed, overall functionality was improved.
+Check out the improved MULTILAYER demo to see the latest powerfull features of TDEC's plugin system in action.
+03-11-03 TDEC has been extended with a run-time pluggable multi-layered demo effects plugin system, which is 
+able to show a lot of effects, filters and transition plugins concurrently and can be used to create demo's. 
+This is now part of libTDEC. Plugins can be found in the PLUGINS directory. 
+Check out the new MULTILAYER demo to see the system in action.
+01-28-03 libWPCG was extended with an animation manager. Object instancing is now complete for animation and collision 
+detection. Many other changes to libWPCG. The DEMONS effect was added to show the new features, the DEMON effect was extended. XHACKS directory was added containng X ports of effects.
+12-26-02 Added 4 new effects, added scaling functions to libTDEC and improved libWPCG's collision detection and 
+overall performance
+12-15-02 Added 3 new effects, fixed a bug in WPCG's lighting system and added a namespace to it. Added logo to 3D 
+effects.
+11-27-02 Added many improvements to the WPCG 2D/3D library, among others 3D collision detection using the 3D OPCODE 
+library v1.2 of Pierre Terdiman, collision handling and a proper lighting system. 
+Many bug fixes and enhancements in WPCG. The demon and 3D terrain effect were corrected. Added 3D collision 
+detection and frustum culling demo called ufos which demonstrates the use of OPCODE.
+09-04-02 Added 1 new 3D terrain effect. Added many inprovements to the WPCG 2D/3D 
+library. 08-21-02 Added 2 new effects, added WPCG 3D classes. Extended some of the earlier effects. Extended libTDEC
+08-05-02 Added 3 new effects, fixed some bugs. Changed libcommon into libTDEC and added many new functions, improved old ones. 
+	 Libmikmod is now optional by using --enable-mikmod switch in configure script
+07-22-02 Added 3 new effects, fixed a bug in the lens effect, added image functions to the util library
+07-13-02 Added 2 new effects, done some optimizations, separated init timer from init video
+06-23-02 Added 2 new effects, created GFX directory and added utility functions to the common lib
+06-14-02 Added 3 new effects, improved configure script, created static common lib
+05-31-02 Added 2 more effects, cleaned up the code, increased performance
+05-20-02 Released the first 5 effects, created the configure scripts

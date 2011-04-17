@@ -1,0 +1,49 @@
+This project will try to cover the basics of demo programming, by including all different kind of demo effects. Starting with the 
+retro ones and ending with the latest techniques. 
+
+TDEC does not only include effects but also harbours a run-time pluggable multi-layered demo effects plugin system, 
+which is able to show a lot of effects, filters and transition plugins concurrently and can thus be used to create 
+demo's.
+
+The Demo Effects Collection uses the great mikmod library for playing musical mods. 
+run configure --enable-mikmod=no if you don't want to use it. The Equalizer effect won't build in that case. 
+The use of mikmod is enabled by default
+
+For 3D collision detection and frustum culling, The Demo Effects Collection makes use of the excellent OPCODE 
+collision detection library of Pierre Terdiman
+
+If you don't want the 3D demonstrations, run configure --enable-opengl=no
+
+The Demo Effects Collection is available under the GNU General Public License,
+see the file "COPYING" for details.
+
+Thanks to the following people for advice, help, submissions, suggestions or just nice mail
+
+Edwin Rovers 		- for keeping me up to date with the latest demos and keeping me fascinated -
+Henk Huitema  		
+Byron Ellacott 		  
+Jamie Zawinski		
+Dan G. Lunde		
+Buddy Smith		
+Ed Sinjiashvili		
+Nupur Saurabh		
+Pierre Terdiman		
+Christophe Conduche
+Frederic Marmond
+Jason Liszkiewicz	- of the Creative Invasion Workshop -
+Radford Spaeth		
+Aamir Syed		
+Jermain			
+Wanduir Durant		
+Phillip Thorne		
+Lakshmi P.G.		
+Jonathan Corriveau	
+Aumya Sarpal		 
+Brady Chang
+
+Feel free to send me your favourite effect || become a developer!
+
+Cheers
+WP van Paassen
+
+ *- 2002-2003 -* 

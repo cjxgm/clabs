@@ -1,0 +1,69 @@
+0.7 Added a raytracer demo. Many bugfixes in libWPCG. Rewrote demo loop for some 3D examples.
+
+0.6.1 Improvements to configure script. TDEC 0.6.1 was tested on Mandrake 10
+configure --disable-opengl now works and doesn't build WPCG and OPCODE
+DOOMMELT effect was improved by Dekoder
+		
+0.6 TDEC's plugin system has been extended with functions to pass effect's parameters to plugins by using a parameter 
+list. This makes it possible to add effects defined in a database or from a script. 
+Bugs were fixed and overall functionality was improved. 
+Some simple effect and filter plugins were added to the PLUGINS directory to demonstrate 
+how easy it is to implement these. 
+Check out the improved MULTILAYER demo to see it all in action.
+
+0.5 TDEC has been extended with a run-time pluggable multi-layered demo effects plugin system, which is able to show 
+a lot of effects, filters and transition plugins concurrently and can be used to create demo's. This is now part of 
+libTDEC. Plugins can be found in the PLUGINS directory. 
+Check out the new MULTILAYER demo to see the system in action.
+
+0.4 The WPCG libray was improved. An animation manager was added. Objects can now share models and animate independently from each other. Object instancing in libWPCG is now complete, every object can share the same model for both collision detection and animation. For every frame of an animated model a separate collision detection model is generated which is used accordingly in frustum culling and collision detection. 3D object picking is functioning again. The WP_Camera class was improved, so was WP_Math.
+The DEMON effect was extended and the DEMONS effect is new, it demonstrates libWPCG's latest features. The XHACKS directory was added which includes demo effect ports to X so they can be used by xscreensaver, only source for now. OPCODE now works when compiled with gcc >= 3.0
+The weapon.MD2 model was changed so its frame names now matches those of the demon MD2 model.
+	
+0.3 Added 4 new effects. BARSCROLLER, 3D TUNNEL, 2D BLOB and TUXTRAIL with a mozaiek end effect. The TDEC lib was 
+extended with extra functions for scaling a SDL surface. The WPCG lib was optimized and the use of OPCODE in the 
+library was improved.
+
+0.2 Added three new effects. First a 3D PLASMACUBE effect which is lighted by two coloured lights. Second a 2D Spiral 
+Sine scroller effect called SPIRALSINESCROLL and last a 2D Twin sine scroller (butterfly) called TWINSCROLLER.
+Furthermore, fixed a bug in the lighting system of WPCG, added the WPCG namespace to it and changed some defines into 
+consts. All 3D effects are now accompanied by the TDEC logo in the upper right corner.
+
+0.1 Pierre Terdiman's fantastic OPCODE 3D Collision Detection Library is now part of TDEC and is used by the WPCG 
+library for 3D frustum culling and collision detection. A demo called ufos was added to demonstrate these features.
+The WPCG library was improved and enchanced. Many bugs were fixed and a proper lighting system and collision 
+detection support and handling was among others added to WPCG. The demon and terrain examples were therefore adjusted.
+TDEC now compiles with gcc 3.2 which has better C++ support and generates better and tighter code.
+
+0.0.9 Optimized BUMP2D effect. Added weapon to CyberDemon 2000 quake2 model. Added new Terrain effect demo. Added and improved upon 
+WPCG classes (fixed bugs in WP_Terrain class. Removed WP_SkyDome class and added WP_SkyBox class, improved object handling of 
+WP_ObjectManager etc.)
+
+0.0.8 Added vertical scanline effect to SPIRALTWIST effect. Optimized SINEWAVE effect. Added C++ library libWPCG which adds many 
+classes for handling 2D/3D computer graphics. Added first completely 3D C++ effect called DEMON which displays a key frame animated 
+quake2 model. Added 2D bump map effect. Added some new functions to libTDEC. Changed the graphic for the WATER effect. It's using a 
+great TDEC logo by Jason Liszkiewicz now.
+
+0.0.7 mikmod library is now optional and can be dis/enabled with configure --enable-mikmod=yes/no, default is yes. This means that the 
+Equalizer effect won't compile if mikmod is disabled. 
+make install does nothing from now on.
+Added Water (rain) effect, added Doom Melt effect submitted by Ed Sinjiashvili, added SPIRALTWIST effect
+libCommon is now called libTDEC
+Added more scaling functions to libTDEC and improved overall speed of it
+
+0.0.6 Added 3 new effects (circlescroller, sinewave and flipimage). A bug in the image setup was fixed in the lens effect. Image 
+functions added to the util library
+
+0.0.5 Added 2 new effects (rotozoom (by Byron Ellacot) and equalizer which is the first effect with music). Optimized some effects and 
+done some cleaning up. Created a SOUND and SOUND/MODS directory for storing music and mods
+
+0.0.4 Added 2 new effects (bobs and unlimited bobs). Created a GFX directory for sharing graphics. Added utility functions to the 
+common library 
+
+0.0.3 Added 3 new effects (shadebob, lens (both by Byron Ellacott) and jumping scroller). Improved configure script. Created a COMMON 
+dir and library containing the fps and video code. Now effects share this common code
+
+0.0.2 Added 2 new effects (candybar and sinusscroller), dramatically improved the performance of the demo's, added a better timed loop implementation, 
+split the demo's into fps, video and the actual effect .c files, cleaned up the code
+
+0.0.1 Added the first 5 effects (plasma, fire, particle explosion, 3d starfield and copperbars)

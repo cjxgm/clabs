@@ -1,0 +1,92 @@
+WP_Vector2D.o: WP_Vector2D.C /usr/include/c++/4.3/cmath \
+  /usr/include/c++/4.3/i486-linux-gnu/bits/c++config.h \
+  /usr/include/c++/4.3/i486-linux-gnu/bits/os_defines.h \
+  /usr/include/features.h /usr/include/sys/cdefs.h \
+  /usr/include/bits/wordsize.h /usr/include/gnu/stubs.h \
+  /usr/include/gnu/stubs-32.h \
+  /usr/include/c++/4.3/i486-linux-gnu/bits/cpu_defines.h \
+  /usr/include/c++/4.3/bits/cpp_type_traits.h \
+  /usr/include/c++/4.3/ext/type_traits.h /usr/include/math.h \
+  /usr/include/bits/huge_val.h /usr/include/bits/huge_valf.h \
+  /usr/include/bits/huge_vall.h /usr/include/bits/inf.h \
+  /usr/include/bits/nan.h /usr/include/bits/mathdef.h \
+  /usr/include/bits/mathcalls.h /usr/include/bits/mathinline.h \
+  /usr/include/c++/4.3/bits/cmath.tcc WP_Vector2D.h WP_Def.h \
+  /usr/include/GL/gl.h /usr/include/GL/glext.h \
+  /usr/lib/gcc/i486-linux-gnu/4.3.3/include/stddef.h \
+  /usr/include/inttypes.h /usr/include/stdint.h /usr/include/bits/wchar.h \
+  /usr/include/GL/glu.h /usr/include/GL/glut.h \
+  /usr/include/GL/freeglut_std.h WP_Math.h WP_Matrix2D.h WP_Line2D.h \
+  WP_Point2D.h
+
+/usr/include/c++/4.3/cmath:
+
+/usr/include/c++/4.3/i486-linux-gnu/bits/c++config.h:
+
+/usr/include/c++/4.3/i486-linux-gnu/bits/os_defines.h:
+
+/usr/include/features.h:
+
+/usr/include/sys/cdefs.h:
+
+/usr/include/bits/wordsize.h:
+
+/usr/include/gnu/stubs.h:
+
+/usr/include/gnu/stubs-32.h:
+
+/usr/include/c++/4.3/i486-linux-gnu/bits/cpu_defines.h:
+
+/usr/include/c++/4.3/bits/cpp_type_traits.h:
+
+/usr/include/c++/4.3/ext/type_traits.h:
+
+/usr/include/math.h:
+
+/usr/include/bits/huge_val.h:
+
+/usr/include/bits/huge_valf.h:
+
+/usr/include/bits/huge_vall.h:
+
+/usr/include/bits/inf.h:
+
+/usr/include/bits/nan.h:
+
+/usr/include/bits/mathdef.h:
+
+/usr/include/bits/mathcalls.h:
+
+/usr/include/bits/mathinline.h:
+
+/usr/include/c++/4.3/bits/cmath.tcc:
+
+WP_Vector2D.h:
+
+WP_Def.h:
+
+/usr/include/GL/gl.h:
+
+/usr/include/GL/glext.h:
+
+/usr/lib/gcc/i486-linux-gnu/4.3.3/include/stddef.h:
+
+/usr/include/inttypes.h:
+
+/usr/include/stdint.h:
+
+/usr/include/bits/wchar.h:
+
+/usr/include/GL/glu.h:
+
+/usr/include/GL/glut.h:
+
+/usr/include/GL/freeglut_std.h:
+
+WP_Math.h:
+
+WP_Matrix2D.h:
+
+WP_Line2D.h:
+
+WP_Point2D.h:

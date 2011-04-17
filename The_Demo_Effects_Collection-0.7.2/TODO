@@ -1,0 +1,27 @@
+Adding more effect, filter and transition plugins for the new TDEC demo system. Extending the demo system with 3D and 
+music. In the future, effects should be scripted. Creating plugins for the 'older' effects of TDEC.
+
+Adding the following effect plugins:
+3D Metaballs
+Dots
+spectrum analyzer
+
+Many more...
+
+Writing the following tools:
+
+2D/3D spline editor
+Texture generator
+Effect viewer
+
+Detecting the user's fps and compiling the effects with the right fps
+
+Port the effects to native X, so they can be used by Xscreensaver
+
+and ofcourse a simple and little 3D game...
+
+By the way, feel free to mail your request || code of your favourite effect || become a developer!
+
+
+
+
