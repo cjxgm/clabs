@@ -20,51 +20,15 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 	
-	mod_t *mod = load(filename);
-	if (mod == NULL) {
-		fprintf(stderr, "Cannot load '%s'!\n", filename);
+	FILE *fp = fopen(filename, "r");
+	if (fp == NULL) {
+		fprintf(stderr, "Unable to open file '%s'.\n", filename);
 		return -1;
 	}
 
-	/********** DEBUG BEGIN **********/
-	printf("[ Module:\n");
-	printf("\t%-*s= %u\n", ALIGN_SIZE, "bpm", (uint) mod->bpm);
+	play_mod_file(fp);
 
-	int p;
-	for (p=0; p<1; p++) {
-		printf("\t[ Pattern (%2.2i):\n", p);
-		pat_t *pat = &mod->pats[p];
-
-		int c;
-		for (c=0; c<4; c++) {
-			printf("\t\t[ Channel (%2.2i):\n", c);
-			chn_t *chn = &pat->chns[c];
-
-			int n;
-			printf("\t\t\t");
-			for (n=0; n<64; n++) {
-				printf("%2.2u  ", (uint) chn->notes[n].note);
-				if (n != 0 && (n+1) % 16 == 0 && n != 63)
-					printf("\n\t\t\t");
-			}
-
-			printf("\n\t\t]\n");
-		}
-
-		printf("\t]\n");
-	}
-
-	printf("]\n");
-	fflush(stdout);
-	/********** DEBUG  END  **********/
-
-	if (player_init() == -1) {
-		fprintf(stderr, "Cannot open /dev/dsp for writing!\n");
-		return -1;
-	}
-	play(mod);
-	player_free();
-
+	fclose(fp);
 	return 0;
 }
 

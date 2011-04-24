@@ -1,6 +1,0 @@
-#!/bin/bash
-
-[ -x "./cjtmplay" ] || make
-
-./cjtmplay ./test.cjtm.ptf
-./cjtmplay ./test.cjtm.ptf

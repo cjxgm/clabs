@@ -7,6 +7,7 @@
 #include <string.h>
 #include <assert.h>
 #include "loader.h"
+#include "player.h"
 
 static char *note_table[12] = {
 	"C-", "C#",
@@ -20,35 +21,86 @@ static char *note_table[12] = {
 
 static int note_str_to_ub(const char *note_str);
 
-/* filename = "*.cjtm.ptf"				*/
-/* cjtm:	Clanjor Tracker Module		*/
-/* ptf:		Pure Text Format			*/
-mod_t *load(const char *filename)
-{
-	FILE	*fp;
-	mod_t	*mod;
-	note_t	*note;
+static int load_header(FILE *fp, mod_t *mod);
+static int load_pattern(FILE *fp, mod_t *mod);
 
-	uint	p, c;
-	uint	bpm;
-	char	note_str[4];
-	int		note_ub;
-	int		ins_ub;
+void play_mod_file(FILE *fp)
+{
+	mod_t	*mod;
 	
-	if ((fp = fopen(filename, "r")) == NULL)
+	if (fp == NULL)
+		return;
+	
+	if ((mod = calloc(sizeof(mod_t), 1)) == NULL)
+		return;
+
+	if (load_header(fp, mod) == -1
+		|| player_init() == -1) {
+		free(mod);
+		return;
+	}
+
+	while (load_pattern(fp, mod) == 0)
+		play(mod);
+
+	player_free();
+	free(mod);
+}
+
+mod_t *load(FILE *fp)
+{
+	mod_t	*mod;
+	
+	if (fp == NULL)
 		return NULL;
 	
-	if ((mod = calloc(sizeof(mod_t), 1)) == NULL) {
-		fclose(fp);
+	if ((mod = calloc(sizeof(mod_t), 1)) == NULL)
+		return NULL;
+
+	if (load_header(fp, mod) == -1) {
+		free(mod);
 		return NULL;
 	}
+
+	if (load_pattern(fp, mod) == -1) {
+		free(mod);
+		return NULL;
+	}
+
+	return mod;
+}
+
+static int note_str_to_ub(const char *note_str)
+{
+	int note;
+
+	for (note = 0; note < 12; note++)
+		if (strcmp(note_table[note], note_str) == 0)
+			return note;
+
+	return -1;
+}
+
+int load_header(FILE *fp, mod_t *mod)
+{
+	uint	bpm;
 
 	// Read bpm
 	fscanf(fp, "%u", &bpm);
 	assert(bpm > 0 && bpm < 256);
 	mod->bpm = (byte) bpm;
+	return 0;
+}
 
-	// Read notes
+int load_pattern(FILE *fp, mod_t *mod)
+{
+	note_t	*note;
+	uint	p, c;
+	char	note_str[4];
+	int		note_ub;
+	int		ins_ub;
+
+	// Load
 	for (p=0; p<64; p++) {
 		if (feof(fp))
 			break;
@@ -58,7 +110,7 @@ mod_t *load(const char *filename)
 
 			// Read a note
 			if (fscanf(fp, "%3s", note_str) == EOF)
-				goto _end_of_reading;
+				return -1;
 
 			if (note_str[2] == '=')
 				note->note = 90;
@@ -67,15 +119,17 @@ mod_t *load(const char *filename)
 
 				note_str[2] = 0;
 				note_ub = note_str_to_ub(note_str);
-				if (note_ub == -1)
+				if (note_ub == -1) {
 					note->note = 0;
+					note->freq = 0;
+				}
 				else {
 					note->note += note_ub;
 
 					/*                  12 ___
 										1.059463 ~= 1 +  ./ 2
 					 */
-					note->freq = 1.0;
+					note->freq = 1.0;				// Fill the freq.
 					note_ub = note->note;
 					while (note_ub--)
 						note->freq *= 1.059463;
@@ -96,20 +150,6 @@ mod_t *load(const char *filename)
 			fscanf(fp, "%3s", note_str);
 		}
 	}
-	_end_of_reading:
-
-	fclose(fp);
-	return mod;
-}
-
-static int note_str_to_ub(const char *note_str)
-{
-	int note;
-
-	for (note = 0; note < 12; note++)
-		if (strcmp(note_table[note], note_str) == 0)
-			return note;
-
-	return -1;
+	return 0;
 }
 
