@@ -8,80 +8,85 @@
 %endmacro
 
 ;======================================================================
+; Print
+;	%1	msg
+;		CAUTION:	There must be %1_len
+;	%2	x
+;	%3	y
+;	%4	color
+%macro	print	4
+	mov		bp, %1
+	mov		cx, %1_len
+
+	mov		dl, %2				; x
+	mov		dh, %3				; y
+	mov		bl, %4				; color
+
+	mov		ax, 01301h
+	xor		bh, bh
+	int		10h
+%endmacro
+
+
+;======================================================================
 ; Init
 	org		07c00h
 
 	mov		ax, cs
 	mov		ds, ax
 
+	mov		ax, 0b800h	;`. Video memory
+	mov		gs, ax		;/
+
 	call	_start
 	jmp		$
 
+;======================================================================
+; Some datas and includes
+%include	"fd.asm"
+%include	"const.asm"
+
 msg_err:		db	"Failed!"
 msg_err_len:	equ	$-msg_err
+
 msg_done:		db	"Well done!"
 msg_done_len:	equ	$-msg_done
+
+msg_boot:		db	"Booting..."
+msg_boot_len:	equ	$-msg_boot
 
 ;======================================================================
 ; Main routine
 _start:
-	; Read a sector
-	mov		ax, 08000h	;`.
-	mov		es, ax		; | Destination 8000:0100
-	mov		bx, 0100h	;/
+	; Print "booting"
+	mov		ax, cs				;`. Point es to current cs
+	mov		es, ax				;/
+	print	msg_boot, 0, 0, 00001010b	; Print msg_boot at (0, 0) in
+										; light green
 
-	mov		ch, 0		; Track
-	mov		cl, 2		; Sector
-	mov		dh, 0		; Head
-	mov		dl, 0		; Drive: Floppy
+	; Read datas
+	mov		ax, KERNEL_BASE		;`.
+	mov		es, ax				; | Destination ex:bx
+	xor		bx, bx				;/
 
-.0
-	mov		ah, 02h		; Read
-	mov		al, 1		; for 1 sector
-	int		13h			; Do read!
-	
-	;cmp		al, 128
-	;jne		.error
-	jc		.0
+	mov		ax, 1				; Read from the 2nd sector
+	call	fd_read_64k
 
-	mov		ax, cs
-	mov		es, ax
-	; Print msg_done
-	mov		bp, msg_done
-	mov		cx, msg_done_len
-	mov		ax, 01301h
-	mov		bx, 000ch
-	mov		dx, 0000h		; at (00, 00)
-	int		10h
+	; Print "done" and wait for key
+	mov		ax, cs				;`. Point es to current cs
+	mov		es, ax				;/
+	print	msg_done, 0, 1, 00001110b	; Print msg_done at (0, 1) in
+										; light yellow
 
 	inkey
 
 	call	vga
 
-	jmp		8000h:0100h
-
-.error:
-	mov		ax, cs
-	mov		es, ax
-	; Print msg_err
-	mov		bp, msg_err
-	mov		cx, msg_err_len
-	mov		ax, 01301h
-	mov		bx, 000ch
-	mov		dx, 0000h		; at (00, 00)
-	int		10h
-
-	inkey
+	jmp		KERNEL_BASE:KERNEL_OFFSET		; Let's go!
 
 ;======================================================================
+; A boring animation
 vga:
-	; Init SVGA
-	;mov		ax, 04F02h
-	;mov		bx, 0101h		; graph 640x480 256 colors
-	;int		10h
-	;cmp		ah, 0			; When succeeded, ah == 0
-	;jne		.error			; When ah != 0, show error message
-
 	mov ax,012h    ;VGA mode
 	int 10h        ;640 x 480 16 colors.
 
@@ -107,7 +112,7 @@ vga:
 	call	wait
 	pop		dx
 	inc		dh
-	cmp		dh, 040h
+	cmp		dh, 042h
 	jne		.loop
 
 	jmp		.done
@@ -129,16 +134,6 @@ vga:
 	mov		al, 03h
 	int		10h
 
-	mov		ax, cs
-	mov		es, ax
-	; Print msg_done
-	mov		bp, msg_done
-	mov		cx, msg_done_len
-	mov		ax, 01301h
-	mov		bx, 000ch
-	mov		dx, 0000h		; at (00, 00)
-	int		10h
-
 .gohome:
 	ret
 
@@ -148,6 +143,11 @@ wait:
 	mov		ah, 86h
 	mov		cx, cs
 	mov		dx, time
+	int		15h
+	int		15h
+	int		15h
+	int		15h
+	int		15h
 	int		15h
 
 	ret

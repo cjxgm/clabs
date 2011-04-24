@@ -1,11 +1,13 @@
 ; Boot Sector
 ; by eXerigumo Clanjor
 
-	org		0100h
+times 100h db 0
+	jmp		_start
 
-times 10 db 0
+times 1024 db 0
 STACK	equ		$
 
+_start:
 	mov		ax, cs
 	mov		ds, ax
 	mov		ss, ax
@@ -71,6 +73,8 @@ BootMsg					db		"Welcome!"
 BootMsgLen				equ		$-BootMsg
 x						dw		1
 y						dw		1
+
+times 1024 dw	0x1234
 
 times	65536-($-$$)		db		0
 

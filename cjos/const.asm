@@ -1,0 +1,7 @@
+
+KERNEL_BASE:	equ	08000h
+KERNEL_OFFSET:	equ	0100h
+
+APP_BASE:		equ	09000h
+APP_OFFSET:		equ	0100h
+
