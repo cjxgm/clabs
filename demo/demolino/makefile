@@ -1,6 +1,6 @@
 AR = ar
 CC = gcc
-CFLAGS = -g
+CFLAGS = #-g
 OBJS = demofw.o demoutil.o demostr.o demosnd.o
 
 .PHONY: all clean
@@ -11,8 +11,9 @@ test: test.c libdemolino.a
 	gcc -g -I. -o test test.c -L. -ldemolino -lglut
 all: libdemolino.a
 clean:
-	rm *.o
-	rm *.a
+	rm -f *.o
+	rm -f *.a
+	rm -f test
 
 libdemolino.a: $(OBJS)
 	$(AR) rcs $@ $(OBJS)

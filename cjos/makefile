@@ -18,8 +18,8 @@ kernel: kernel.bin floppy.img
 floppy.img:
 	dd bs=512 count=2880 if=/dev/zero of=$@
 
-boot.bin: boot.asm fd.asm const.asm
+boot.bin: boot.asm fd.asm macro.asm
 	$(ASM) -o $@ $<
 
-kernel.bin: kernel.asm
+kernel.bin: kernel.asm unreal.asm macro.asm
 	$(ASM) -o $@ $<

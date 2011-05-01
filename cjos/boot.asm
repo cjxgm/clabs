@@ -1,33 +1,3 @@
-
-;======================================================================
-; Input key
-; (Like the classical "Press any key to continue")
-%macro	inkey		0
-	xor		ah, ah
-	int		16h
-%endmacro
-
-;======================================================================
-; Print
-;	%1	msg
-;		CAUTION:	There must be %1_len
-;	%2	x
-;	%3	y
-;	%4	color
-%macro	print	4
-	mov		bp, %1
-	mov		cx, %1_len
-
-	mov		dl, %2				; x
-	mov		dh, %3				; y
-	mov		bl, %4				; color
-
-	mov		ax, 01301h
-	xor		bh, bh
-	int		10h
-%endmacro
-
-
 ;======================================================================
 ; Init
 	org		07c00h
@@ -43,8 +13,8 @@
 
 ;======================================================================
 ; Some datas and includes
+%include	"macro.asm"
 %include	"fd.asm"
-%include	"const.asm"
 
 msg_err:		db	"Failed!"
 msg_err_len:	equ	$-msg_err

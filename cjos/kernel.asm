@@ -1,80 +1,99 @@
-; Boot Sector
-; by eXerigumo Clanjor
 
-times 100h db 0
-	jmp		_start
+;======================================================================
+; Convert position to memory address
+%define pos(x,y) ((y<<8)+(y<<6)+x)
 
-times 1024 db 0
-STACK	equ		$
+;======================================================================
+times	100h	db	0		; This is a must
 
-_start:
+;======================================================================
+	; Set up registers
 	mov		ax, cs
 	mov		ds, ax
-	mov		ss, ax
-	mov		sp, STACK
-
-	mov		ax, 0b800h			; vga
 	mov		es, ax
+	mov		fs, ax
 
-	call 	cls
+	mov		ss, ax			;`. Set up stack
+	mov		sp, stack_top	;/
 
-	xor		bx, bx
+	mov		ax, 0a000h		;`. Set up video adapter
+	mov		gs, ax			;/
 
-	mov		ah, 00001010b		; color
-	mov		si, BootMsg
-	mov		cx, BootMsgLen
-	call	DispStr
+	call	_start
 
-abc:
-	mov		al, '.'
-	mov		[es:bx], ax
-	add		bx, 2
+	jmp		$				; Loop forever
 
-	mov		dl, [es:80*2]
-	inc		dl
-	mov		[es:80*2], dl
+;======================================================================
+; The stack
+stack:		times 1024	db	0
+stack_top:	equ			$-stack
 
-	inc		ah
-	cmp		ah, 00001111b
-	jb		.4
+%include	"macro.asm"
+%include	"unreal.asm"
+
+;======================================================================
+; The main routine
+_start:
+	call	enable_unreal
+
+	; Set up VGA
 	xor		ah, ah
-.4:
-	cmp		bx, 80*25*2
-	jb		.3
-	mov		bx, 10000b*2
-.3:
-	call	draw
-	jmp		abc
+	mov		al, 13h			; 320x200 256 colors mode
+	int		10h
 
-; === Funcs ===
+	; Plot pixels
+	xor		al, al
+.0:
+	mov		cx, 320*100
+	xor		bp, bp
+.loop0:
+	mov		byte [gs:bp], al			; Red
+	inc		bp
+	inc		al
+	cmp		al, 16
+	jb		.cont_loop0
+	xor		al, al
+.cont_loop0:
+	loop	.loop0
 
-DispStr:
-	mov		al, [si]
-	mov		[es:bx], ax
-	inc		si
-	add		bx, 2
-	loop	DispStr
+	mov		byte [gs:pos(10,20)], 4
+
+	; Wait for a key
+	inkey
+	cmp		al, 27
+	je		.done
+	cmp		al, 32
+	je		.next
+	mov		al, ah
+	jmp		.0
+
+.next:
+	mov		ax, 10		;`.
+	mov		bx, 20		; | Draw a line from
+	mov		cx, 70		; | (10, 20) to (70, 40).
+	mov		dx, 40		; |
+	call	draw_line	;/
+	inkey
+
+.done:
+	; Return to normal mode
+	xor		ah, ah
+	mov		al, 03h			; Normal mode
+	int		10h
+
 	ret
 
-cls:
-	mov		cx, 80*25*2
-.1:
-	xor		ax, ax
+
+draw_line:
+	mov		cx, 200
+	mov		bx, 0
+.0:
 	mov		bx, cx
-	mov		[es:bx], ax
-	loop	.1
+	shl		bx, 8
+	mov		ax, cx
+	shl		ax, 6
+	add		bx, ax
+	add		bx, cx
+	mov		byte [gs:bx], 4
+	loop	.0
 	ret
-
-draw:
-	ret
-
-; === Data ===
-BootMsg					db		"Welcome!"
-BootMsgLen				equ		$-BootMsg
-x						dw		1
-y						dw		1
-
-times 1024 dw	0x1234
-
-times	65536-($-$$)		db		0
-
