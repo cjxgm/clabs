@@ -1,0 +1,1665 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+	<title>/media/clans/CLAN/clanjor/labs/demo/effect_cloud/demo.c</title>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+	<meta name="generator" content="Geany 0.16" />
+	<meta name="date" content="2011-05-08T15:57:08+0800">
+	<style type="text/css">
+	body
+	{
+		font-family: Monospace, monospace;
+		font-size: 10pt;
+	}
+	.style_2
+	{
+		color: #d00000;
+		background-color: #ffffff;
+	}
+	.style_3
+	{
+		color: #3f5fbf;
+		background-color: #ffffff;
+	}
+	.style_4
+	{
+		color: #007f00;
+		background-color: #ffffff;
+	}
+	.style_5
+	{
+		color: #00007f;
+		background-color: #ffffff;
+		font-weight: bold;
+	}
+	.style_6
+	{
+		color: #ff901e;
+		background-color: #ffffff;
+	}
+	.style_9
+	{
+		color: #007f7f;
+		background-color: #ffffff;
+	}
+	.style_10
+	{
+		color: #301010;
+		background-color: #ffffff;
+	}
+	.style_11
+	{
+		color: #000000;
+		background-color: #ffffff;
+	}
+	.style_15
+	{
+		color: #3f5fbf;
+		background-color: #ffffff;
+		font-weight: bold;
+	}
+	.style_19
+	{
+		color: #0000d0;
+		background-color: #ffffff;
+		font-weight: bold;
+	}
+	.style_32
+	{
+		color: #b71500f3;
+		background-color: #000000;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_33
+	{
+		color: #9487e00;
+		background-color: #9487e00;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_35
+	{
+		color: #bfec8418;
+		background-color: #b714b3ff;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_36
+	{
+		color: #000000;
+		background-color: #000000;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_37
+	{
+		color: #8e83978;
+		background-color: #b71223b8;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_38
+	{
+		color: #9487e00;
+		background-color: #000028;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_40
+	{
+		color: #8e59b48;
+		background-color: #8e59b6a;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_43
+	{
+		color: #000000;
+		background-color: #000000;
+	}
+	.style_47
+	{
+		color: #000000;
+		background-color: #b70c30b4;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_48
+	{
+		color: #b6e556b6;
+		background-color: #000004;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_49
+	{
+		color: #000001;
+		background-color: #94a36e0;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_50
+	{
+		color: #002000;
+		background-color: #8e4f170;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_51
+	{
+		color: #000050;
+		background-color: #000009;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_52
+	{
+		color: #b742dff4;
+		background-color: #93c3290;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_53
+	{
+		color: #000050;
+		background-color: #93c3290;
+		font-style: italic;
+	}
+	.style_54
+	{
+		color: #93c3290;
+		background-color: #bfec84a8;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_55
+	{
+		color: #000400;
+		background-color: #b74d54de;
+		font-style: italic;
+	}
+	.style_56
+	{
+		color: #b77dbff4;
+		background-color: #9482d50;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_57
+	{
+		color: #9482d50;
+		background-color: #947b058;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_58
+	{
+		color: #400921fb;
+		background-color: #bfec84d8;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_59
+	{
+		color: #bfec84f8;
+		background-color: #b74d6336;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_60
+	{
+		color: #bfec8518;
+		background-color: #b77dbff4;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_61
+	{
+		color: #9482d50;
+		background-color: #b74d5770;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_62
+	{
+		color: #bfec85a0;
+		background-color: #9482d50;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_63
+	{
+		color: #bfec8548;
+		background-color: #b7565535;
+		font-weight: bold;
+	}
+	.style_64
+	{
+		color: #b7165ff4;
+		background-color: #9485bb8;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_65
+	{
+		color: #8e805e8;
+		background-color: #bfec86f0;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_66
+	{
+		color: #b74d79d0;
+		background-color: #5142bf15;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_67
+	{
+		color: #bfec8608;
+		background-color: #b7133be3;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_68
+	{
+		color: #9485bb8;
+		background-color: #bfec86dc;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_69
+	{
+		color: #bfec86dc;
+		background-color: #9485bb8;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_70
+	{
+		color: #000010;
+		background-color: #000010;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_71
+	{
+		color: #8e59b04;
+		background-color: #b71500f3;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_72
+	{
+		color: #b7165ff4;
+		background-color: #bfec86f0;
+		font-style: italic;
+	}
+	.style_73
+	{
+		color: #000014;
+		background-color: #000000;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_74
+	{
+		color: #000000;
+		background-color: #bfec8728;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_75
+	{
+		color: #bfec86f0;
+		background-color: #000000;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_76
+	{
+		color: #b71223e0;
+		background-color: #8e80280;
+		font-style: italic;
+	}
+	.style_77
+	{
+		color: #000000;
+		background-color: #000000;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_78
+	{
+		color: #000001;
+		background-color: #000000;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_79
+	{
+		color: #002000;
+		background-color: #8e80728;
+		font-weight: bold;
+	}
+	.style_80
+	{
+		color: #000026;
+		background-color: #0009fd;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_81
+	{
+		color: #8e80738;
+		background-color: #000001;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_82
+	{
+		color: #9485bb8;
+		background-color: #bfec86d8;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_83
+	{
+		color: #bfec86d8;
+		background-color: #b714e8e4;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_84
+	{
+		color: #b7165ff4;
+		background-color: #00001d;
+		font-style: italic;
+	}
+	.style_86
+	{
+		color: #002000;
+		background-color: #8e4f148;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_87
+	{
+		color: #000028;
+		background-color: #8fa84f0;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_88
+	{
+		color: #b7165ff4;
+		background-color: #00001d;
+		font-style: italic;
+	}
+	.style_89
+	{
+		color: #8fa84f0;
+		background-color: #8e925c0;
+		font-weight: bold;
+	}
+	.style_90
+	{
+		color: #000235;
+		background-color: #00002c;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_91
+	{
+		color: #b71223e0;
+		background-color: #bfec87e8;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_92
+	{
+		color: #000014;
+		background-color: #9485bcc;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_93
+	{
+		color: #8e83698;
+		background-color: #8e836b8;
+		font-style: italic;
+	}
+	.style_94
+	{
+		color: #9485be0;
+		background-color: #b6e57ac5;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_95
+	{
+		color: #bfec8898;
+		background-color: #000000;
+	}
+	.style_97
+	{
+		color: #000000;
+		background-color: #000000;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_100
+	{
+		color: #000000;
+		background-color: #000000;
+	}
+	.style_101
+	{
+		color: #b6f44140;
+		background-color: #93956c8;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_102
+	{
+		color: #9060e30;
+		background-color: #bfec8888;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_103
+	{
+		color: #000020;
+		background-color: #000003;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_104
+	{
+		color: #b7122788;
+		background-color: #938f0a0;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_105
+	{
+		color: #00000b;
+		background-color: #000048;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_106
+	{
+		color: #9482d50;
+		background-color: #bfec88a8;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_107
+	{
+		color: #000000;
+		background-color: #b77dbff4;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_108
+	{
+		color: #b74d5740;
+		background-color: #938f0a0;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_109
+	{
+		color: #9011880;
+		background-color: #947fb08;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_110
+	{
+		color: #9223258;
+		background-color: #bfec88f8;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_111
+	{
+		color: #938f320;
+		background-color: #b713c10a;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_112
+	{
+		color: #b70c3ad4;
+		background-color: #b7121ff4;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_113
+	{
+		color: #8e65390;
+		background-color: #bfec8964;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_114
+	{
+		color: #9223258;
+		background-color: #5142bf15;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_115
+	{
+		color: #bfec8998;
+		background-color: #b713bacf;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_116
+	{
+		color: #938f320;
+		background-color: #b77dbff4;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_117
+	{
+		color: #9223258;
+		background-color: #938f320;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_118
+	{
+		color: #000010;
+		background-color: #000010;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_119
+	{
+		color: #000010;
+		background-color: #b77dbff4;
+		font-weight: bold;
+	}
+	.style_120
+	{
+		color: #b75df7f9;
+		background-color: #000010;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_121
+	{
+		color: #b7121ff4;
+		background-color: #b7165ff4;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_122
+	{
+		color: #946863c;
+		background-color: #000000;
+		font-weight: bold;
+	}
+	.style_123
+	{
+		color: #bfec8a08;
+		background-color: #b7135d16;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_124
+	{
+		color: #000000;
+		background-color: #8e80280;
+		font-style: italic;
+	}
+	.style_125
+	{
+		color: #000000;
+		background-color: #000000;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_126
+	{
+		color: #000001;
+		background-color: #bfec8a3c;
+		font-style: italic;
+	}
+	.style_127
+	{
+		color: #bfec8a3c;
+		background-color: #000000;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_130
+	{
+		color: #94acac0;
+		background-color: #000010;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_131
+	{
+		color: #000000;
+		background-color: #b77dbff4;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_132
+	{
+		color: #b714e8e4;
+		background-color: #000010;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_133
+	{
+		color: #bfec8b00;
+		background-color: #9474e48;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_134
+	{
+		color: #8e83a78;
+		background-color: #bfec8ad8;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_135
+	{
+		color: #bfec8aec;
+		background-color: #000000;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_136
+	{
+		color: #b77dbff4;
+		background-color: #bfec8b00;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_137
+	{
+		color: #bfec8bb0;
+		background-color: #bfec8b00;
+		font-weight: bold;
+	}
+	.style_138
+	{
+		color: #000235;
+		background-color: #00002d;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_140
+	{
+		color: #b77dbff4;
+		background-color: #947b000;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_141
+	{
+		color: #947b000;
+		background-color: #000001;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_142
+	{
+		color: #bfec8bb0;
+		background-color: #bfec8b98;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_143
+	{
+		color: #bfec8bb0;
+		background-color: #b73c7fc1;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_144
+	{
+		color: #000000;
+		background-color: #000235;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_145
+	{
+		color: #bfec8bb0;
+		background-color: #9482c80;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_146
+	{
+		color: #bfec8bb0;
+		background-color: #bfec8c50;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_147
+	{
+		color: #000043;
+		background-color: #000015;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_148
+	{
+		color: #b749e66d;
+		background-color: #947b000;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_149
+	{
+		color: #9482c80;
+		background-color: #000001;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_150
+	{
+		color: #bfec8c50;
+		background-color: #bfec8c38;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_151
+	{
+		color: #bfec8c50;
+		background-color: #b73c7fc1;
+	}
+	.style_152
+	{
+		color: #000000;
+		background-color: #000234;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_153
+	{
+		color: #bfec8c50;
+		background-color: #92231e0;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_154
+	{
+		color: #bfec8c50;
+		background-color: #bfec8cec;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_155
+	{
+		color: #00004c;
+		background-color: #000016;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_156
+	{
+		color: #000003;
+		background-color: #000018;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_157
+	{
+		color: #92231e0;
+		background-color: #000001;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_158
+	{
+		color: #9060e30;
+		background-color: #bfec8ce8;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_159
+	{
+		color: #000020;
+		background-color: #000003;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_160
+	{
+		color: #b7122788;
+		background-color: #938f190;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_161
+	{
+		color: #00000d;
+		background-color: #000048;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_162
+	{
+		color: #92231e0;
+		background-color: #bfec8d08;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_163
+	{
+		color: #000022;
+		background-color: #b77dbff4;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_164
+	{
+		color: #b74d5740;
+		background-color: #938f190;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_166
+	{
+		color: #bfec8db8;
+		background-color: #bfec8d58;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_167
+	{
+		color: #93c3738;
+		background-color: #b74d54de;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_168
+	{
+		color: #b74a29ab;
+		background-color: #92231e0;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_169
+	{
+		color: #94548a0;
+		background-color: #94548a0;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_170
+	{
+		color: #000001;
+		background-color: #b74d5770;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_171
+	{
+		color: #bfec8dc8;
+		background-color: #9113d00;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_172
+	{
+		color: #b715ab64;
+		background-color: #9488cf0;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_173
+	{
+		color: #b77dbff4;
+		background-color: #b74d79d0;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_174
+	{
+		color: #000000;
+		background-color: #8e925c0;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_175
+	{
+		color: #bfec8e18;
+		background-color: #9113d00;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_176
+	{
+		color: #b70c3ad4;
+		background-color: #b7122788;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_177
+	{
+		color: #000008;
+		background-color: #8e805e8;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_179
+	{
+		color: #b71667e0;
+		background-color: #b7121ff4;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_180
+	{
+		color: #b70c3ad4;
+		background-color: #b7122788;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_181
+	{
+		color: #000008;
+		background-color: #000000;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_182
+	{
+		color: #b7122788;
+		background-color: #bfec8e88;
+	}
+	.style_183
+	{
+		color: #b71667e0;
+		background-color: #b713896d;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_184
+	{
+		color: #b7121ff4;
+		background-color: #000000;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_186
+	{
+		color: #b7122788;
+		background-color: #bfec8ed8;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_187
+	{
+		color: #bfec8f08;
+		background-color: #b713896d;
+		font-style: italic;
+	}
+	.style_188
+	{
+		color: #b7137220;
+		background-color: #94ab000;
+		font-style: italic;
+	}
+	.style_189
+	{
+		color: #9113d20;
+		background-color: #000001;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_190
+	{
+		color: #9113428;
+		background-color: #bfec8f90;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_191
+	{
+		color: #bfec8f48;
+		background-color: #b7135fb2;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_192
+	{
+		color: #9113d00;
+		background-color: #94ab000;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_193
+	{
+		color: #000000;
+		background-color: #000000;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_195
+	{
+		color: #bfec8fc8;
+		background-color: #b70c30b4;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_196
+	{
+		color: #000008;
+		background-color: #8e4ed28;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_197
+	{
+		color: #000000;
+		background-color: #94accc0;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_198
+	{
+		color: #000008;
+		background-color: #bfec8fd8;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_199
+	{
+		color: #8e4f130;
+		background-color: #b70c30b4;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_200
+	{
+		color: #000008;
+		background-color: #8e4ed28;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_201
+	{
+		color: #94aafc0;
+		background-color: #94ab010;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_202
+	{
+		color: #000008;
+		background-color: #bfec9028;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_203
+	{
+		color: #8e4f130;
+		background-color: #b7122788;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_204
+	{
+		color: #000001;
+		background-color: #00002f;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_205
+	{
+		color: #94ab020;
+		background-color: #000000;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_206
+	{
+		color: #94ab020;
+		background-color: #000000;
+		font-weight: bold;
+	}
+	.style_207
+	{
+		color: #bfec9078;
+		background-color: #b7165ff4;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_210
+	{
+		color: #000000;
+		background-color: #000000;
+	}
+	.style_211
+	{
+		color: #b6f42ff4;
+		background-color: #94aafa8;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_212
+	{
+		color: #000000;
+		background-color: #000000;
+	}
+	.style_214
+	{
+		color: #000000;
+		background-color: #000000;
+	}
+	.style_215
+	{
+		color: #b6f42ff4;
+		background-color: #94ab008;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_216
+	{
+		color: #b6f44140;
+		background-color: #b7166308;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_217
+	{
+		color: #94a3250;
+		background-color: #000010;
+		font-style: italic;
+	}
+	.style_218
+	{
+		color: #94a7148;
+		background-color: #000000;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_219
+	{
+		color: #bfec9188;
+		background-color: #b70ad16a;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_220
+	{
+		color: #000000;
+		background-color: #000004;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_221
+	{
+		color: #94aafd0;
+		background-color: #00002f;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_222
+	{
+		color: #000040;
+		background-color: #b71398bb;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_223
+	{
+		color: #bfec9248;
+		background-color: #b713a7e7;
+		font-weight: bold;
+	}
+	.style_224
+	{
+		color: #00003b;
+		background-color: #00003b;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_225
+	{
+		color: #00003b;
+		background-color: #b6f44140;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_226
+	{
+		color: #00003b;
+		background-color: #bfec9218;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_227
+	{
+		color: #94a7148;
+		background-color: #b6f44140;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_228
+	{
+		color: #b70ad25a;
+		background-color: #b7121ff4;
+		font-style: italic;
+	}
+	.style_229
+	{
+		color: #94aae98;
+		background-color: #94a7148;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_230
+	{
+		color: #b7801cbc;
+		background-color: #b7170175;
+		font-weight: bold;
+	}
+	.style_231
+	{
+		color: #000000;
+		background-color: #b6e556b6;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_232
+	{
+		color: #b7815ff4;
+		background-color: #91898dc;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_233
+	{
+		color: #94a7148;
+		background-color: #000000;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_234
+	{
+		color: #b7811e88;
+		background-color: #bfec92b0;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_235
+	{
+		color: #49cfd95;
+		background-color: #000030;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_236
+	{
+		color: #b70ad126;
+		background-color: #000000;
+		font-style: italic;
+	}
+	.style_237
+	{
+		color: #b6e55b51;
+		background-color: #b72bc828;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_238
+	{
+		color: #000001;
+		background-color: #b7815ff4;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_239
+	{
+		color: #b78021ef;
+		background-color: #bfec93c0;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_240
+	{
+		color: #b6f2562e;
+		background-color: #b6f2557a;
+		font-weight: bold;
+	}
+	.style_241
+	{
+		color: #b6f44178;
+		background-color: #94aae98;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_242
+	{
+		color: #9498a38;
+		background-color: #b6e54d74;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_243
+	{
+		color: #9479020;
+		background-color: #bfec9400;
+		font-style: italic;
+	}
+	.style_244
+	{
+		color: #b6f44140;
+		background-color: #000006;
+		font-style: italic;
+	}
+	.style_245
+	{
+		color: #940f1d8;
+		background-color: #94ab000;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_246
+	{
+		color: #bfec9398;
+		background-color: #b6e57ac5;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_247
+	{
+		color: #b6e07795;
+		background-color: #b7121ff4;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_248
+	{
+		color: #b70ad284;
+		background-color: #00003b;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_249
+	{
+		color: #000000;
+		background-color: #9498a38;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_251
+	{
+		color: #00003a;
+		background-color: #b7121ff4;
+	}
+	.style_252
+	{
+		color: #b708e3f9;
+		background-color: #9498a38;
+		font-weight: bold;
+	}
+	.style_253
+	{
+		color: #9457050;
+		background-color: #0008bd;
+		font-style: italic;
+	}
+	.style_254
+	{
+		color: #9457048;
+		background-color: #8eaee10;
+		font-weight: bold;
+		font-style: italic;
+	}
+	.style_255
+	{
+		color: #bfec9448;
+		background-color: #80dff58;
+		font-weight: bold;
+		font-style: italic;
+	}
+
+	</style>
+</head>
+
+<body>
+<p>
+<span class="style_9">#include&nbsp;</span><span class="style_6">"demolino.h"</span><br />
+<span class="style_9">#include&nbsp;</span><span class="style_10">&lt;</span><span class="style_11">math</span><span class="style_10">.</span><span class="style_11">h</span><span class="style_10">&gt;</span><br />
+<br />
+<span class="style_9">#define&nbsp;</span><span class="style_11">DEMO_TITLE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_6">"Effect&nbsp;-&nbsp;Colorful&nbsp;Clouds"</span><br />
+<span class="style_9">#define&nbsp;</span><span class="style_11">DEMO_WIN_SIZE&nbsp;&nbsp;&nbsp;</span><span class="style_4">640</span><span class="style_10">,&nbsp;</span><span class="style_4">480</span><br />
+<br />
+<span class="style_9">#ifndef&nbsp;</span><span class="style_11">PI</span><br />
+<span class="style_9">#define&nbsp;</span><span class="style_11">PI&nbsp;</span><span class="style_4">3.1415927f</span><br />
+<span class="style_9">#endif</span><br />
+<br />
+<span class="style_9">#ifndef&nbsp;</span><span class="style_11">SQR</span><br />
+<span class="style_9">#define&nbsp;</span><span class="style_11">SQR</span><span class="style_10">(</span><span class="style_11">X</span><span class="style_10">)&nbsp;((</span><span class="style_11">X</span><span class="style_10">)*(</span><span class="style_11">X</span><span class="style_10">))</span><br />
+<span class="style_9">#endif</span><br />
+<br />
+<span class="style_9">#ifndef&nbsp;</span><span class="style_11">RECT</span><br />
+<span class="style_9">#define&nbsp;</span><span class="style_11">RECT</span><span class="style_10">(</span><span class="style_11">X</span><span class="style_10">,&nbsp;</span><span class="style_11">Y</span><span class="style_10">,&nbsp;</span><span class="style_11">W</span><span class="style_10">,&nbsp;</span><span class="style_11">H</span><span class="style_10">)&nbsp;</span><span class="style_11">glRectf</span><span class="style_10">(</span><span class="style_11">X</span><span class="style_10">,&nbsp;</span><span class="style_11">Y</span><span class="style_10">,&nbsp;(</span><span class="style_11">X</span><span class="style_10">)&nbsp;+&nbsp;(</span><span class="style_11">W</span><span class="style_10">),&nbsp;(</span><span class="style_11">Y</span><span class="style_10">)&nbsp;+&nbsp;(</span><span class="style_11">H</span><span class="style_10">))</span><br />
+<span class="style_9">#endif</span><br />
+<br />
+<span class="style_2">//&nbsp;How&nbsp;many&nbsp;control&nbsp;points?</span><br />
+<span class="style_9">#define&nbsp;</span><span class="style_11">CPS_SIZE&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_4">20</span><br />
+<br />
+<span class="style_2">//&nbsp;type:&nbsp;controll&nbsp;point</span><br />
+<span class="style_5">typedef&nbsp;struct&nbsp;</span><span class="style_19">_ctl_point&nbsp;</span><span class="style_10">{</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_11">x</span><span class="style_10">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_2">//&nbsp;x</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_11">y</span><span class="style_10">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_2">//&nbsp;y</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_11">dist</span><span class="style_10">;&nbsp;&nbsp;&nbsp;</span><span class="style_2">//&nbsp;effect&nbsp;distance</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">float&nbsp;&nbsp;&nbsp;</span><span class="style_11">r</span><span class="style_10">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_2">//`.</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">float&nbsp;&nbsp;&nbsp;</span><span class="style_11">g</span><span class="style_10">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_2">//&nbsp;|&nbsp;color</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">float&nbsp;&nbsp;&nbsp;</span><span class="style_11">b</span><span class="style_10">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_15">///</span><br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_2">//&nbsp;'above'&nbsp;will&nbsp;become&nbsp;'below'&nbsp;gradually...</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_11">dx</span><span class="style_10">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_2">//&nbsp;destination&nbsp;x</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_11">dy</span><span class="style_10">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_2">//&nbsp;destination&nbsp;y</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_11">ddist</span><span class="style_10">;&nbsp;&nbsp;</span><span class="style_2">//&nbsp;destination&nbsp;effect&nbsp;distance</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">float&nbsp;&nbsp;&nbsp;</span><span class="style_11">dr</span><span class="style_10">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_2">//`.</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">float&nbsp;&nbsp;&nbsp;</span><span class="style_11">dg</span><span class="style_10">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_2">//&nbsp;|&nbsp;destination&nbsp;color</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">float&nbsp;&nbsp;&nbsp;</span><span class="style_11">db</span><span class="style_10">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_15">///</span><br />
+<span class="style_10">}&nbsp;</span><span class="style_19">ctl_point_t</span><span class="style_10">;</span><br />
+<br />
+<span class="style_5">static&nbsp;int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_11">frame&nbsp;&nbsp;</span><span class="style_10">=&nbsp;</span><span class="style_4">0</span><span class="style_10">;</span><br />
+<span class="style_5">static&nbsp;</span><span class="style_19">ctl_point_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_10">*</span><span class="style_11">cps&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_10">=&nbsp;</span><span class="style_5">NULL</span><span class="style_10">;&nbsp;</span><span class="style_2">//&nbsp;Control&nbsp;PointS</span><br />
+<span class="style_5">static&nbsp;int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_11">w&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_10">=&nbsp;</span><span class="style_4">80</span><span class="style_10">;&nbsp;&nbsp;&nbsp;</span><span class="style_2">//&nbsp;the&nbsp;draw&nbsp;width</span><br />
+<span class="style_5">static&nbsp;int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_11">h&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_10">=&nbsp;</span><span class="style_4">80</span><span class="style_10">;&nbsp;&nbsp;&nbsp;</span><span class="style_2">//&nbsp;the&nbsp;draw&nbsp;height</span><br />
+<br />
+<span class="style_2">//&nbsp;prototype</span><br />
+<span class="style_5">void&nbsp;</span><span class="style_11">draw</span><span class="style_10">(</span><span class="style_5">void</span><span class="style_10">);</span><br />
+<br />
+<span class="style_5">int&nbsp;</span><span class="style_11">main</span><span class="style_10">(</span><span class="style_5">void</span><span class="style_10">)</span><br />
+<span class="style_10">{</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">printf</span><span class="style_10">(</span><span class="style_6">"Effect&nbsp;-&nbsp;Colorful&nbsp;Clouds\n"</span><span class="style_10">);</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">printf</span><span class="style_10">(</span><span class="style_6">"&nbsp;&nbsp;&nbsp;&nbsp;Coded&nbsp;by&nbsp;eXerigumo&nbsp;Clanjor\n"</span><span class="style_10">);</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">printf</span><span class="style_10">(</span><span class="style_6">"&nbsp;&nbsp;&nbsp;&nbsp;Under&nbsp;GPLv3,&nbsp;ABSOLUTELY&nbsp;NO&nbsp;WARRANTY!!!\n"</span><span class="style_10">);</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">printf</span><span class="style_10">(</span><span class="style_6">"Keys:\n"</span><span class="style_10">);</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">printf</span><span class="style_10">(</span><span class="style_6">"&nbsp;&nbsp;&nbsp;&nbsp;+&nbsp;=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Higher&nbsp;resolution\n"</span><span class="style_10">);</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">printf</span><span class="style_10">(</span><span class="style_6">"&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;_&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lower&nbsp;resolution\n"</span><span class="style_10">);</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">printf</span><span class="style_10">(</span><span class="style_6">"&nbsp;&nbsp;&nbsp;&nbsp;ESC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Exit\n"</span><span class="style_10">);</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">fflush</span><span class="style_10">(</span><span class="style_11">stdout</span><span class="style_10">);</span><br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">demo_main</span><span class="style_10">(</span><span class="style_11">DEMO_TITLE</span><span class="style_10">,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_2">//&nbsp;title</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">DEMO_WIN_SIZE</span><span class="style_10">,&nbsp;&nbsp;</span><span class="style_2">//&nbsp;w,&nbsp;h</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_3">/**&nbsp;TODO:</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_3">*&nbsp;Following&nbsp;view_w&nbsp;and&nbsp;view_h&nbsp;look&nbsp;strange,</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_3">*&nbsp;don't&nbsp;they?&nbsp;I&nbsp;don't&nbsp;know&nbsp;why&nbsp;these&nbsp;values</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_3">*&nbsp;work&nbsp;so&nbsp;fine.</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_3">*/</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_4">240</span><span class="style_10">,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_2">//&nbsp;view_w</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_4">240</span><span class="style_10">,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_2">//&nbsp;view_h</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_4">100</span><span class="style_10">,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_2">//&nbsp;view_z</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_4">30</span><span class="style_10">);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_2">//&nbsp;fps</span><br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">return&nbsp;</span><span class="style_4">0</span><span class="style_10">;</span><br />
+<span class="style_10">}</span><br />
+<br />
+<span class="style_5">void&nbsp;</span><span class="style_11">init</span><span class="style_10">(</span><span class="style_5">void</span><span class="style_10">)</span><br />
+<span class="style_10">{</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">int&nbsp;</span><span class="style_11">i</span><span class="style_10">;</span><br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">glClearColor</span><span class="style_10">(</span><span class="style_4">0</span><span class="style_10">,&nbsp;</span><span class="style_4">0</span><span class="style_10">,&nbsp;</span><span class="style_4">0</span><span class="style_10">,&nbsp;</span><span class="style_4">0</span><span class="style_10">);</span><br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_2">//&nbsp;init&nbsp;control&nbsp;points</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">cps&nbsp;</span><span class="style_10">=&nbsp;</span><span class="style_11">calloc</span><span class="style_10">(</span><span class="style_5">sizeof</span><span class="style_10">(</span><span class="style_19">ctl_point_t</span><span class="style_10">),&nbsp;</span><span class="style_11">CPS_SIZE</span><span class="style_10">);</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">for&nbsp;</span><span class="style_10">(</span><span class="style_11">i</span><span class="style_10">=</span><span class="style_4">0</span><span class="style_10">;&nbsp;</span><span class="style_11">i</span><span class="style_10">&lt;</span><span class="style_11">CPS_SIZE</span><span class="style_10">;&nbsp;</span><span class="style_11">i</span><span class="style_10">++)&nbsp;{</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">cps</span><span class="style_10">[</span><span class="style_11">i</span><span class="style_10">].</span><span class="style_11">x&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_10">=&nbsp;</span><span class="style_11">rand</span><span class="style_10">()&nbsp;%&nbsp;</span><span class="style_11">w</span><span class="style_10">;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">cps</span><span class="style_10">[</span><span class="style_11">i</span><span class="style_10">].</span><span class="style_11">y&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_10">=&nbsp;</span><span class="style_11">rand</span><span class="style_10">()&nbsp;%&nbsp;</span><span class="style_11">h</span><span class="style_10">;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">cps</span><span class="style_10">[</span><span class="style_11">i</span><span class="style_10">].</span><span class="style_11">dist&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_10">=&nbsp;</span><span class="style_11">rand</span><span class="style_10">()&nbsp;%&nbsp;((</span><span class="style_11">w</span><span class="style_10">&lt;</span><span class="style_11">h&nbsp;</span><span class="style_10">?&nbsp;</span><span class="style_11">w&nbsp;</span><span class="style_10">:&nbsp;</span><span class="style_11">h</span><span class="style_10">)&nbsp;/&nbsp;</span><span class="style_4">4</span><span class="style_10">);</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">cps</span><span class="style_10">[</span><span class="style_11">i</span><span class="style_10">].</span><span class="style_11">r&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_10">=&nbsp;(</span><span class="style_11">rand</span><span class="style_10">()&nbsp;%&nbsp;</span><span class="style_4">101</span><span class="style_10">)&nbsp;/&nbsp;</span><span class="style_4">100.0</span><span class="style_10">;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">cps</span><span class="style_10">[</span><span class="style_11">i</span><span class="style_10">].</span><span class="style_11">g&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_10">=&nbsp;(</span><span class="style_11">rand</span><span class="style_10">()&nbsp;%&nbsp;</span><span class="style_4">101</span><span class="style_10">)&nbsp;/&nbsp;</span><span class="style_4">100.0</span><span class="style_10">;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">cps</span><span class="style_10">[</span><span class="style_11">i</span><span class="style_10">].</span><span class="style_11">b&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_10">=&nbsp;(</span><span class="style_11">rand</span><span class="style_10">()&nbsp;%&nbsp;</span><span class="style_4">101</span><span class="style_10">)&nbsp;/&nbsp;</span><span class="style_4">100.0</span><span class="style_10">;</span><br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">cps</span><span class="style_10">[</span><span class="style_11">i</span><span class="style_10">].</span><span class="style_11">dx&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_10">=&nbsp;</span><span class="style_11">rand</span><span class="style_10">()&nbsp;%&nbsp;</span><span class="style_11">w</span><span class="style_10">;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">cps</span><span class="style_10">[</span><span class="style_11">i</span><span class="style_10">].</span><span class="style_11">dy&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_10">=&nbsp;</span><span class="style_11">rand</span><span class="style_10">()&nbsp;%&nbsp;</span><span class="style_11">h</span><span class="style_10">;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">cps</span><span class="style_10">[</span><span class="style_11">i</span><span class="style_10">].</span><span class="style_11">ddist&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_10">=&nbsp;</span><span class="style_11">rand</span><span class="style_10">()&nbsp;%&nbsp;((</span><span class="style_11">w</span><span class="style_10">&lt;</span><span class="style_11">h&nbsp;</span><span class="style_10">?&nbsp;</span><span class="style_11">w&nbsp;</span><span class="style_10">:&nbsp;</span><span class="style_11">h</span><span class="style_10">)&nbsp;/&nbsp;</span><span class="style_4">4</span><span class="style_10">);</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">cps</span><span class="style_10">[</span><span class="style_11">i</span><span class="style_10">].</span><span class="style_11">dr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_10">=&nbsp;(</span><span class="style_11">rand</span><span class="style_10">()&nbsp;%&nbsp;</span><span class="style_4">101</span><span class="style_10">)&nbsp;/&nbsp;</span><span class="style_4">100.0</span><span class="style_10">;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">cps</span><span class="style_10">[</span><span class="style_11">i</span><span class="style_10">].</span><span class="style_11">dg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_10">=&nbsp;(</span><span class="style_11">rand</span><span class="style_10">()&nbsp;%&nbsp;</span><span class="style_4">101</span><span class="style_10">)&nbsp;/&nbsp;</span><span class="style_4">100.0</span><span class="style_10">;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">cps</span><span class="style_10">[</span><span class="style_11">i</span><span class="style_10">].</span><span class="style_11">db&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_10">=&nbsp;(</span><span class="style_11">rand</span><span class="style_10">()&nbsp;%&nbsp;</span><span class="style_4">101</span><span class="style_10">)&nbsp;/&nbsp;</span><span class="style_4">100.0</span><span class="style_10">;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_10">}</span><br />
+<br />
+<span class="style_10">}</span><br />
+<br />
+<span class="style_5">void&nbsp;</span><span class="style_11">timer</span><span class="style_10">(</span><span class="style_5">int&nbsp;</span><span class="style_11">value</span><span class="style_10">)</span><br />
+<span class="style_10">{</span><br />
+<span class="style_9">#define&nbsp;</span><span class="style_11">P</span><span class="style_10">(</span><span class="style_11">SI</span><span class="style_10">,&nbsp;</span><span class="style_11">DI</span><span class="style_10">,&nbsp;</span><span class="style_11">STEP</span><span class="style_10">,&nbsp;</span><span class="style_11">NEW</span><span class="style_10">)\</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">if&nbsp;</span><span class="style_10">(</span><span class="style_11">SI&nbsp;</span><span class="style_10">&lt;&nbsp;</span><span class="style_11">DI</span><span class="style_10">)\</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">SI</span><span class="style_10">+=</span><span class="style_11">STEP</span><span class="style_10">;\</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">else&nbsp;if&nbsp;</span><span class="style_10">(</span><span class="style_11">SI&nbsp;</span><span class="style_10">&gt;&nbsp;</span><span class="style_11">DI</span><span class="style_10">)\</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">SI</span><span class="style_10">-=</span><span class="style_11">STEP</span><span class="style_10">;\</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">else\</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">DI&nbsp;</span><span class="style_10">=&nbsp;</span><span class="style_11">NEW</span><span class="style_10">;</span><br />
+<br />
+<span class="style_9">#define&nbsp;</span><span class="style_11">P_CPS</span><span class="style_10">(</span><span class="style_11">SI</span><span class="style_10">,&nbsp;</span><span class="style_11">DI</span><span class="style_10">,&nbsp;</span><span class="style_11">STEP</span><span class="style_10">,&nbsp;</span><span class="style_11">NEW</span><span class="style_10">)&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_11">P</span><span class="style_10">(</span><span class="style_11">cps</span><span class="style_10">[</span><span class="style_11">i</span><span class="style_10">].</span><span class="style_11">SI</span><span class="style_10">,&nbsp;</span><span class="style_11">cps</span><span class="style_10">[</span><span class="style_11">i</span><span class="style_10">].</span><span class="style_11">DI</span><span class="style_10">,&nbsp;</span><span class="style_11">STEP</span><span class="style_10">,&nbsp;</span><span class="style_11">NEW</span><span class="style_10">)</span><br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">int&nbsp;</span><span class="style_11">i</span><span class="style_10">;</span><br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">for&nbsp;</span><span class="style_10">(</span><span class="style_11">i</span><span class="style_10">=</span><span class="style_4">0</span><span class="style_10">;&nbsp;</span><span class="style_11">i</span><span class="style_10">&lt;</span><span class="style_11">CPS_SIZE</span><span class="style_10">;&nbsp;</span><span class="style_11">i</span><span class="style_10">++)&nbsp;{</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">P_CPS</span><span class="style_10">(</span><span class="style_11">x</span><span class="style_10">,&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_11">dx</span><span class="style_10">,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_4">1</span><span class="style_10">,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_11">rand</span><span class="style_10">()&nbsp;%&nbsp;</span><span class="style_11">w</span><span class="style_10">);</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">P_CPS</span><span class="style_10">(</span><span class="style_11">y</span><span class="style_10">,&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_11">dy</span><span class="style_10">,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_4">1</span><span class="style_10">,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_11">rand</span><span class="style_10">()&nbsp;%&nbsp;</span><span class="style_11">h</span><span class="style_10">);</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">P_CPS</span><span class="style_10">(</span><span class="style_11">dist</span><span class="style_10">,&nbsp;</span><span class="style_11">ddist</span><span class="style_10">,&nbsp;&nbsp;</span><span class="style_4">1</span><span class="style_10">,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_11">rand</span><span class="style_10">()&nbsp;%&nbsp;((</span><span class="style_11">w</span><span class="style_10">&lt;</span><span class="style_11">h&nbsp;</span><span class="style_10">?&nbsp;</span><span class="style_11">w&nbsp;</span><span class="style_10">:&nbsp;</span><span class="style_11">h</span><span class="style_10">)&nbsp;/&nbsp;</span><span class="style_4">4</span><span class="style_10">));</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">P_CPS</span><span class="style_10">(</span><span class="style_11">r</span><span class="style_10">,&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_11">dr</span><span class="style_10">,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_4">0.01</span><span class="style_10">,&nbsp;&nbsp;&nbsp;(</span><span class="style_11">rand</span><span class="style_10">()&nbsp;%&nbsp;</span><span class="style_4">101</span><span class="style_10">)&nbsp;/&nbsp;</span><span class="style_4">100.0</span><span class="style_10">);</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">P_CPS</span><span class="style_10">(</span><span class="style_11">g</span><span class="style_10">,&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_11">dg</span><span class="style_10">,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_4">0.01</span><span class="style_10">,&nbsp;&nbsp;&nbsp;(</span><span class="style_11">rand</span><span class="style_10">()&nbsp;%&nbsp;</span><span class="style_4">101</span><span class="style_10">)&nbsp;/&nbsp;</span><span class="style_4">100.0</span><span class="style_10">);</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">P_CPS</span><span class="style_10">(</span><span class="style_11">b</span><span class="style_10">,&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_11">db</span><span class="style_10">,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_4">0.01</span><span class="style_10">,&nbsp;&nbsp;&nbsp;(</span><span class="style_11">rand</span><span class="style_10">()&nbsp;%&nbsp;</span><span class="style_4">101</span><span class="style_10">)&nbsp;/&nbsp;</span><span class="style_4">100.0</span><span class="style_10">);</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_10">}</span><br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">frame</span><span class="style_10">++;</span><br />
+<span class="style_9">#undef&nbsp;</span><span class="style_11">P</span><br />
+<span class="style_9">#undef&nbsp;</span><span class="style_11">P_CPS</span><br />
+<span class="style_10">}</span><br />
+<br />
+<span class="style_5">void&nbsp;</span><span class="style_11">render</span><span class="style_10">(</span><span class="style_5">void</span><span class="style_10">)</span><br />
+<span class="style_10">{</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">CLEAR</span><span class="style_10">;</span><br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">glColor3f</span><span class="style_10">(</span><span class="style_4">0.5</span><span class="style_10">,&nbsp;</span><span class="style_4">0.25</span><span class="style_10">,&nbsp;</span><span class="style_4">0.25</span><span class="style_10">);</span><br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">PUSH</span><span class="style_10">;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">glTranslatef</span><span class="style_10">(</span><span class="style_4">160</span><span class="style_10">,&nbsp;</span><span class="style_4">200</span><span class="style_10">,&nbsp;</span><span class="style_4">10</span><span class="style_10">);</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">glScalef</span><span class="style_10">(</span><span class="style_4">12</span><span class="style_10">,&nbsp;</span><span class="style_4">12</span><span class="style_10">,&nbsp;</span><span class="style_4">1</span><span class="style_10">);</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">draw_logo</span><span class="style_10">();</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">POP</span><span class="style_10">;</span><br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">PUSH</span><span class="style_10">;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">glTranslatef</span><span class="style_10">(-</span><span class="style_4">280</span><span class="style_10">,&nbsp;</span><span class="style_4">200</span><span class="style_10">,&nbsp;</span><span class="style_4">10</span><span class="style_10">);</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">glScalef</span><span class="style_10">(</span><span class="style_4">10</span><span class="style_10">,&nbsp;</span><span class="style_4">10</span><span class="style_10">,&nbsp;</span><span class="style_4">1</span><span class="style_10">);</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">draw_string</span><span class="style_10">(</span><span class="style_6">"Colorful"</span><span class="style_10">);</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">POP</span><span class="style_10">;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">PUSH</span><span class="style_10">;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">glTranslatef</span><span class="style_10">(-</span><span class="style_4">278</span><span class="style_10">,&nbsp;</span><span class="style_4">170</span><span class="style_10">,&nbsp;</span><span class="style_4">10</span><span class="style_10">);</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">glScalef</span><span class="style_10">(</span><span class="style_4">13</span><span class="style_10">,&nbsp;</span><span class="style_4">13</span><span class="style_10">,&nbsp;</span><span class="style_4">1</span><span class="style_10">);</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">draw_string</span><span class="style_10">(</span><span class="style_6">"Clouds"</span><span class="style_10">);</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">POP</span><span class="style_10">;</span><br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">PUSH</span><span class="style_10">;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">draw</span><span class="style_10">();</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">POP</span><span class="style_10">;</span><br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">SWAP</span><span class="style_10">;</span><br />
+<span class="style_10">}</span><br />
+<br />
+<span class="style_5">void&nbsp;</span><span class="style_11">draw</span><span class="style_10">(</span><span class="style_5">void</span><span class="style_10">)</span><br />
+<span class="style_10">{</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">float&nbsp;&nbsp;&nbsp;</span><span class="style_11">aw&nbsp;&nbsp;</span><span class="style_10">=&nbsp;</span><span class="style_4">640.0&nbsp;</span><span class="style_10">/&nbsp;</span><span class="style_11">w</span><span class="style_10">;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_2">//&nbsp;aspect&nbsp;ratio&nbsp;of&nbsp;width</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">float&nbsp;&nbsp;&nbsp;</span><span class="style_11">ah&nbsp;&nbsp;</span><span class="style_10">=&nbsp;</span><span class="style_4">480.0&nbsp;</span><span class="style_10">/&nbsp;</span><span class="style_11">h</span><span class="style_10">;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_2">//&nbsp;aspect&nbsp;ratio&nbsp;of&nbsp;height</span><br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_11">i</span><span class="style_10">;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_11">x</span><span class="style_10">;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_11">y</span><span class="style_10">;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">float&nbsp;&nbsp;&nbsp;</span><span class="style_11">r</span><span class="style_10">;&nbsp;&nbsp;</span><span class="style_2">//`.</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">float&nbsp;&nbsp;&nbsp;</span><span class="style_11">g</span><span class="style_10">;&nbsp;&nbsp;</span><span class="style_2">//&nbsp;|&nbsp;color</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">float&nbsp;&nbsp;&nbsp;</span><span class="style_11">b</span><span class="style_10">;&nbsp;&nbsp;</span><span class="style_15">///</span><br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">for&nbsp;</span><span class="style_10">(</span><span class="style_11">y</span><span class="style_10">=</span><span class="style_4">0</span><span class="style_10">;&nbsp;</span><span class="style_11">y</span><span class="style_10">&lt;</span><span class="style_11">h</span><span class="style_10">;&nbsp;</span><span class="style_11">y</span><span class="style_10">++)</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">for&nbsp;</span><span class="style_10">(</span><span class="style_11">x</span><span class="style_10">=</span><span class="style_4">0</span><span class="style_10">;&nbsp;</span><span class="style_11">x</span><span class="style_10">&lt;</span><span class="style_11">w</span><span class="style_10">;&nbsp;</span><span class="style_11">x</span><span class="style_10">++)&nbsp;{</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">r&nbsp;</span><span class="style_10">=&nbsp;</span><span class="style_4">1.0f</span><span class="style_10">;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">g&nbsp;</span><span class="style_10">=&nbsp;</span><span class="style_4">1.0f</span><span class="style_10">;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">b&nbsp;</span><span class="style_10">=&nbsp;</span><span class="style_4">1.0f</span><span class="style_10">;</span><br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">for&nbsp;</span><span class="style_10">(</span><span class="style_11">i</span><span class="style_10">=</span><span class="style_4">0</span><span class="style_10">;&nbsp;</span><span class="style_11">i</span><span class="style_10">&lt;</span><span class="style_11">CPS_SIZE</span><span class="style_10">;&nbsp;</span><span class="style_11">i</span><span class="style_10">++)&nbsp;{</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">int&nbsp;</span><span class="style_11">dx&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_10">=&nbsp;(</span><span class="style_11">x</span><span class="style_10">-</span><span class="style_11">cps</span><span class="style_10">[</span><span class="style_11">i</span><span class="style_10">].</span><span class="style_11">x</span><span class="style_10">);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_2">//&nbsp;distance&nbsp;of&nbsp;x</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">int&nbsp;</span><span class="style_11">dy&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_10">=&nbsp;(</span><span class="style_11">y</span><span class="style_10">-</span><span class="style_11">cps</span><span class="style_10">[</span><span class="style_11">i</span><span class="style_10">].</span><span class="style_11">y</span><span class="style_10">);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_2">//&nbsp;distance&nbsp;of&nbsp;y</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">int&nbsp;</span><span class="style_11">dd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_10">=&nbsp;</span><span class="style_11">SQR</span><span class="style_10">(</span><span class="style_11">dx</span><span class="style_10">)&nbsp;+&nbsp;</span><span class="style_11">SQR</span><span class="style_10">(</span><span class="style_11">dy</span><span class="style_10">);</span><span class="style_2">//&nbsp;squared&nbsp;distance</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">int&nbsp;</span><span class="style_11">sqrd&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="style_10">=&nbsp;</span><span class="style_11">SQR</span><span class="style_10">(</span><span class="style_11">cps</span><span class="style_10">[</span><span class="style_11">i</span><span class="style_10">].</span><span class="style_11">dist</span><span class="style_10">);&nbsp;</span><span class="style_2">//&nbsp;squared&nbsp;effect&nbsp;distance</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">if&nbsp;</span><span class="style_10">(</span><span class="style_11">dd&nbsp;</span><span class="style_10">&lt;=&nbsp;</span><span class="style_11">sqrd</span><span class="style_10">)&nbsp;{</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">float&nbsp;&nbsp;&nbsp;</span><span class="style_11">rate&nbsp;</span><span class="style_10">=&nbsp;&nbsp;(</span><span class="style_5">float</span><span class="style_10">)</span><span class="style_11">dd&nbsp;</span><span class="style_10">/&nbsp;</span><span class="style_11">sqrd</span><span class="style_10">;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">r&nbsp;</span><span class="style_10">=&nbsp;</span><span class="style_11">r&nbsp;</span><span class="style_10">*&nbsp;</span><span class="style_11">rate&nbsp;</span><span class="style_10">+&nbsp;</span><span class="style_11">cps</span><span class="style_10">[</span><span class="style_11">i</span><span class="style_10">].</span><span class="style_11">r&nbsp;</span><span class="style_10">*&nbsp;(</span><span class="style_4">1</span><span class="style_10">-</span><span class="style_11">rate</span><span class="style_10">);</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">g&nbsp;</span><span class="style_10">=&nbsp;</span><span class="style_11">g&nbsp;</span><span class="style_10">*&nbsp;</span><span class="style_11">rate&nbsp;</span><span class="style_10">+&nbsp;</span><span class="style_11">cps</span><span class="style_10">[</span><span class="style_11">i</span><span class="style_10">].</span><span class="style_11">g&nbsp;</span><span class="style_10">*&nbsp;(</span><span class="style_4">1</span><span class="style_10">-</span><span class="style_11">rate</span><span class="style_10">);</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">b&nbsp;</span><span class="style_10">=&nbsp;</span><span class="style_11">b&nbsp;</span><span class="style_10">*&nbsp;</span><span class="style_11">rate&nbsp;</span><span class="style_10">+&nbsp;</span><span class="style_11">cps</span><span class="style_10">[</span><span class="style_11">i</span><span class="style_10">].</span><span class="style_11">b&nbsp;</span><span class="style_10">*&nbsp;(</span><span class="style_4">1</span><span class="style_10">-</span><span class="style_11">rate</span><span class="style_10">);</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_10">}</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_10">}</span><br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">glColor3f</span><span class="style_10">(</span><span class="style_11">r</span><span class="style_10">,&nbsp;</span><span class="style_11">g</span><span class="style_10">,&nbsp;</span><span class="style_11">b</span><span class="style_10">);</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">RECT</span><span class="style_10">(</span><span class="style_11">x&nbsp;</span><span class="style_10">*&nbsp;</span><span class="style_11">aw&nbsp;</span><span class="style_10">-&nbsp;</span><span class="style_4">320</span><span class="style_10">,&nbsp;</span><span class="style_11">y&nbsp;</span><span class="style_10">*&nbsp;</span><span class="style_11">ah&nbsp;</span><span class="style_10">-&nbsp;</span><span class="style_4">240</span><span class="style_10">,&nbsp;</span><span class="style_11">aw</span><span class="style_10">,&nbsp;</span><span class="style_11">ah</span><span class="style_10">);</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_10">}</span><br />
+<span class="style_10">}</span><br />
+<br />
+<span class="style_5">void&nbsp;</span><span class="style_11">keypress</span><span class="style_10">(</span><span class="style_11">byte&nbsp;key</span><span class="style_10">,&nbsp;</span><span class="style_5">int&nbsp;</span><span class="style_11">x</span><span class="style_10">,&nbsp;</span><span class="style_5">int&nbsp;</span><span class="style_11">y</span><span class="style_10">)</span><br />
+<span class="style_10">{</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">switch&nbsp;</span><span class="style_10">(</span><span class="style_11">key</span><span class="style_10">){</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">case&nbsp;</span><span class="style_4">27</span><span class="style_10">:&nbsp;</span><span class="style_2">//&nbsp;Esc</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">exit</span><span class="style_10">(</span><span class="style_4">0</span><span class="style_10">);</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">case&nbsp;</span><span class="style_4">43</span><span class="style_10">:&nbsp;</span><span class="style_2">//&nbsp;+</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">case&nbsp;</span><span class="style_4">61</span><span class="style_10">:&nbsp;</span><span class="style_2">//&nbsp;=</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">w&nbsp;</span><span class="style_10">+=&nbsp;</span><span class="style_4">10</span><span class="style_10">;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">h&nbsp;</span><span class="style_10">+=&nbsp;</span><span class="style_4">10</span><span class="style_10">;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">printf</span><span class="style_10">(</span><span class="style_6">"Resolution&nbsp;changed&nbsp;to&nbsp;(%d,&nbsp;%d).\n"</span><span class="style_10">,&nbsp;</span><span class="style_11">w</span><span class="style_10">,&nbsp;</span><span class="style_11">h</span><span class="style_10">);</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">fflush</span><span class="style_10">(</span><span class="style_11">stdout</span><span class="style_10">);</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">break</span><span class="style_10">;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">case&nbsp;</span><span class="style_4">45</span><span class="style_10">:&nbsp;</span><span class="style_2">//&nbsp;-</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">case&nbsp;</span><span class="style_4">95</span><span class="style_10">:&nbsp;</span><span class="style_2">//&nbsp;_</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">w&nbsp;</span><span class="style_10">-=&nbsp;</span><span class="style_4">10</span><span class="style_10">;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">h&nbsp;</span><span class="style_10">-=&nbsp;</span><span class="style_4">10</span><span class="style_10">;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">if&nbsp;</span><span class="style_10">(</span><span class="style_11">w&nbsp;</span><span class="style_10">==&nbsp;</span><span class="style_4">0</span><span class="style_10">)&nbsp;</span><span class="style_11">w&nbsp;</span><span class="style_10">=&nbsp;</span><span class="style_4">10</span><span class="style_10">;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">if&nbsp;</span><span class="style_10">(</span><span class="style_11">h&nbsp;</span><span class="style_10">==&nbsp;</span><span class="style_4">0</span><span class="style_10">)&nbsp;</span><span class="style_11">h&nbsp;</span><span class="style_10">=&nbsp;</span><span class="style_4">10</span><span class="style_10">;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">printf</span><span class="style_10">(</span><span class="style_6">"Resolution&nbsp;changed&nbsp;to&nbsp;(%d,&nbsp;%d).\n"</span><span class="style_10">,&nbsp;</span><span class="style_11">w</span><span class="style_10">,&nbsp;</span><span class="style_11">h</span><span class="style_10">);</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">fflush</span><span class="style_10">(</span><span class="style_11">stdout</span><span class="style_10">);</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">break</span><span class="style_10">;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_5">default</span><span class="style_10">:</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_11">fprintf</span><span class="style_10">(</span><span class="style_11">stderr</span><span class="style_10">,&nbsp;</span><span class="style_6">"key:&nbsp;%d\n"</span><span class="style_10">,&nbsp;</span><span class="style_11">key</span><span class="style_10">);</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="style_10">}</span><br />
+<span class="style_10">}</span><br />
+<br />
+
+</p>
+</body>
+</html>
