@@ -8,6 +8,6 @@
 #include "type.h"
 
 // vol <- [0, 64]
-void mix_instrument(byte ins_id, float angle, byte vol);
+void mix_instrument(byte ins_id, double angle, byte vol);
 
 #endif

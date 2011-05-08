@@ -27,6 +27,7 @@ void play(mod_t *mod)
 	note_t *note_playing[4] = {NULL};
 
 	for (p=0; p<64;) {
+		snd_data = 0;
 		for (c=0; c<4; c++) {
 			note_t *note = &(mod->pats[0].chns[c].notes[p]);
 
@@ -50,7 +51,7 @@ void play(mod_t *mod)
 		sound_play(snd_data);
 
 		time++;
-		if (time >= 2048 * 60 / mod->bpm) {
+		if (time >= 3000 * 60 / mod->bpm) {
 			time = 0;
 			p++;
 		}

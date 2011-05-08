@@ -22,6 +22,20 @@ APP_OFFSET:		equ	0100h
 %endmacro
 
 ;======================================================================
+; cls
+; DESCRIPTION	Clear screen
+; CAUTION		gs must pointed to 0b800h
+; MODIFIES		bx, cx
+%macro	cls		0
+	mov		cx, 80*25
+	xor		bx, bx
+%%0:
+	mov		word [gs:bx], 0
+	add		bx, 2
+	loop	%%0
+%endmacro
+
+;======================================================================
 ; print
 ; DESCRIPTION	Print message
 ; ARG	%1		msg

@@ -1,7 +1,7 @@
 CC = gcc
 LD = ld
 CFLAGS = -I../demolino
-LDFLAGS = -L../demolino -ldemolino -lglut
+LDFLAGS = -L../demolino -ldemolino -lglut -s
 
 .PHONY: all clean
 

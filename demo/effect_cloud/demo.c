@@ -1,7 +1,8 @@
-#define DEMO_TITLE "Effect - Colorful Clouds"
-#define DEMO_WIN_SIZE 640, 480
 #include "demolino.h"
 #include <math.h>
+
+#define DEMO_TITLE		"Effect - Colorful Clouds"
+#define DEMO_WIN_SIZE	640, 480
 
 #ifndef PI
 #define PI 3.1415927f
@@ -15,7 +16,8 @@
 #define RECT(X, Y, W, H) glRectf(X, Y, (X) + (W), (Y) + (H))
 #endif
 
-#define CPS_SIZE	100
+// How many control points?
+#define CPS_SIZE	20
 
 // type: controll point
 typedef struct _ctl_point {
@@ -119,14 +121,37 @@ void timer(int value)
 	}
 
 	frame++;
+#undef P
+#undef P_CPS
 }
 
 void render(void)
 {
 	CLEAR;
+
+	glColor3f(0.5, 0.25, 0.25);
+
+	PUSH;
+	glTranslatef(160, 200, 10);
+	glScalef(12, 12, 1);
+	draw_logo();
+	POP;
+
+	PUSH;
+	glTranslatef(-280, 200, 10);
+	glScalef(10, 10, 1);
+	draw_string("Colorful");
+	POP;
+	PUSH;
+	glTranslatef(-278, 170, 10);
+	glScalef(13, 13, 1);
+	draw_string("Clouds");
+	POP;
+
 	PUSH;
 	draw();
 	POP;
+
 	SWAP;
 }
 

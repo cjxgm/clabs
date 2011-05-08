@@ -20,7 +20,7 @@
 
 static double saw(double angle);
 
-void mix_instrument(byte ins_id, float angle, byte vol)
+void mix_instrument(byte ins_id, double angle, byte vol)
 {
 	float value;
 	byte snd;
