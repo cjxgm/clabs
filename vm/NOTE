@@ -1,0 +1,9 @@
+mov rd16, rs16 -> 10001001 11 rs rd
+	rs: reg source
+	rd: reg dest
+	regs:
+		ax	000		`.
+		cx	001		 | Why the order is ax, cx, dx, and then bx?
+		dx	010		 |
+		bx	011		/
+nop -> 10010000

@@ -1,0 +1,4 @@
+#!/bin/bash
+nasm test.asm
+xxd -b test | sed 's/^.*: //g' | sed 's/  .*$//g' > test.b.txt
+cat test.b.txt
