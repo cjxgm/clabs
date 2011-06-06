@@ -1,6 +1,6 @@
 
 CC = gcc
-CFLAGS = -g
+CFLAGS = -g -Wall
 
 debug: all
 	echo '[ab]c\(.*\.\)c\?'|./hre

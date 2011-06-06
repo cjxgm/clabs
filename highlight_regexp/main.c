@@ -10,7 +10,7 @@ char *exename = "";
 
 int main(int argc, char *argv[])
 {
-	char *renderer = "stdout";
+	char * renderer = "stdout";
 
 	exename = *argv;
 	argv++; argc--;
