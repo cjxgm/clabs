@@ -1,10 +1,11 @@
-http://www.monstersoft.com/tutorial1/		VESA
-This is in fact something like notes...
+# http://www.monstersoft.com/tutorial1/		VESA Tutorial
+# This is in fact something like notes...
 
 - PROGRAMMING
 +	zimbu: A no-nonsense programming language
+		> At: http://www.zimbu.org/
 		> Project hosted at: http://code.google.com/p/zimbu/
-		> Homepage: http://www.zimbu.org/
+		>
 		> Why Zimbu?
 		>
 		> Suppose you want to write a new program, something like a text
@@ -26,11 +27,26 @@ This is in fact something like notes...
 		> practical, no-nonsense kind of language.  It mixes the good
 		> things of many existing languages and avoids their
 		> deficiencies.  And then throws in a few brand new ideas.
+
 +	NeHe OpenGL Tutorials: Some good examples and tutorials about OpenGL.
 		> At: http://nehe.gamedev.net/
+
++	Vala: Compiler for the GObject type system
+		> At: http://live.gnome.org/Vala
+
++	Clutter: A UI library using OpenGL
+		> At: http://www.clutter-project.org/
+		>
+		> Clutter is an open source (LGPL 2.1) software library for
+		> creating fast, compelling, portable, and dynamic graphical
+		> user interfaces. Clutter uses OpenGL for rendering, but wraps
+		> an easy to use, efficient, flexible API around GL's complexity.
+
 - GRAPHICS
 +	graphviz: Graph Visualization Software
 		> At: http://www.graphviz.org/
+
 - SKILLS
 +	ConqueTerm: Shell in VIM
 		> Usage: :ConqueTerm command<CR>
+
