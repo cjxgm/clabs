@@ -1,4 +1,0 @@
-#!/bin/sh
-
-exec cheesetracker_qt $@
-

@@ -1,49 +1,0 @@
-8
-
-dir
-33
-svn://svn.gna.org/svn/fvwm-crystal/trunk/fvwm/decorations/Clear
-svn://svn.gna.org/svn/fvwm-crystal
-
-
-
-2008-04-27T19:31:43.576012Z
-18
-libre
-
-
-svn:special svn:externals svn:needs-lock
-
-
-
-
-
-
-
-
-
-
-
-998a5334-0c22-0410-ba51-aa63de30526d
-
-Green
-dir
-
-Violet
-dir
-
-Blue
-dir
-
-Mono
-dir
-
-Red
-dir
-
-Orange
-dir
-
-Navy
-dir
-

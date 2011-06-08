@@ -1,9 +1,0 @@
-# File used by Window-Decorations functions to set back old styles on windows
-# which can be affected by changed decoration. You don't need to use it
-# directly
-
-Read $./FVWM
-Read $./QuakeConsole
-Read $./Applications
-
-# vim:ft=fvwm

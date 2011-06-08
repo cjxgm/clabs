@@ -1,4 +1,0 @@
-#!/bin/sh
-
-exec startBristol -pro5 -jack $@
-

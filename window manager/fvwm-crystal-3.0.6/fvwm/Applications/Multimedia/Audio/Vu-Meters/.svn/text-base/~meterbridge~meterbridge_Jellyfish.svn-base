@@ -1,4 +1,0 @@
-#!/bin/sh
-
-exec meterbridge -t jf in_1 in_2  $@
-

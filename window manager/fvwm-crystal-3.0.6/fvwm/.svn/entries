@@ -1,70 +1,0 @@
-8
-
-dir
-33
-svn://svn.gna.org/svn/fvwm-crystal/trunk/fvwm
-svn://svn.gna.org/svn/fvwm-crystal
-
-
-
-2008-05-01T14:22:30.919908Z
-22
-libre
-
-
-svn:special svn:externals svn:needs-lock
-
-
-
-
-
-
-
-
-
-
-
-998a5334-0c22-0410-ba51-aa63de30526d
-
-locale
-dir
-
-preferences
-dir
-
-components
-dir
-
-config
-file
-
-
-
-
-2008-06-22T18:54:47.000000Z
-f913bd4e611863a094255815797c3c00
-2008-04-27T19:31:43.576012Z
-18
-libre
-
-Applications
-dir
-
-scripts
-dir
-
-decorations
-dir
-
-recipes
-dir
-
-wallpapers
-dir
-
-icons
-dir
-
-colorsets
-dir
-

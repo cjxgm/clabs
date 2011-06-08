@@ -1,4 +1,0 @@
-#!/bin/sh
-
-exec gneutronica -d /dev/snd/midiC0D0 $@
-

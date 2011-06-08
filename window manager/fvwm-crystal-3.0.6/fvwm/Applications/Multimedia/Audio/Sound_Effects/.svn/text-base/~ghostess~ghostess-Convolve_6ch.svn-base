@@ -1,4 +1,0 @@
-#!/bin/sh
-
-exec ghostess dssi_convolve6ch.so $@
-

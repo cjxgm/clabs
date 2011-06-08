@@ -1,7 +1,0 @@
-# Settings for FvwmIdent
-*FvwmIdent: Font "xft:Verdana:pixelsize=12:Bold"
-Test (EnvIsSet FVWM_FLAG_UTF_8) *FvwmIdent: Font "xft:Verdana:pixelsize=12:Bold:encoding=iso10646-1"
-*FvwmIdent: Colorset $[cs_panel_active]
-
-# ViM modeline {{{1
-# vim:foldmethod=marker:foldenable:foldlevel=0:filetype=fvwm
