@@ -1,0 +1,219 @@
+# FvwmApplet-MpdPlEd v1.0
+# An MPD playlist editor for FVWM using FvwmScript
+# 
+# Written by Bert 'theBlackDragon' Geens <bert@lair.be>
+# 
+# Requires:
+#  - fvwm (doh!)
+#  - mpc
+#  - bash
+#  - python
+# 
+# Things you might want to do:
+#  - change the WindowPosition to match your screensize (or just remove it)
+#
+# Changes:
+#  0.1
+#	Initial release
+#  0.1.1
+#	Incorporated Hun's patch to add a clear playlist menu item.
+WindowTitle {MPD Playlist Editor}
+WindowSize 450 502
+#WindowPosition 300 300
+Colorset	1
+Font	"xft:Verdana:size=10"
+#Font	"xft:Bitstream Vera Sans:size=10"
+
+Init
+ Begin
+  #load the current playlist
+  ChangeTitle 1 (GetOutput { $FVWM_SYSTEMDIR/scripts/FvwmMPD/parseplaylist.sh| tr '\n' '|' } 1 -1 )
+End
+
+PeriodicTasks
+Begin 
+  #the flickering is just too heavy when updating every second...:(
+  If (RemainderOfDiv (GetTime) 1)==0 Then
+  Begin
+    #update the list when the currently playing song changes
+    Set $currtitle = (GetOutput {mpc} 1 -1)
+    
+    # Update when the contents of the playlist change
+    If (GetOutput {$FVWM_SYSTEMDIR/scripts/FvwmMPD/parseplaylist.sh| tr '\n' '|'} 1 -1 ) == (GetTitle 1) Then
+       Do Nop
+    Else
+    Begin
+	ChangeTitle 1 (GetOutput {$FVWM_SYSTEMDIR/scripts/FvwmMPD/parseplaylist.sh| tr '\n' '|'} 1 -1 )
+      	Set $oldtitle = $currtitle
+    End
+
+    # Update when the currently playing song changes
+    If $currtitle == $oldtitle Then
+      Do Nop
+    Else
+    Begin
+      ChangeTitle 1 (GetOutput {$FVWM_SYSTEMDIR/scripts/FvwmMPD/parseplaylist.sh| tr '\n' '|'} 1 -1 )
+      Set $oldtitle = $currtitle
+    End
+  End
+End
+
+Widget 1
+Property
+ Flags NoReliefString
+ Position 0 24
+ Size 450 450
+ Type List
+ Title { }
+Main
+ Case message of
+  SingleClic :
+  Begin
+    Set $item = (GetValue 1)
+    Set $clicks = (Add $clicks 1)
+    If $olditem == $item Then
+    Begin
+      If $clicks==1 Then
+    	Do {Exec mpc play } (GetValue 1) { >/dev/null}
+    End
+    Else
+    Begin
+      Set $olditem = $item
+      Set $clicks=0
+    End
+  End
+End
+
+Widget 2
+Property
+ Flags NoReliefString
+ Position 0 474
+ Size 90 26
+ Type ItemDraw
+ Title { Move song: }
+Main
+ Case message of
+  SingleClic :
+  Begin
+    Do Nop
+  End
+End
+
+Widget 3
+Property
+ Flags NoReliefString
+ Position 90 474
+ Size 60 26
+ Type PushButton
+ Title { Up }
+Main
+ Case message of
+  SingleClic :
+  Begin
+    Do {Exec mpc move } (GetValue 1) { } (Add (GetValue 1) -1) { >/dev/null}
+  End
+End
+
+Widget 4
+Property
+ Flags NoReliefString
+ Position 150 474
+ Size 60 26
+ Type PushButton
+ Title { Down }
+Main
+ Case message of
+  SingleClic :
+  Begin
+    Do {Exec mpc move } (GetValue 1) { } (Add (GetValue 1) 1) { >/dev/null}
+  End
+End
+
+Widget 5
+Property
+ Flags NoReliefString
+ Position 230 474
+ Size 110 26
+ Type PushButton
+ Title { Add song }
+Main
+ Case message of
+  SingleClic :
+  Begin
+	If $MainColorset <> {} Then
+		Do {FvwmScript $[FVWM_SYSTEMDIR]/scripts/FvwmMPD/FvwmApplet-MpdAddSong } $MainColorset
+	Else
+	Begin
+		Do {FvwmScript $[FVWM_SYSTEMDIR]/scripts/FvwmMPD/FvwmApplet-MpdAddSong }	
+	End
+  End
+End
+
+Widget 6
+Property
+ Flags NoReliefString
+ Position 340 474
+ Size 110 26
+ Type PushButton
+ Title { Remove song }
+Main
+ Case message of
+  SingleClic :
+  Begin
+    Do {Exec mpc del } (GetValue 1) { >/dev/null}
+  End
+End
+
+Widget 100
+Property
+ Flags NoReliefString
+ Position 0 0
+ Type Menu
+ Title { File|Quit }
+Main
+ Case message of
+  SingleClic :
+  Begin
+    Set $clickeditem = (GetValue 100)
+    If $clickeditem==1 Then
+     Quit
+  End
+End
+
+Widget 101
+Property
+ Flags NoReliefString
+ Position 0 0
+ Type Menu
+ Title { Options|Toggle repeat|Toggle random|Crop|Clear }
+Main
+ Case message of
+  SingleClic :
+  Begin
+    Set $clickeditem = (GetValue 101)
+    If $clickeditem==1 Then
+     Do {Exec mpc repeat>/dev/null}
+    If $clickeditem==2 Then
+     Do {Exec mpc random >/dev/null}
+    If $clickeditem==3 Then
+     Do {Exec mpc crop >/dev/null}
+    If $clickeditem==4 Then
+     Do {Exec mpc clear >/dev/null}
+  End
+End
+
+Widget 102
+Property
+ Flags NoReliefString
+ Position 0 0
+ Type Menu
+ Title { Database|Update }
+Main
+ Case message of
+  SingleClic :
+  Begin
+    Set $clickeditem = (GetValue 102)
+    If $clickeditem==1 Then
+     Do {Exec mpc update >/dev/null}
+  End
+End

@@ -1,0 +1,49 @@
+# MacOS X version
+
+# Setup colorsets
+Read $./Colorsets
+
+DestroyDecor recreate WindowDecoration
+AddToDecor WindowDecoration
+
++ TitleStyle Active TiledPixmap $./window-active-title.png
++ TitleStyle InActive TiledPixmap $./window-inactive-title.png
++ TitleStyle Centered Height 24-- flat
+
++ BorderStyle -- HiddenHandles
++ BorderStyle -- Flat
+
++ ButtonStyle 1 \
+	ActiveUp (Pixmap $./window-active-close.png) \
+	ActiveDown (Pixmap $./window-active-close-down.png) \
+	InactiveUp (Pixmap $./window-inactive-close.png) \
+	InactiveDown (Pixmap $./window-inactive-close-down.png)
+
++ ButtonStyle 3 \
+	ActiveUp (Pixmap $./window-active-iconify.png) \
+	ActiveDown (Pixmap $./window-active-iconify-down.png) \
+	InactiveUp (Pixmap $./window-inactive-iconify.png) \
+	InactiveDown (Pixmap $./window-inactive-iconify-down.png)
+
++ ButtonStyle 5 \
+	ActiveUp (Pixmap $./window-active-maximize.png) \
+	ActiveDown (Pixmap $./window-active-maximize-down.png) \
+	InactiveUp (Pixmap $./window-inactive-maximize.png) \
+	InactiveDown (Pixmap $./window-inactive-maximize-down.png)
+
++ ButtonStyle All -- UseTitleStyle
++ ButtonStyle All -- flat
+
+Style * HandleWidth 1, BorderWidth 1
+Style * Colorset                $[cs-window-inactive], \
+        BorderColorset          $[cs-window-inactiveborder], \
+        HilightColorset         $[cs-window-active], \
+        HilightBorderColorset   $[cs-window-activeborder]
+
+Style * Font shadow="1 1":"xft:Verdana:pixelsize=12:Bold"
+
+Style * UseDecor WindowDecoration
+
+# Setup button functions
+Include components/decorations/Buttons-macosx
+

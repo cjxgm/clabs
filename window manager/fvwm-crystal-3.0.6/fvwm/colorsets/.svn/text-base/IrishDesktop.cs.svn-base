@@ -1,0 +1,58 @@
+# IrishDesktop colorset
+# Written by: fromooze <fromooze@yahoo.es>
+
+SetEnv Colorset-Name "IrishDesktop"
+SetENv Colorset-Author "fromooze <fromooze@yahoo.es>"
+
+# What colorsets do we use?
+Read $./colorset-definition
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# QuakeConsole, thumbnailed windows
+Colorset $[cs-quakeconsole] \
+Foreground "black", Background "black", \
+Hilight "black", Shadow "black", \
+IconAlpha 70
+
+
+Colorset $[cs-panel-inactive] \
+Foreground "white", Background "white", \
+Tint "white" 0, RootTransparent, \
+fgTint, IconAlpha, IconTint
+
+Colorset $[cs-panel-active] \
+Foreground "white", Background "darkgray", \
+Hilight "darkgray", Shadow "darkgray", \
+Tint "white" 30, RootTransparent
+
+Colorset $[cs-panel-wininactive] \
+Foreground "white", Background "white", \
+Hilight "#cccccc", Shadow "#cccccc", \
+Tint "white" 20, RootTransparent
+
+Colorset $[cs-panel-winactive] \
+Foreground "orange", Background "orange", \
+Hilight "orange", Shadow "orange", \
+Tint "darkgreen" 50, RootTransparent
+
+Colorset $[cs-panel-border] \
+Background "white"
+
+Colorset $[cs-menu-inactive] \
+Foreground "white", Background "white", \
+Hilight "white", Shadow "white", \
+Tint "white" 10, RootTransparent
+
+Colorset $[cs-menu-active] \
+Foreground "darkgreen", Background "orange", \
+Hilight "darkgreen", Shadow "orange"
+
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# Additional variables
+SetEnv ThumbBorderColor "gray"
+SetEnv ExternalFontColor "gray40"
+
+SetEnv TrayerTint "0xFFFFFF"
+SetEnv TrayerAlpha "256"
+

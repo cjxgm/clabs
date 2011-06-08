@@ -1,0 +1,9 @@
+# Default FVWM-Crystal styles
+Append components/styles/Application-Icons-22-32
+Append components/styles/Applications
+Include components/styles/QuakeConsole
+Include components/styles/Menu
+Include components/styles/FVWM
+Include components/styles/CursorStyle
+
+# vim:ft=fvwm

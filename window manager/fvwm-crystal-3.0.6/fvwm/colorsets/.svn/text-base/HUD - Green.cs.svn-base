@@ -1,0 +1,58 @@
+# HUD - Green colorset
+# Written by: Maciej Delmanowski <harnir@linux.net.pl>
+
+SetEnv Colorset-Name "HUD - Green"
+SetEnv Colorset-Author "Maciej Delmanowski <harnir@linux.net.pl>"
+
+# What colorsets do we use?
+Read $./colorset-definition
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# QuakeConsole, thumbnailed windows
+Colorset $[cs-quakeconsole] \
+Foreground "black", Background "black", \
+Hilight "black", Shadow "black", \
+IconAlpha 70
+
+
+Colorset $[cs-panel-inactive] \
+Foreground "#04ba00", Background "black", \
+Tint, RootTransparent, \
+fgTint, IconAlpha, IconTint
+
+Colorset $[cs-panel-active] \
+Foreground "green", Background "darkgray", \
+Hilight "darkgray", Shadow "darkgray", \
+Tint "#04ba00" 40, RootTransparent
+
+Colorset $[cs-panel-wininactive] \
+Foreground "green", Background "black", \
+Hilight "#444444", Shadow "#444444", \
+Tint "#04ba00" 20, RootTransparent
+
+Colorset $[cs-panel-winactive] \
+Foreground "green", Background "black", \
+Hilight "#04ba00", Shadow "#04ba00", \
+Tint "#04ba00" 60, RootTransparent
+
+Colorset $[cs-panel-border] \
+Background "#04ba00"
+
+Colorset $[cs-menu-inactive] \
+Foreground "#2bdc27", Background "gray", \
+Hilight "#444444", Shadow "#444444", \
+Tint "#04ba00" 30, RootTransparent
+
+Colorset $[cs-menu-active] \
+Foreground "lightgray", Background "#666666", \
+Hilight "#333333", Shadow "darkgray"
+
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# Additional variables
+SetEnv ThumbBorderColor "gray"
+SetEnv ExternalFontColor "green"
+
+SetEnv TrayerTint "0x000000"
+SetEnv TrayerAlpha "256"
+

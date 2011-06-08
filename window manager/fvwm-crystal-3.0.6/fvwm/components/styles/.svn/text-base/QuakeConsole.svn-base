@@ -1,0 +1,10 @@
+Style QuakeConsoleNeedsUniqueName !Title, !Handles, SkipMapping, \
+	WindowListSkip, VariableSize, FixedPosition, NoIcon, StaysOnTop, \
+	!Iconifiable, EWMHMaximizeIgnoreWorkingArea, StickyAcrossPages, \
+	!Maximizable, BorderWidth $[QuakeConsole-Border], \
+	Colorset $[cs-quakeconsole], HilightColorset $[cs-quakeconsole], \
+	BorderColorset $[cs-quakeconsole], \
+	HilightBorderColorset $[cs-quakeconsole], WindowShadeSteps 64, \
+	WindowShadeShrinks
+
+# vim:ft=fvwm

@@ -1,0 +1,63 @@
+# Basic functions for controlling windows
+
+DestroyFunc Window-Move
+AddToFunc Window-Move
++ I Move
+
+DestroyFunc Window-Lower-Move
+AddToFunc Window-Lower-Move
++ C Lower
++ M Move
+
+DestroyFunc Window-Raise-Move
+AddToFunc Window-Raise-Move
++ C Raise
++ M Move
+
+DestroyFunc Window-Raise-MoveRaise
+AddToFunc Window-Raise-MoveRaise
++ C Raise
++ M Move
++ M Raise
+
+DestroyFunc Window-Raise-RaiseMove
+AddToFunc Window-Raise-RaiseMove
++ C Raise
++ M Raise
++ M Move
+
+DestroyFunc Window-Raise-LowerMoveRaise
+AddToFunc Window-Raise-LowerMoveRaise
++ C Raise
++ M Lower
++ M Move
++ M Raise
+
+
+DestroyFunc Window-Resize
+AddToFunc Window-Resize
++ I Resize
+
+DestroyFunc Window-Resize-Opaque
+AddToFunc Window-Resize-Opaque
++ I Resize Direction $0
+
+DestroyFunc Window-Shade-Resize
+AddToFunc Window-Shade-Resize
++ C WindowShade toggle
++ M Resize
+
+DestroyFunc Window-Resize-Context
+AddToFunc Window-Resize-Context
++ I Resize $0p $1p
+
+DestroyFunc Window-Shade
+AddToFunc Window-Shade
++ I Current (!Iconifiable) Break
++ I WindowShade $*
+
+DestroyFunc Window-Iconify
+AddToFunc Window-Iconify
++ I Iconify
+
+# vim:ft=fvwm

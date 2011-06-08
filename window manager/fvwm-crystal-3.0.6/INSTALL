@@ -1,0 +1,93 @@
+FVWM-Crystal installation instructions
+======================================
+
+Installing from a package
+-------------------------
+Uncompress the package to a temporary directory and issue command:
+
+	make install
+
+FVWM-Crystal will be installed in /usr/local directory, so you need to become
+root for installation to work. If you want to install Crystal in other
+directory, or you don't have access to a root account, you can change the
+prefix:
+
+	make prefix=/usr install
+
+
+Installing from svn repository
+------------------------------
+cd to the repository and issue commands:
+
+	make install
+
+Optionally copy 'addons/fvwm-crystal.desktop' to /usr/share/xsessions/, then
+you will be able to select "FVWM-Crystal" in your GDM/KDM login manager.
+
+
+Note on fvwm-crystal.generate-menu
+----------------------------------
+fvwm-crystal.generate-menu is a script that can be used to generate the missing
+FVWM-Crystal applications menu entries. To be able to do that, it must know
+where FVWM-Crystal is installed and where are the applications type *.desktop
+files. This is handled by a few variables in the script and it can be needed
+to edit some of them before to run the script.
+
+The FVWM-Crystal related variables will be modified to the correct location
+by "make install". But it is no way the Makefile can know for sure where the 
+application type desktop files are installed in your distribution.
+
+Variables to check in fvwm-crystal.generate-menu:
+-------------------------------------------------
+DesktopDir="Path_to_the_desktop_files" usualy 
+"/usr/share/applications /usr/local/share /path/to/kde/share/application /path/to/gnome/apps"
+
+SYSTEM_ICONDIRS="Path_to_the_icon_files" usualy
+"/usr/share/pixmaps /usr/share/icons /path/to/kde/share/icons"
+
+Note to distribution maintainer:
+--------------------------------
+If you package management system is using a sandbox when building the package,
+you must also pay attention to the following variables: 
+
+FC_MENUBASEROOT="path_to_FVWM-Crystal_application_menu", usualy
+"/usr/share/fvwm-crystal/fvwm/Applications".
+
+FC_ICONBASEROOT="path_to_FVWM-Crystal_icons", usualy
+"/usr/share/fvwm-crystal/fvwm/icons/Default".
+
+
+General installation tips
+-------------------------
+If you don't have your own ~/.Xresources, copy one from 'addons/' directory.
+You can also find there sample ~/.Xsession (or ~/.xinitrc) file.
+
+You need recent version of Python installed for 'fvwm-crystal.apps' script.
+And of course unstable version of FVWM (2.5.13+ or CVS) would be good... ;)
+
+
+-----------------------------------------------------------------------------
+Useful applications:
+
+Strongly recommended:
+---------------------
+- ImageMagick package for screenshots and thumbnailed icons
+- 'habak' 'hsetroot' or 'Esetroot' for setting a wallpaper
+- one of 'trayer' for tray icons (available on FVWM-Crystal webpage) or
+  'stalonetray'
+- One of 'aterm', 'urxvt', 'mrxvt', 'xterm', 'Eterm', 'gnome-terminal', 'konsole' or
+  'xfce4-terminal' - for terminal emulator
+- One of 'mrxvt', 'urxvt', aterm' or 'xterm' for Quake console
+
+Optional, but supported:
+------------------------
+- 'xscreensaver' for screen saver
+- At least one of 'mpd', 'mpc', 'gmpc' or 'xmms', 'xmms-shell', 'xmms-find' or 'xmms2' or
+  'quodlibet' or 'cdcd' or 'cmus' or 'alsaplayer' or 'mplayer' for built-in music
+  player support (even video support with mplayer)
+- 'sudo' and 'gksudo' for running text/graphical applications as superuser and
+  for reboot/shutdown options in the Exit menu
+- 'gdmflexiserver' (distributed with gdm) for GDM login manager support
+- ROX-Filer or Nautilus for nice file manager and icons on the desktop
+- 'gnome-session' for session management support. Follow the instructions in 
+  'addons/session-management.README'.

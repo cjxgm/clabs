@@ -1,0 +1,1641 @@
+Sun Jun 22 Dominique Michel
+  * Applied the gentoo POSIX fix for the env variables.
+  * Changed the fvwm exec name into bin/fbwm-crystal in order to use the new and now old fvwm2 exec name: fvwm
+  * Backported some of the chamges made into the svn repository:
+    * All the ascii files are encoded using UTF-8.
+    * Changed the fvwm exec name into bin/fbwm-crystal in order to use the new and now old fvwm2 exec name: fvwm
+  * Taged 3.0.6
+  
+Sat May 3 Dominique Michel
+  * Updated the requirements in the README 
+
+Fri May 1 Dominique Michel 
+  * Created svn repositoty
+  * Updated ChangeLog from the darcs repository
+  * Updated the Makefile to work with the new svn repository.
+
+Thu Jun 7 Maciej Delmanovski
+  * Removed the firefox icons from Makefile (dist-minimal couldn't be build)
+  * Updated NEWS file
+  * Updated AUTHORS file
+  * Updated About dialog
+
+Tue Jun  5 00:19:18 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Changed recursive copy commands to use POSIX syntax.
+
+Tue Jun  5 00:12:55 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * 2 things: correctpermissions for addons/fvwm-crystal.lesspipe.sh and style for FvwmIdent in the Debug menu. This window will be on top and the font will be readable.
+
+Sun Jun  3 17:53:20 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Commented out Style * CenterPlacement (give me error), and added stalonetray
+
+Sun Jun  3 17:51:07 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Code cleanup in Music-alsaplayer
+
+Sun Jun  3 15:19:23 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Added xzoom in devel menu, an alternative to xmag, but better
+
+Sat Jun  2 23:43:44 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Icons cleanup
+
+Sat Jun  2 16:39:30 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Visual change of the bottom bar. From left to right: menu, notification area, audio button, taskbar, clock. Removed duplicated style option.
+
+Sat May 19 00:17:58 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Added command line option is Start MPlayer that does at MPlayer will not close and reopen its window between 2 titles or movies.
+
+Fri May 18 23:38:09 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Added OSD menu im Music-mplayer. Work with the MMB on second audio button.
+
+Fri May 18 22:36:02 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Removed duplicated function and fixed Load-DVD function in Music-mplayer. It will queue all the titles on a dvd and doesn t depend on mplayer support for the broken libdvdnav.
+
+Thu May 17 17:13:13 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Updated comment in Music-mplayer
+
+Thu May 17 16:59:25 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Music-mplayer use FvwmMenuDirectory to browse the media files. Change in the syntax of fvwm-crystal.mplayer-wrapper. Added DVD browsing menu in Music-mplayer.
+
+Thu May 17 00:14:41 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Added dB + multimedia keys + alsamoxergui(s) support in amixer. Fixed Mixer-GUI function in Mixer-amixer and Mixer-aumix. Adjusted dB values in mixer-aumix according to the output of the ALSA driver (aumix doesnt support dB control natively and the correspondance in dB doesnt fit well the math and can vary a little from card to card when the mixer and-or the driver doesnt support dB natively). Added multimedia key support in Mixer-aumix.  Code cleanup in Music-mplayer. Added Mixer-GUI in Thin recipe.
+
+Wed May 16 00:09:34 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Support for Mixer menu in Thin recipe. Needed in order to get the Mixer menu in the Audio button.
+
+Wed May 16 00:05:40 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Support for alsamixergui in Mixer-amixer. Added AT function in Exec-Accelerator: same as A but give a title to the window. I made AT because it was useful in Mixer-amixer.
+
+Sun May 13 22:28:44 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Fixed System documentation browser to use $PAGER. Added documentation and a less preprocessor.
+
+Sun May 13 15:53:29 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Fixed confusion in locale test in speed_calc script and associated Music-controls. In case of trouble, be sure at you have the same locale setting in ~/.bashrc and ~/.profile (seam to be important when gdm launch Crystal).
+
+Sun May 13 00:55:07 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Adjusted version in About file.
+
+Sun May 13 00:52:50 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Added mplayer support in all the recipes.
+
+Sun May 13 00:48:29 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Added Load-DVD menu im Music-mplayer. MPlayer start in fullscreen.
+
+Sat May 12 21:28:35 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Added System documentation browser in the doc menu (devel menu).
+
+Sun May  6 23:57:57 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Added missing quotes in fvwm-crystal.mplayer-wrapper
+
+Sun May  6 23:17:06 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Initial release of MPlayer media control with preferences support. Some basic controls pn the audio button are included as playlists and files loading (This was the worst! I hate quoting! A wrapper made it to work.), file change, volume and speed control, pause and framestep. Modified Thin recipe with support for MPlayer (use the 3 buttons audio button). In fullscreen mode, the audio button will appear and desappear by moving the mouse on the left of the screen. Commented out the multimedia menu in Thin.
+
+Sun May  6 15:54:33 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Initial FVWM-Crystal documentation menu
+
+Sun May  6 15:34:48 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Renamed man page.
+
+Sun May  6 15:31:55 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Man pages for FVWM-Crystal: initial commit. Missing preference file.
+
+Sat May  5 21:49:03 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Added conditional test in the documentation menu in Developer-Menu. The different terminal will get the right syntax with the man command.
+
+Sat May  5 21:44:22 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Added missing NotificationArea-Width preferences in FVWM-Crystal_Preferences
+
+Sat May  5 19:10:18 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Updated Music-alsaplayer with security fix in SetEnv Alsaplayer-Playlists, reorganized speed menu and added missing song value in Music-SongChange
+
+Tue May  1 23:06:50 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Modified autohiding of the bottom panel in Thinrecipe. It is no thin line at the bottom in fullscreen mplayer anymore.
+
+Tue May  1 22:19:51 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Modified autohiding of the bottom panel. It is no thin line at the bottom in fullscreen mplayer anymore.
+
+Mon Apr 30 19:20:24 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Added a few words about fvwm-crystal.generate-menu installation and gnome-session setup.
+
+Mon Apr 30 00:05:26 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Added correctpath function into the Makefile, fvwm-crystal-generate-menu need to know the install location.
+
+Sun Apr 29 23:26:18 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Added wrongly removed change in DefaultMusicPlayer
+
+Sun Apr 29 21:11:17 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Fixed StayOnTop style for the bottom panel. Will work after a restart and with or without gnome-session.
+
+Sun Apr 29 20:47:11 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Fixed StayOnTop style for the bottom panel. Will work after a restart and with or without gnome-session.
+
+Sun Apr 29 17:18:00 CEST 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * Added "Debug window list", available from the developer menu
+
+Sun Apr 29 15:33:18 CEST 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * Added "Window-Ring-[Next|Previous]" functions, which let you select next or prev window in a FVWM ring of windows
+
+Sun Apr 29 18:47:00 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Fixed the new locale test in speed_value. Must work as expected now.
+
+Sun Apr 29 17:43:15 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Removed obsoleted doc menu from Thin recipe.
+
+Sun Apr 29 16:55:29 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Fixed the locale test in Music-alsaplayer. Alsaplayer's volume must work now with any locale that use comma or point as decimal point.
+
+Sun Apr 29 16:16:29 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Fixed the locale test in speed_value. Must work now with any locale that use comma or point as decimal point.
+
+Sun Apr 29 15:27:44 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Changed ManPageView into a portable function
+
+Sun Apr 29 14:40:55 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * TopLine recipe with updated Alsaplayer button and Notification area support. Removed obsoleted TopLine Audio recipe
+
+Sun Apr 29 14:22:47 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * TopDown recipe with updated Alsaplayer button and Notification area support.
+
+Sun Apr 29 14:13:50 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Thin recipe with updated Alsaplayer button support.
+
+Sun Apr 29 13:03:51 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * SilentHacker recipe with Alsaplayer button support.
+
+Sun Apr 29 12:42:53 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * SideLine recipe with Alsaplayer button and Notification area preferences support.
+
+Sun Apr 29 00:02:19 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Old School recipe with Alsaplayer button.
+
+Sat Apr 28 23:31:08 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Nebulae recipe with Alsaplayer button.
+
+Sat Apr 28 23:04:25 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Dock recipe with Alsaplayer button.
+
+Sat Apr 28 22:52:43 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Dock recipe with gnome-session suport and Alsaplayer button.
+
+Sat Apr 28 22:33:04 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Added missing icon for the Alsaplayer button.
+
+Sat Apr 28 22:13:23 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Some recipes with gnome-session and alsaplayer support. Removed obsolete recipes.
+
+Sat Apr 28 15:44:55 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Clean Vertical and Corner recipes are working with gnome-session and the 2 audio buttons.
+
+Sat Apr 28 14:48:40 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Added missing bin/fvwm-crystal.generate-menu file.
+
+Sat Apr 28 14:35:45 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Added fvwm/scripts/speed_value in Makefile. It will install with correct permissions.
+
+Sat Apr 28 14:28:45 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Renamed bin/fvwm-crystal-generate-menu into fvwm-crystal.generate-menu. Added bin/fvwm-crystal.generate-menu and bin/fvwm-crystal.infoline into the Makefile for easy installation.
+
+Sat Apr 28 12:43:57 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Modified Music-alsaplayer to work with the recipes without audio button. Modified Thin recipe to work with this new version, modified Clean recipe to work with Music-alsaplayer and gnome-session.
+
+Sat Apr 28 00:52:24 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Moved speed_value, it was at the wrong emplacement.
+
+Sat Apr 28 00:50:48 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Thin recipe with support for all the audio player and session management
+
+Sat Apr 28 00:49:06 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Preference file for the width of the Notification area
+
+Sat Apr 28 00:47:53 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Preference file for Music-*
+
+Sat Apr 28 00:43:46 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Updated french locales
+
+Sat Apr 28 00:39:01 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Speed support file for Music-alsaplayer
+
+Sat Apr 28 00:37:31 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Removed non needed file. This setting is now in preferences/NotificationArea-Width
+
+Sat Apr 28 00:36:31 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Removed non needed file.
+
+Sat Apr 28 00:35:00 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Added preference support for the Notification area width. It is used by stalonetray in all the recipes and by trayer in the recipes where this area have a fixed size.
+
+Sat Apr 28 00:31:58 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Fixed width function in NotificationAreaManager-*
+
+Sat Apr 28 00:29:43 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Removed non needed file. This setting is now in preferences/NotificationArea-Width
+
+Sat Apr 28 00:26:45 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Music-alsamixer: It try to exercise Alsaplayer a lot, volume in db, mixed fixed-dynamic speed control, playlist, song changes, etc.
+
+Sat Apr 28 00:23:52 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Mixer-aumix with multimedia keys support and volume control in db
+
+Sat Apr 28 00:22:34 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Session management support in the Exit menu
+
+Sat Apr 28 00:19:20 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * New developper menu with session management menu and documentation menu. The syntax of the doc menu is still to be fixed
+
+Sat Apr 28 00:16:27 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Fixed wrong keybindings in Application-Ardour
+
+Fri Apr 27 21:47:16 CEST 2007  Dominique Michel <dominique_libre@sourceforge.net>
+  * Fixed filename in session-management.README, changed typo and added some infos related to gnome-session.
+
+Thu Apr 26 01:18:36 CEST 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * Rearrangements in Application database
+  - IceWeasel, IceDove, IceApe and Konqueror have now higher priority due to the
+    removal of non-free application icons
+  - xtraceroute and wavemon are moved to the System/Monitors section
+
+Thu Apr 26 01:15:13 CEST 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * Added support for Deluge Torrent on Ubuntu
+
+Thu Apr 26 01:06:39 CEST 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * Removing all non-free icons or icons with unknown status
+  These icons were pretty and useful, but it looks like because they either
+  they are not on GPLv2 license, or they have an unknown license, I cannot
+  include them in official FVWM-Crystal package - if I do, I'm violating the GNU
+  GPL license. So I'm moving them out of the main tree, and I will release them
+  as a separate, non-free icon package for FVWM-Crystal.
+
+Thu Apr 26 00:45:39 CEST 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * Documentation menus are moved from the main menu to the "Developer Menu" submenu
+
+Thu Apr 26 00:44:59 CEST 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * Removing old unused icon
+
+Sat Apr 21 15:58:27 CEST 2007  dominique.michel@citycable.ch
+  * Default recipe with experimental support for session management and notification area preferences
+
+Tue Apr 17 00:58:06 CEST 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * Updated doc/TODO file
+
+Sun Apr 15 22:20:57 CEST 2007  dominique.michel@citycable.ch
+  * Initial import of preference setting for the trayer with a modified version of the Default recipe.
+
+Sun Apr 15 00:30:50 CEST 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * Added documentation menu in "Developer Menu"
+  Currently there are all FVWM man pages included, divided in various sections.
+
+Sat Apr 14 23:09:45 CEST 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * Removed redundant 'gdmflexiserver' entry from the Application database
+  Support for gdmflexiserver is included in 'components/functions/Exit-gdm', and
+  it's activated when GDM is detected.
+
+Sat Apr 14 23:06:38 CEST 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * Added the sample application-specific bindings for Ardour
+  You can use this file to remove unwanted bindings from Ardour's windows, by
+  including it in your configuration (~/.fvwm-crystal/userconfig).
+
+Sat Apr 14 22:48:38 CEST 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * Rearrangements in the Application database
+  - Ekiga has been removed from 'Network/Instant_Messaging' section, it's
+    available in 'Network/Telephony' section and has been included two times in
+    the menu.
+  - Balsa Address Book should be in the 'Office/Contact_Management' section,
+    because it's responsible for managing address book in the Balsa mail client.
+  - I've added 'deluge-torrent', the same as 'deluge' application.
+
+Wed Apr 11 01:33:13 CEST 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * Reverting back for old keybindings for QuakeConsole, new terminal window and FvwmMiniConsole
+
+Thu Apr  5 00:15:18 CEST 2007  Dominique Michel <dominique.michel@sourceforge.net>
+  * New recipes with all the alsaplayer functions
+
+Wed Apr  4 19:53:13 CEST 2007  Dominique Michel <dominique.michel@sourceforge.net>
+  * New french UTF-8 locale
+
+Wed Apr  4 19:47:13 CEST 2007  Dominique Michel <dominique.michel@sourceforge.net>
+  * New decoration: CIOS-blue
+
+Wed Apr  4 19:20:51 CEST 2007  Dominique Michel <dominique.michel@sourceforge.net>
+  * New Misc-Keybindings
+
+Wed Apr  4 19:12:04 CEST 2007  Dominique Michel <dominique.michel@sourceforge.net>
+  * New utility apps for the application menu
+
+Wed Apr  4 19:10:47 CEST 2007  Dominique Michel <dominique.michel@sourceforge.net>
+  * New system apps for the application menu
+
+Wed Apr  4 19:08:52 CEST 2007  Dominique Michel <dominique.michel@sourceforge.net>
+  * New settings apps for the application menu
+
+Wed Apr  4 19:07:10 CEST 2007  Dominique Michel <dominique.michel@sourceforge.net>
+  * New office apps for the application menu
+
+Wed Apr  4 19:05:38 CEST 2007  Dominique Michel <dominique.michel@sourceforge.net>
+  * New network apps for the application menu
+
+Wed Apr  4 19:03:33 CEST 2007  Dominique Michel <dominique.michel@sourceforge.net>
+  * New video apps for the application menu
+
+Wed Apr  4 19:02:10 CEST 2007  Dominique Michel <dominique.michel@sourceforge.net>
+  * New audio-video apps for the application menu
+
+Wed Apr  4 19:00:17 CEST 2007  Dominique Michel <dominique.michel@sourceforge.net>
+  * New audio apps for the application menu
+
+Wed Apr  4 18:58:31 CEST 2007  Dominique Michel <dominique.michel@sourceforge.net>
+  * New knowledge apps for the application menu
+
+Wed Apr  4 18:57:15 CEST 2007  Dominique Michel <dominique.michel@sourceforge.net>
+  * New graphics apps for the application menu
+
+Wed Apr  4 18:55:54 CEST 2007  Dominique Michel <dominique.michel@sourceforge.net>
+  * New devel apps for the application menu
+
+Wed Apr  4 18:53:14 CEST 2007  Dominique Michel <dominique.michel@sourceforge.net>
+  * New games for the application menu
+
+Wed Apr  4 18:50:57 CEST 2007  Dominique Michel <dominique.michel@sourceforge.net>
+  * New games for the application menu
+
+Wed Apr  4 18:47:38 CEST 2007  Dominique Michel <dominique.michel@sourceforge.net>
+  * New games for the application menu
+
+Wed Apr  4 17:51:35 CEST 2007  Dominique Michel <dominique.michel@sourceforge.net>
+  * Added script to generate the menu entries from application type desktop files.
+
+Wed Apr  4 17:36:59 CEST 2007  Dominique Michel <dominique.michel@sourceforge.net>
+  * Added category icons for the freedesktop friendly menu
+
+Wed Apr  4 17:25:24 CEST 2007  Dominique Michel <dominique.michel@sourceforge.net>
+  * Fvwm-Crystal category icons reorganisation into a freedesktop friendly menu
+
+Wed Apr  4 15:37:34 CEST 2007  Dominique Michel <dominique.michel@sourceforge.net>
+  * Fvwm-Crystal menu reorganisation into a freedesktop friendly menu
+
+Wed Mar 28 19:58:25 CEST 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * Resolving small conflicts the fourth time
+
+Wed Mar 28 00:38:19 CEST 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * Added es_ES.UTF-8 translation, thanks to SpOeK@DistroBit.Net
+
+Wed Mar 28 00:36:20 CEST 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * All *.m3u and *.pls are now searched in ~/.fvwm-crystal/playlists directory
+
+Wed Mar 28 00:34:43 CEST 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * Add support for the Audacious music player, thanks to spoek@distrobit.net
+
+Tue Mar 27 23:25:53 CEST 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * Added support for MOC music player, created by tuxator@o2.pl
+
+Tue Mar 27 23:12:04 CEST 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * Adding new icons, applications and styles
+  Now Firefox, Thunderbird and Mozilla Suite don't use MiniIcons forced by FVWM-Crystal
+
+Tue Mar 27 20:19:07 CEST 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * Updated fvwm.vim hilight configuration
+
+Tue Mar 27 20:17:58 CEST 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * Some changes in support for 'xmms2' music player (experimental)
+
+Tue Mar 27 20:13:29 CEST 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * Added support for the 'amixer' audio mixer
+
+Tue Mar 27 20:08:33 CEST 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * Improved gmplayer window support - you can now raise/lower mplayer control window above/below video window
+
+Tue Mar 27 20:07:05 CEST 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * Added "Expose" clone, it's an experimental code, needs improvement
+
+Sun Jan 21 23:39:07 CET 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * Reverting changes to the 'components/functions/Window-Decorations', these functions are meant to count the directories, not just activate if they're present
+
+Wed Mar 28 19:56:41 CEST 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * Resolving some conflicts a third time
+
+Sun Jan 21 23:33:17 CET 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * Updated 'components/styles/Applications' (Thomas Adam's patch)
+
+Wed Mar 28 19:50:33 CEST 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * Again resolving some conflicts...
+
+Sun Jan 21 23:29:48 CET 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * Applied Thomas Adam's patch of the 'components/functions/Fullscreen' file, thanks Thomas!
+
+Wed Mar 28 19:48:07 CEST 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * Resolved conflicts with Thomas patches (something isn't right here...)
+
+Fri May 26 01:15:13 CEST 2006  thomas@edulinux.homeunix.org
+  * Functions-Style-Updates
+
+Sun Jan 21 22:42:05 CET 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * Removed startup of 'gnome-settings-daemon' from 'preferences/Startup'
+
+Sun Jan 21 22:41:19 CET 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * Added 'components/apps/OpenOffice.org' to all of the recipes
+
+Sun Jan 21 22:38:08 CET 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * Added new configuration files for 'gnome-settings-daemon' and 'OpenOffice.org':
+  - in 'components/apps/GNOME-Settings-Daemon' you can find a code which will
+    launch g-s-d at startup; this code has been moved from 'preferences/Startup'
+    to it's own file to make it easier to run g-s-d. It's not used by default,
+    you can add it to your recipe or for example, '~/.fvwm-crystal/userconfig'.
+  - in 'components/apps/OpenOffice.org' you can find settings for OpenOffice.org
+    to allow it to use GNOME or KDE theme. By default OO.o uses GNOME themes,
+    it's launched from the recipe.
+
+Sun Jan 21 22:09:49 CET 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * Updated 'WindowSize' in the "FvwmScript-Clock-small"
+
+Sun Jan 21 22:09:10 CET 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * Updated application styles
+
+Sun Jan 21 22:08:36 CET 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * Added new applications
+
+Sun Jan 21 22:07:50 CET 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * Added new application icons
+
+Sun Jan 21 22:06:28 CET 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * Changed default FvwmIconMan resolution from "Global" to "Page" due to popular demand in 'Default' and 'Default with ACPI' recipes
+
+Sun Jan 21 22:04:18 CET 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * Updated 'SilentHacker' recipe:
+  - added main FVWM-Crystal menu and Applications menu under Alt+Win_R/Menu
+  - added top panel with output from 'fvwm-crystal.infoline' script and clock
+
+Sun Jan 21 21:57:27 CET 2007  Maciej Delmanowski <harnir@linux.net.pl>
+  * Added new script, 'fvwm-crystal.infoline'
+
+Thu Oct  5 22:49:11 CEST 2006  Maciej Delmanowski <harnir@post.pl>
+  * New recipe "SilentHacker" - very minimalistic
+
+Thu Oct  5 22:48:48 CEST 2006  Maciej Delmanowski <harnir@post.pl>
+  * New, really small clock script
+
+Tue May 30 22:31:59 CEST 2006  Maciej Delmanowski <harnir@post.pl>
+  tagged 3.0.4
+
+Tue May 30 22:31:39 CEST 2006  Maciej Delmanowski <harnir@post.pl>
+  * Getting ready for the new release
+
+Tue May 30 22:31:01 CEST 2006  Maciej Delmanowski <harnir@post.pl>
+  * Updated documentation
+
+Tue May 30 17:43:16 CEST 2006  Maciej Delmanowski <harnir@post.pl>
+  * Added "C Music Player" to supported music players
+
+Tue May 30 17:33:27 CEST 2006  Maciej Delmanowski <harnir@post.pl>
+  * Added new applications, icons and styles
+
+Mon May 29 22:52:35 CEST 2006  Maciej Delmanowski <harnir@post.pl>
+  * Cosmetic changes in application styles
+
+Mon May 29 22:45:56 CEST 2006  Maciej Delmanowski <harnir@post.pl>
+  * Cosmetic change in 'Window-Autohide'
+
+Mon May 29 22:24:11 CEST 2006  Maciej Delmanowski <harnir@post.pl>
+  * Updated "Fullscreen" functions by Thomas Adam
+  Now fullscreened windows cannot be resized or moved.
+
+Mon May 29 22:21:24 CEST 2006  Maciej Delmanowski <harnir@post.pl>
+  * Updated Makefile script, now 'dist-minimal' should work fine.
+
+Mon May 29 22:10:54 CEST 2006  Maciej Delmanowski <harnir@post.pl>
+  * Changed the icon directory of FVWM-Crystal's logo used in recipes
+
+Mon May 29 00:34:17 CEST 2006  Maciej Delmanowski <harnir@post.pl>
+  * Updated 'Makefile' script - adding new target, 'dist-minimal' (work in progress)
+
+Sun May 28 22:02:10 CEST 2006  Maciej Delmanowski <harnir@post.pl>
+  * Updated 'FvwmScript-CpuTemp' to work with wider range of devices
+
+Sun May 28 22:01:37 CEST 2006  Maciej Delmanowski <harnir@post.pl>
+  * Adding new recipe, "SideLine"
+
+Sun May 28 22:01:04 CEST 2006  Maciej Delmanowski <harnir@post.pl>
+  * Adding new functions: Window-Autohide
+
+Sat May 27 22:09:15 CEST 2006  Maciej Delmanowski <harnir@post.pl>
+  * Adding new recipe, "Light"
+
+Sat May 27 22:03:16 CEST 2006  Maciej Delmanowski <harnir@post.pl>
+  * Common bindings are moved from 'components/desktop/Keyboard*' to 'components/bindings/Misc-Keybindings*'
+
+Sat May 27 21:51:39 CEST 2006  Maciej Delmanowski <harnir@post.pl>
+  * Updated application panel and menu generation commands, by Michael Stilkerich
+  There are two new variables:
+  - $FVWM_DISTROMENUDIR - a directory with application database generated by
+  distribution-based script, for example using Debian Menu system
+  
+  - $FVWM_DISTROMENUNAME - name of a menu generated by the script, used to
+    include/exclude it in the app panels or menus. By default it's set to
+    "debian".
+  
+  All recipes are updated to use these variables. Using $FVWM_DISTROMENUNAME you
+  can change the name of the system application menu, and icon used to display
+  it. For example, you can change "debian" to "ubuntu", generate a menu with
+  that name and have it displayed with a Ubuntu logo.
+
+Sat May 27 17:25:24 CEST 2006  Maciej Delmanowski <harnir@post.pl>
+  * Updated FvwmScript-CpuFreq - fall back to /proc/cpuinfo without cpufreq available
+
+Sat May 27 16:40:43 CEST 2006  Maciej Delmanowski <harnir@post.pl>
+  * Updated clock scripts
+  Michael Stilkerich sent a new version of clock script, which automatically
+  guess the correct time format from current locale settings and displays it
+  accordingly. You can also toggle between 12h and 24h time formats using right
+  mouse button on the clock (left mouse button toggles between time/date
+  display). Thanks to that there's no need for separate 24h and 12h clock
+  scripts, so old files will be removed in the next release.
+  
+  All recipes have been updated to use the new clock.
+
+Tue May 23 22:46:13 CEST 2006  Maciej Delmanowski <harnir@post.pl>
+  * Small update in all colorsets, file with colorset definitions had to be renamed
+
+Tue May 23 22:35:01 CEST 2006  Maciej Delmanowski <harnir@post.pl>
+  * Adding new window decoration, "MicroClear"
+
+Mon May 22 22:00:08 CEST 2006  Maciej Delmanowski <harnir@post.pl>
+  * Updated wallpaper menu generator - it should work faster
+
+Mon May 22 20:36:02 CEST 2006  Maciej Delmanowski <harnir@post.pl>
+  * Updated documentation
+
+Mon May 22 20:32:17 CEST 2006  Maciej Delmanowski <harnir@post.pl>
+  * Changed default user directory
+  By default, fvwm-crystal sets $FVWM_USERDIR as '~/.fvwm-crystal/'.
+  Script now looks for user-wide installation in '~/fvwm-crystal/'.
+
+Mon May 22 20:30:19 CEST 2006  Maciej Delmanowski <harnir@post.pl>
+  * Update in the fvwm2 command line (added $@)
+
+Mon May 22 20:28:55 CEST 2006  Maciej Delmanowski <harnir@post.pl>
+  * Added a small commented command to 'components/functions/Icon-Thumbnails', which enables moveable thumbnails
+
+Wed Apr  5 19:14:54 CEST 2006  Maciej Delmanowski <harnir@post.pl>
+  * Fonts used in recipes automatically select UTF-8 encoding
+
+Wed Apr  5 18:31:58 CEST 2006  Maciej Delmanowski <harnir@post.pl>
+  * Added Dvorak keyboard bindings
+
+Wed Apr  5 18:23:46 CEST 2006  Maciej Delmanowski <harnir@post.pl>
+  * FvwmForm and FvwmIdent settings are moved from recipes to separate files in components/
+
+Fri Mar 31 00:44:54 CEST 2006  Maciej Delmanowski <harnir@post.pl>
+  * Updated 'Multimedia' category icon
+
+Fri Mar 31 00:43:44 CEST 2006  Maciej Delmanowski <harnir@post.pl>
+  * Automatically select correct font encoding in icon titles
+
+Fri Mar 31 00:42:22 CEST 2006  Maciej Delmanowski <harnir@post.pl>
+  * Automatically select correct font encoding in the menus; also default font changed from "Tahoma" to "Verdana"
+
+Fri Mar 31 00:39:55 CEST 2006  Maciej Delmanowski <harnir@post.pl>
+  * Crystal now recognizes UTF-8 environment and automatically uses correct font encoding
+
+Mon Mar 13 20:41:42 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Updated pl_PL and pl_PL.UTF-8 translation
+
+Thu Mar  9 12:43:41 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Adding Hungarian localization
+
+Wed Mar  8 22:15:23 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Added 'Reload current recipe' command to the Developer Menu
+  This way if you want to test the changes in your recipe, you can avoid full
+  FVWM restart (and for example trayer kill, and problems with applications
+  which use it). And it's a bit quickier than "normal" restart.
+
+Fri Mar  3 18:28:24 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Updated es_ES translation
+
+Sun Feb 19 21:41:26 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  tagged 3.0.3
+
+Sun Feb 19 21:41:00 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Changed version to 3.0.3
+
+Sun Feb 19 21:40:32 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Updated documentation
+
+Sun Feb 19 20:14:14 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Changed names of the icons used in Window decorations menu - they were too long and menu didn't work when Crystal was installed in /usr/local
+
+Fri Feb 17 23:51:16 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Adding Debian menu support
+  If 'Applications/debian' category is present, it will be shown on the app
+  panels with category icon (Debian logo) instead of the "topapp" icon.
+
+Fri Feb 17 23:50:35 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Added missing 'applications.png' icon
+
+Fri Feb 17 22:33:29 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Updated Makefile, now it sets world read permissions on all the files, and uninstalls previously installed Crystal before updating
+
+Fri Feb 17 22:25:02 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Added "Mouse bindings.txt" to the documentation.
+
+Fri Feb 17 01:13:14 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Changes in Makefile
+  Makefile is now more friendly for distribution packages.
+
+Fri Feb 17 01:12:04 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Updated 'fvwm-crystal' script
+  Now it looks automatically in parent directory for FVWM config files, so
+  there's no need to edit the script.
+
+Thu Feb 16 01:58:00 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  tagged 3.0.2
+
+Thu Feb 16 01:57:25 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Changed the version number to 3.0.2
+
+Thu Feb 16 01:56:10 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Updated NEWS file
+
+Thu Feb 16 01:42:10 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Updates in the Makefile script
+
+Thu Feb 16 01:39:19 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Adding ViM modeline to the FvwmConfig configuration files, so they are recognized by ViM
+
+Thu Feb 16 00:55:18 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Added new FvwmConfig syntax hilighting for ViM editor
+
+Tue Feb 14 11:25:49 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  tagged 3.0.1
+
+Tue Feb 14 11:22:16 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Forgot about some more Autotools script... removing.
+
+Mon Feb 13 22:33:03 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Updated documentation
+
+Mon Feb 13 22:22:05 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Adding new Makefile script
+
+Mon Feb 13 22:20:12 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Removing old Autotools scripts (superseded by new Makefile script)
+
+Mon Feb 13 18:44:13 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Updated "NEWS" file
+
+Mon Feb 13 18:43:25 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Updated installation requirements and change of the version number to 3.0.1
+
+Mon Feb 13 18:31:27 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Changed Wallpaper menu function, it will now only look for image files (.png, .jpg and .gif)
+
+Mon Feb 13 18:30:23 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Added "Original" variant of the "Crystal" window decoration and corresponding panel colorset
+
+Mon Feb 13 18:29:24 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Updated application database and app icons
+
+Fri Feb 10 19:29:12 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Urgency hint functions are reset so FVWM don't freak out with gajim ;-)
+
+Thu Feb  9 22:47:49 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Icons used in window decorations menu have changed names (they were too long)
+
+Thu Feb  9 20:11:09 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Updaed Polish translation
+
+Thu Feb  9 19:57:45 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Added information about new keybindings to the documentation
+
+Thu Feb  9 19:44:11 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Adding window movement keybindings using Alt+(Shift)+hjkl
+
+Thu Feb  9 00:26:17 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Updated documentation
+  - added FAQ
+  - added donation info in the README
+
+Thu Feb  9 00:25:40 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Updated application styles
+
+Thu Feb  9 00:25:20 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Added new application icons
+
+Thu Feb  9 00:23:03 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Updates in application database
+  - Added new applications
+  - 'Internet/Communicators/' is renamed to 'Internet/IM'
+
+Thu Feb  9 00:20:14 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Cosmetic changes in the recipes
+
+Wed Jan 25 13:57:31 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Updated FVWM styles
+  Hidden panels' icons will not be shown (this was caused by the wrong sequence
+  of FVWM styles).
+
+Wed Jan 25 13:52:44 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Adding GDM reboot/shutdown support
+  Crystal will now check if GDM is installed and running, and if so, it will use
+  'gdmflexiserver' to shutdown or reboot the computer. If GDM is not running, or
+  not installed, sudo commands will be used instead. There are also new icons
+  for GDM login actions - starting new login nested and standalone.
+
+Tue Jan 24 23:25:54 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Removing $[cs-panel-inactive-MiniIcon] from the colorset files
+
+Tue Jan 24 23:24:30 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Removing $[cs-panel-inactive-MiniIcon] colorset from the recipes
+  I'm removing it becuse there are no "transparent" icons - this colorset was
+  used to colorize them.
+
+Tue Jan 24 23:21:09 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Updated icon names used in recipes
+
+Tue Jan 24 23:20:03 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Updated icon names in various menus
+
+Tue Jan 24 23:17:11 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Updated fvwm-crystal/ icons
+  Almost all of the icons in 'fvwm-crystal/' directories are renamed, so they
+  will have the same names as those in the 'Tango' library. That way if you will
+  find another iconset which uses the same name specification, icon replacement
+  will be easier.
+
+Sun Jan 22 23:22:02 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Adding support for XMMS, created by Michal Gorny
+
+Thu Jan 19 19:43:08 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Updated 'FvwmMiniConsole' and 'QuakeConsole' for better support of Xorg's XComposite extension
+
+Thu Jan 19 19:40:56 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Updates in recipes
+  - adding icons in "main" FVWM-Crystal menu
+  - updated 'fvwm-crystal.apps' commands - directory.png has been moved to
+    'categories/' directory (previously in 'apps/' directory)
+
+Thu Jan 19 19:39:44 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Added commented out settings for UTF-8 fonts in menus
+
+Thu Jan 19 19:37:43 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Updated FVWM settings
+  - window shading steps are set to 0 for better compatibility with Xorg's
+    XComposite extension
+  - a "busy" mouse cursor will be shown while creating large menus (wallpapers,
+    window decorations, etc.)
+
+Thu Jan 19 19:36:50 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Updated application styles
+
+Thu Jan 19 19:33:23 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Added new application icon styles
+
+Thu Jan 19 19:32:38 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Updated icons in 'ROX-Filer' wallpaper menu
+
+Thu Jan 19 19:32:10 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Updated icons in 'Nautilus' wallpaper menu
+
+Thu Jan 19 19:31:34 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Updated icons in 'Wallpaper' menu
+
+Thu Jan 19 19:30:34 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Added icons in 'Preferences" menu
+
+Thu Jan 19 19:29:58 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Added icons in 'Exit' menu
+
+Thu Jan 19 19:29:06 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Added icons in 'Window Decorations' menu
+
+Thu Jan 19 19:27:00 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Added icons in 'Colorsets' menu
+
+Thu Jan 19 19:25:26 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Adding "SX" function
+  This function can be used to execute selected graphical application using
+  'gksudo' command.
+
+Thu Jan 19 19:22:39 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Updated 'fvwm-crystal.apps' script
+
+Thu Jan 19 19:17:01 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Changes in application database
+  - some application categories are renamed:
+    Programming -> Development
+    Tools -> System
+  - There is new application category, "Other", with applications that don't fit
+    to any category (or new category would be too small for them)
+  - 'Games' category is reorganized, there are new games from "gnome-games' and
+    'kdegames' packages
+  - 'Communication' category is merged with 'Internet'
+
+Thu Jan 19 19:13:03 CET 2006  Maciej Delmanowski <harnir@post.pl>
+  * Adding new icons
+  - many new application icons in various sizes
+  - new 'category/' group, for application categories, used in
+    'fvwm-crystal.apps'
+  - new 'fvwm-crystal/' icons in various sizes, used in main Crystal menu
+
+Tue Dec 27 18:07:35 CET 2005  Maciej Delmanowski <harnir@post.pl>
+  * Activating new NumLock support in all the recipes
+
+Tue Dec 27 17:58:52 CET 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updates in keyboard and mouse bindings
+  This patch changes the NumLock support in various places of the configuration
+  files:
+  - most keyboard and mouse bindings have been "copied" - there are now usually
+    2 key/mouse combinations - 1 with NumLock turned on, and 1 with NumLock
+    turned off
+  - NumLock-enabled key/mouse bindings are in separate files (mostly), so it's
+    easy to bring back old behaviour
+  - currently after turning on NumLock all but numpad keybindings still work,
+    numpad is "deactivated" and you can write numbers and use it in ex. Blender
+    as usual.
+
+Tue Dec 27 15:03:32 CET 2005  Maciej Delmanowski <harnir@post.pl>
+  * Changed 'EdgeResistance 0 0' to '0 100' in all recipes - should prevent problems with desktop switching
+
+Thu Dec 15 23:05:00 CET 2005  Maciej Delmanowski <harnir@post.pl>
+  * Commented out line that makes troubles with installation procedure; need to fix that problems with file permissions...
+
+Wed Dec 14 01:05:55 CET 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated documentation
+
+Wed Dec 14 01:04:49 CET 2005  Maciej Delmanowski <harnir@post.pl>
+  * Changes in Makefile.am, now Crystal is supposed to install cleanly, but that needs to be tested.
+
+Wed Dec 14 01:01:31 CET 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added "TopDown" recipe
+
+Wed Dec 14 00:59:55 CET 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added "FVWM-Crystal" menu in the main menu of "Nebulae" recipe.
+
+Wed Dec 14 00:59:12 CET 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added "Clean" recipe
+
+Wed Dec 14 00:58:39 CET 2005  Maciej Delmanowski <harnir@post.pl>
+  * Cosmetic changes in some files
+
+Wed Dec 14 00:58:14 CET 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added 'xmag' to the Developer Menu
+
+Wed Dec 14 00:57:00 CET 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added new keyboard binding: Alt+Home moves mouse pointer to the top-left corner of the screen.
+
+Wed Dec 14 00:48:52 CET 2005  Maciej Delmanowski <harnir@post.pl>
+  * Changes in window behaviour settings
+  - 'Include components/functions/Window-SetPlacementPolicy' has been moved from
+    recipes to 'components/functions/FVWM-Crystal_Functions'. If you want to
+    turn off centered window placement on empty desktops, you need to edit this
+    file now.
+  - 'components/functions/Window-Remember' has been splitted into two
+    "versions": 'Window-Remember-ClickToFocus' works like the old
+    'Window-Remember' and is used in 'components/styles/FocusPolicy-MSWindows'.
+    New 'Window-Remember-SloppyFocus' works differently - on desktop change it
+    checks if mouse pointer is inside a window, if it is, this window is
+    focused; if not, last active window is focused instead. This behaviour is
+    used in 'components/styles/Focus-Policy-FVWM-Crystal' and
+    'FVWM-Crystal-Raise'. Also 'Include components/functions/Window-Remember'
+    has been removed from the recipes, it's now loaded in the style files.
+  - all recipes are updated.
+
+Wed Dec 14 00:44:30 CET 2005  Maciej Delmanowski <harnir@post.pl>
+  * File 'components/bindings/Desktop-Basic' is splitted into three files - now you can select desktop functions in the recipes independently.
+
+Thu Dec  8 01:00:35 CET 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added icons in terminal-related Preferences menus, also added xfce4-terminal, konsole and multi-gnome-terminal as supported terminals
+
+Thu Dec  8 00:59:48 CET 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated pl_PL and pl_PL.UTF-8 translation
+
+Thu Dec  8 00:33:59 CET 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated music functions
+  - mixer support is now separate from music player support. You can select
+    favourite mixer from the Preferences menu. Currently you can choose from all
+    supported music players (cdcd, mpd, quodlibet, xmms) or aumix.
+  - by default mixer is selected automatically, depending on used music player,
+    ie. if you haven't selected mixer manually and you use mpd, mpd's internal
+    volume control will be used.
+  - because mixer-related functions have changed names to Mixer-*, all recipes
+    which use it are updated.
+  - there is a new keybinding, Alt+Shift+/, which toggles between random and
+    sequential playback (normal or shuffle play).
+
+Thu Dec  8 00:20:25 CET 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated application database, icons and styles
+
+Mon Nov 28 13:09:23 CET 2005  Maciej Delmanowski <harnir@post.pl>
+  * Removed one Include from the recipe
+
+Mon Nov 28 13:07:33 CET 2005  Maciej Delmanowski <harnir@post.pl>
+  * Bugfixes in some keybindings
+
+Mon Nov 28 13:06:44 CET 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added '$[FVWM_USERDIR]/locale' to LocalePath
+
+Mon Nov 28 13:01:07 CET 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated application database, added new icons and styles
+  - transient windows have titlebars, except of "OpenOffice.org" windows
+    (because of the detachable toolbars)
+  - "Untitled" windows have titlebar and border
+
+Mon Nov 28 12:59:52 CET 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated 'fvwm-crystal.apps' script
+
+Tue Nov  1 00:23:59 CET 2005  Maciej Delmanowski <harnir@post.pl>
+  tagged 3.0
+
+Tue Nov  1 00:21:48 CET 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated de_DE translation
+
+Tue Nov  1 00:21:02 CET 2005  Maciej Delmanowski <harnir@post.pl>
+  * Adding new translation, de_DE.UTF-8
+
+Mon Oct 31 23:04:22 CET 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated 'NEWS', preparing for new release
+
+Mon Oct 31 23:01:22 CET 2005  Maciej Delmanowski <harnir@post.pl>
+  * Adding new apps, icons and window styles
+
+Mon Oct 31 21:43:15 CET 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updates in the documentation
+
+Sun Oct 30 23:01:35 CET 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added new icons, applications and window styles
+
+Sun Oct 30 22:59:20 CET 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updates in terminal emulator preferences
+
+Sun Oct 30 22:57:51 CET 2005  Maciej Delmanowski <harnir@post.pl>
+  * Crystal now loads file ~/.fvwm/userconfig after all files and recipes (if it's present)
+
+Sun Oct 30 21:35:13 CET 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated es_ES translation
+
+Sun Oct 30 21:34:37 CET 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated de_DE translation
+
+Fri Oct 28 22:52:33 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added '~/.fvwm/wallpapers/' to the list of known wallpaper directories
+
+Thu Oct 27 16:04:34 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Crystal now remembers wallpaper which was set using Nautilus background dialog
+
+Thu Oct 27 15:16:13 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Changes in application database, icons and window styles
+
+Thu Oct 27 15:15:28 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated "Nautilus" support
+
+Thu Oct 27 15:14:34 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * 'gnome-settings-daemon' is launched using $PATH, not absolute path
+
+Thu Oct 27 15:12:33 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated 'fvwm-crystal.apps' script
+
+Tue Oct 25 23:24:58 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Adding new applications, icons and styles
+
+Tue Oct 25 23:22:20 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Image-related programs are moved from /Applications/Office to /Applications/Multimedia
+
+Tue Oct 25 23:20:59 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Removing /Applications/Internet/Usenet group, it will be moved to /Applications/Communication/Usenet
+
+Tue Oct 25 23:17:59 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Transient windows have no titlebar (fixes problems with OO.org toolbars)
+
+Tue Oct 25 23:17:02 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Adding "KillScript" function
+
+Tue Oct 25 23:16:15 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Bugfix in "DarkSky" window decoration
+
+Tue Oct 25 23:15:24 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated 'fvwm-crystal.apps' script
+
+Wed Oct 19 22:29:33 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Adding new applications, icons and styles
+
+Wed Oct 19 22:23:13 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added ru_RU.UTF-8 translation
+
+Wed Oct 19 22:21:54 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated ru_RU.KOI8-R translation
+
+Wed Oct 19 22:13:03 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated sk_SK and sk_SK.UTF-8 translations
+
+Wed Oct 19 22:08:30 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated "Clear" window decoration
+
+Wed Oct 19 22:03:15 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Screenshots are now .pngs with 100% quality
+
+Wed Oct 19 21:59:08 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Bugfix in the app generator commands
+  - icon theme name was a fixed "Default", now it's $[Icon-Theme]
+  - icons from user and system directory were set in the wrong order
+
+Wed Oct 19 21:55:33 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Adding "DarkSky" window decoration
+
+Sun Oct 16 18:19:59 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  tagged 3.0.RC3
+
+Sun Oct 16 17:40:02 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Adding Polish UTF-8 localization
+
+Sun Oct 16 16:56:46 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Preparing for new release...
+
+Sun Oct 16 16:13:46 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Wallpaper is again set in background, not by using InitFunction
+
+Thu Oct 13 11:25:41 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Adding applications and icons
+
+Thu Oct 13 11:21:11 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * $FVWM_USERDIR is set by fvwm, removing
+
+Wed Oct 12 23:01:26 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated documentation
+
+Wed Oct 12 22:45:40 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated Polish translation
+
+Wed Oct 12 22:45:02 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added preferences menu for choosing desktop manager
+
+Wed Oct 12 22:44:21 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added support for Nautilus as "desktop manager"
+
+Wed Oct 12 22:43:01 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Bugfixes: ROX is not started again after restart, missing directory icons in wallpaper menus
+
+Tue Oct 11 17:57:30 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Program icons on the window thumbnails are back
+
+Mon Oct 10 21:04:12 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated fvwm-crystal.apps script
+
+Fri Oct  7 22:04:25 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added "90% volume" in the Music menu
+
+Fri Oct  7 20:16:59 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated installation procedure from darcs repository
+
+Fri Oct  7 20:01:30 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Adding new recipe, "Nebulae"
+
+Fri Oct  7 20:00:18 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated all swallowed FVWM modules, they should now have transparent background (sometimes they were black)
+
+Fri Oct  7 19:58:29 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Separate 'components/apps/Trayer' is removed, it's contents are moved to the recipes themselves instead of being accessed by the "Include" command.
+
+Fri Oct  7 19:54:56 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * New app panel generator (4/4): updated 'fvwm-crystal.apps' commands in all recipes
+
+Fri Oct  7 19:50:14 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * New app panel generator (3/4): adding new Applications database
+  New database format is based on directories and files instead of one text
+  file. Basically, files are executable scripts which are launched by FVWM, so
+  they need to have executable bit set (or app menu will not work). Be sure to
+  execute command:
+  
+  chmod -R +x fvwm/Applications
+  
+  after installation.
+
+Fri Oct  7 19:49:03 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * New app panel generator (2/4): updated bin/fvwm-crystal.apps script
+
+Fri Oct  7 19:47:30 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * New app panel generator (1/4): removing old ApplicationDatabase
+
+Fri Oct  7 19:44:37 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * New and updated window styles
+
+Fri Oct  7 19:44:06 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * New application icons
+
+Fri Oct  7 19:40:34 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Changes in the Exit menu
+  Old "Exit" menu is back due to the popular demand ;) Old, "safer" version is
+  still available as 'components/functions/Exit-Safe', so if you want, you can
+  use this one instead.
+
+Fri Oct  7 19:39:26 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * FvwmScript-CpuTemp should now work properly with some configurations
+
+Fri Oct  7 19:37:29 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Remove shadow effects in FvwmMPD widgets
+
+Wed Oct  5 00:25:56 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Adding new icons in the fvwm/icons/ directory
+
+Fri Sep 23 13:46:43 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Adding new "icon engine"
+  You can use it by replacing "components/desktop/Icon-Thumbnails" in your
+  recipe to "components/desktop/Icon-Mwm". This will create small transparent
+  rectangles with icons taken from Icon style and with titlebars. You can move
+  them around the screen, doubleclick with LMB will deiconify them, and Alt+MMB
+  will close them.
+
+Fri Sep 23 13:37:51 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Changes in the icon functions
+  - ImagePath now points only to "theme" directory, not inside it. For example:
+    '$[FVWM_SYSTEMDIR]/icons/$[Icon-Theme]/'. Because of that all icon
+    definitions (panels, application styles) have to include additional path
+    with size and "type", for example: 'Style * 22x22/apps/defaulticon.png'.
+  - there is new default application icon, taken from Gnome default theme.
+  - recipes support now user-side icon directories. If you want to change for
+    example terminal icon, you can put it like this:
+    '~/.fvwm/icons/$[Icon-Theme]/22x22/apps/xterm.png'. It will be used instead
+    of the original one in the window styles. Currently this functionality is
+    not supported in the application panel/menu generator.
+
+Fri Sep 23 11:06:42 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Moved wallpaper setup to "InitFunction", now panels should look good after startup
+
+Thu Sep 22 21:04:58 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added 'Ish' window decoration
+
+Mon Sep 19 21:58:05 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  tagged 3.0.RC2
+
+Mon Sep 19 21:56:59 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Getting ready for 3.0.RC2 release
+
+Mon Sep 19 21:08:09 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updates in the music functions
+  - New supported player, cdcd for CD Audio playing.
+  - New "Music-Find" function for accessing find functionality of the music
+    players (currently only XMMS by using XMMSFind plugin). Function is bound to
+    Alt+/ by default.
+  - When XMMS support is activated, player windows are hidden at startup and
+    have some other additional styles
+
+Mon Sep 19 21:06:23 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added hsetroot support as a wallpaper setting utility
+
+Mon Sep 19 21:03:21 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Removed "RootMenu-Insert" from the app menu generator commandline, so there won't be any errors in logs
+
+Mon Sep 19 21:01:10 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated Russian and Slovakian translation
+
+Mon Sep 19 20:48:28 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added new applications and icons
+
+Fri Sep  9 11:05:13 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added 'htop' to Developer Menu
+
+Fri Sep  9 11:04:38 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Fixed SavePreferences function
+
+Fri Sep  9 11:02:54 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added sk_SK.UTF-8 localization
+
+Fri Sep  9 11:02:25 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added DawnSky window decoration
+
+Fri Sep  9 11:01:58 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added Gentoo window decoration
+
+Fri Sep  9 11:01:33 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added Aqua window decoration
+
+Fri Sep  9 11:01:15 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated Winter window decoration
+
+Fri Sep  9 11:00:38 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated SystemG window decoration
+
+Fri Sep  9 11:00:10 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated Motif window decoration
+
+Fri Sep  9 10:59:45 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated Mist window decoration
+
+Fri Sep  9 10:58:58 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated Fear window decoration
+
+Fri Sep  9 10:58:22 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated Elberg window decoration
+
+Fri Sep  9 10:57:42 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated Clearlooks window decoration
+
+Fri Sep  9 10:56:54 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated Dawn of a Terminal window decoration
+
+Fri Sep  9 10:55:38 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated Crystal window decoration
+
+Fri Sep  9 10:54:11 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated Clear window decoration
+
+Fri Sep  9 10:52:23 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Titlebar button definitions are moved to one directory, that should decrease the size of the decoration files and simplify them
+
+Wed Aug 31 14:31:44 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated German translation
+
+Wed Aug 31 01:17:32 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated Spanish translation
+
+Tue Aug 30 22:14:18 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated Polish translation
+
+Tue Aug 30 22:11:41 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Adding new preferences, "Privileged terminals"
+  This option let's you select if terminal windows should give away focus, when
+  new window is opened, or keep it (so you won't loose something that you type
+  into it).
+
+Tue Aug 30 22:07:55 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Adding "SystemG" window decoration
+
+Sun Aug 28 23:23:00 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated pl_PL translation
+
+Sun Aug 28 23:22:30 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updates in the application database and icons
+
+Sun Aug 28 23:21:05 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added new focus policy - "FVWM-Crystal" style with click-to-raise
+
+Sun Aug 28 23:17:14 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added Eterm to supported terminal emulators
+
+Fri Aug 26 00:23:56 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updates in the Polish translation
+
+Fri Aug 26 00:18:08 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Big updates in the preferences system
+  - There is a new "Preferences" menu with most settings from
+    ~/.fvwm/preferences/ directory.
+  - "Recipes" selection menu is moved from "Developer menu" to the new
+    preferences menu.
+  - There is new global file, components/desktop/FVWM-Crystal_Preferences, which
+    loads some preferences like colorsets and window decorations. Because of the
+    loading of these kind of preferences is removed from the recipe files.
+  - You can now change focus policy (FVWM-Crystal or MS Windows) "on the fly"
+    using the preferences menu; it's also laded in the "global" preferences
+    file, so inclusion of the focus policy file is removed from the recipe
+    files.
+  
+  I hope it doesn't sound too cryptic or something :o)
+
+Fri Aug 26 00:16:12 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added new icons and application styles
+
+Fri Aug 26 00:13:48 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added Quod Libet support
+
+Fri Aug 26 00:12:51 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated FvwmMiniConsole, now it looks for xterm, aterm, urxvt and mrxvt
+
+Tue Aug 16 21:50:46 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added sample /etc/sudoers configuration
+
+Tue Aug 16 21:29:51 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added new file-related function, Append
+  This function let's you read specified file from all three Crystal
+  directories, ordered: package-wide, system-wide, user-wide. Specified file
+  from all these directories is loaded (not just the first one found, like the
+  "Include" function does).
+  
+  This is used currently in the "preferences/Startup" file (so now system
+  administrator can add specified commands to be executed at startup, and at the
+  same time users can add their own commands, which also will be executed) and
+  in the application styles and icons.
+
+Tue Aug 16 20:52:28 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added new applications and icons
+
+Tue Aug 16 20:18:50 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added/removed gnome-terminal from respective FvwmIconMans in "Default" recipe
+
+Tue Aug 16 20:16:56 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated the clock script
+  Now you can click on the clock to show the current date (dd/mm). Click again
+  and time will be shown again
+
+Tue Aug 16 20:13:39 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added new FvwmScript scripts with ACPI-related functions
+  They were provided by LiNiO. Included are:
+  - battery monitor (FvwmScript-AcpiBatt)
+  - CPU frequency monitor (FvwmScript-CpuFreq)
+  - CPU temperature monitor (FvwmScript-CpuTemp)
+  There is also included modified "Default" recipe with embedded panels using
+  the new scripts.
+
+Tue Aug 16 20:13:04 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added "Maximize" function to the "metacity-like" window menu
+
+Tue Aug 16 20:12:11 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added missing "button model" preferences file
+
+Tue Aug 16 20:11:01 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updates in the documentation and comments
+
+Tue Aug 16 20:09:02 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added Slovakian translation
+
+Tue Aug 16 00:43:14 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated Polish translation
+
+Tue Aug 16 00:42:22 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added "Dawn of a Terminal" window decoration
+
+Tue Aug 16 00:40:44 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added "Winter" window decoration
+
+Tue Aug 16 00:40:00 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added "Motif" window decoration
+
+Tue Aug 16 00:39:21 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added "Mist" window decoration
+
+Tue Aug 16 00:38:38 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added "Fear" window decoration
+
+Tue Aug 16 00:37:45 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added "Elberg" window decoration
+
+Tue Aug 16 00:36:26 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added "Clearlooks" window decoration
+
+Tue Aug 16 00:34:49 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added "Clear" window decoration
+
+Tue Aug 16 00:31:21 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added "Crystal" window decoration
+
+Tue Aug 16 00:19:42 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added new window decorations "engine"
+  Now you can select the button model of a windows titlebars. Currently there
+  are five button models supported:
+  - FVWM-Crystal (two close buttons, buttons with multiple functions)
+  - MS Windows (iconify/maximize/close on the right side, menu on the left)
+  - MacOS X (all buttons on the left side)
+  - OS/2 (close on the left size, iconify/maximize on the right)
+  - NeXTStep (iconify on the left, close on the right)
+  Button model is selected from the "Window decorations" menu.
+
+Tue Aug 16 00:10:16 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Removing old window decorations, they will be re-added in the new format in the future
+
+Sat Aug  6 22:40:32 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * New version of components/desktop/Numpad, which automatically raises windows upon focusing
+
+Sat Aug  6 22:39:47 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added system-wide directories for selecting random wallpaper from the diamond icon (using RMB)
+
+Sat Aug  6 22:37:48 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * OverrideGrabFocus styles fro terminal emulators is moved to a separate file, so it can be easily turned off (in components/desktop/FVWM-Crystal_Styles)
+
+Sat Aug  6 22:14:48 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated Polish translation
+
+Sat Aug  6 22:12:18 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated music volume change functions on the panels, for compatibility with XMMS
+
+Sat Aug  6 22:11:23 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added a "debug" line at the end of the 'config' file, for config editors
+
+Sat Aug  6 22:10:38 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Xinerama: updated menu position variables
+
+Sat Aug  6 22:08:57 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated "Exit" menu
+  Now you need to select a submenu entry instead of "main" Exit menu entry to
+  perform dangerous actions, such as logout or reboot the computer.
+
+Sat Aug  6 22:00:06 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * New applications and their icons
+
+Sat Aug  6 21:55:25 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * New keybindings for keyboards without numeric part
+  These bindings can be useful on notebook/laptop keyboards:
+  
+  Alt + minus		raise window
+  Alt + Shift + minus	lower window
+  Alt + equal		maximize
+  Alt + Shift + equal	fullscreen
+  Alt + backspace		iconify
+  Alt + Shift + backspace	close
+
+Thu Jul 28 19:20:03 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added files for desktop switch using the mouse wheel on the desktop
+
+Thu Jul 28 14:33:27 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated pl_PL locale
+  - new strings for vertical desktop support (lower, upper, etc.)
+  - added strings for "Applications" and "Music" (menu entries)
+
+Thu Jul 28 14:32:51 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * New recipe, "Clean vertical"
+
+Thu Jul 28 14:31:53 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added some functions for vertical desktop support
+
+Thu Jul 28 14:20:21 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Moved the dock a little down
+
+Thu Jul 28 14:17:03 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updates in the decorations
+  Window decorations have now the same name, "WindowDecoration"; this should
+  eliminate problems with decorations when they are changed many times.
+  Also window decorations support now vertically-aligned desktop pages, so you
+  can move them up or down, instead of left or right
+
+Thu Jul 28 14:15:50 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added support for horizontal/vertical desktop pages in window decorations
+
+Wed Jul 27 16:27:58 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  tagged 3.0.RC1
+
+Wed Jul 27 16:27:16 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added one more icon.
+
+Wed Jul 27 11:49:36 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * New application icons and apps in the database
+
+Tue Jul 26 22:55:50 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated Makefile.am, forgot about the scripts inside fvwm/ directory
+
+Tue Jul 26 19:37:07 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * New applications in the database, updated icons
+
+Tue Jul 26 17:09:33 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Change of the version, from 3.0 to 3.0.RC1
+
+Tue Jul 26 16:58:15 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * 'ADOM' in the ApplicationDatabase is shown even if it's not installed. I've commented it out until that's repaired.
+
+Tue Jul 26 16:46:40 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Update in the NEWS file
+
+Mon Jul 25 17:51:27 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Slight change in the 'Dock' recipe, panel should now always swallow pager and clock windows
+
+Mon Jul 25 11:44:46 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added TODO file, updates in the application database, new applications, FindCommand file renamed to FindFunctions
+
+Mon Jul 25 11:41:55 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * NEWS file, setting the version to "3.0" for compatibility with Gentoo ebuilds
+
+Sat Jul 23 11:33:43 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * New applications in the database
+
+Sat Jul 23 10:43:40 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updates in the 'fvwm-crystal.wallpaper' script, dependencies change
+
+Sat Jul 23 06:44:33 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Changes in the music functions
+  - new "component" called 'Music-xmms', which contains functions for
+    controlling XMMS player
+  - 'Music-MPD' changed to 'Music-mpd', there were also some changes in the
+    functions for better compatibility with XMMS
+  - new preferences file, 'DefaultMusicPlayer', it's loaded from the recipe,
+    selects mpd or xmms by default (can be overriden by administrator or user)
+
+Sat Jul 23 04:37:57 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added the MPD playlist editor created by TheBlackDragon
+  There is no locale support right now.
+
+Sat Jul 23 03:41:03 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added "random wallpaper" support for ROX-Filer
+
+Sat Jul 23 03:37:39 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * New 'fvwm-crystal.wallpaper' script written in Python
+
+Thu Jul 21 22:18:57 CEST 2005  Nicolas Vilz 'niv' <niv@iaglans.de>
+  * little change in german localization according to harnir
+
+Thu Jul 21 21:20:40 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added the menu option which shows currently played track (by: Nicolas Vilz <niv@iaglans.de>
+
+Thu Jul 21 20:49:25 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added OpenOffice.org 2 to the database
+
+Thu Jul 21 20:28:52 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added the autotools files, changes in the installation instructions
+
+Thu Jul 21 20:26:55 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added new applications, some changes in application priorities
+
+Thu Jul 21 15:47:12 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * "Random wallpaper" function restored, using separate Perl script
+
+Wed Jul 20 16:45:23 CEST 2005  Nicolas Vilz 'niv' <niv@iaglans.de>
+  * german localization for fvwm-crystal
+
+Wed Jul 20 17:22:31 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * New applications in the database, icons and styles
+
+Tue Jul 19 22:33:30 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Changed $FVWM_CONFIGDIR to $FVWM_SYSTEMDIR
+  Now there are 3 directories in which configuration is searched (from top to
+  bottom):
+  - user directory: $FVWM_USERDIR = ~/.fvwm/
+  - "administrator' directory: $FVWM_CONFIGDIR = /etc/X11/fvwm/fvwm-crystal
+  - system directory: $FVWM_SYSTEMDIR = $. (current directory at the startup of
+    FVWM)
+  
+  In "admin" directory you can keep the configuration for all users on your
+  system, for example select default wallpaper, and so on.
+  
+  Variable is updated everywhere, you may need to update your recipe(s) or files
+  that you have changed in '~/.fvwm/'.
+
+Tue Jul 19 21:56:23 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updates in the ApplicationDatabase and application styles, new and updated icons
+
+Tue Jul 19 21:51:51 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added new recipe, "Dock"
+  Recipe makes a desktop panel similar to XFCE or CDE panel. There are also new
+  16x16 icons and new clock script, used in this recipe.
+
+Tue Jul 19 21:49:56 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Russian locale were put in wrong directory, fixed.
+
+Tue Jul 19 21:48:29 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Icon thumbnails are now automatically restored after a restart
+
+Tue Jul 19 21:39:49 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added 'IconOverride' style for all windows
+
+Tue Jul 19 21:13:19 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Removed separate Icon styles, they are now in the recipes
+
+Tue Jul 19 21:04:43 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Rewritten folding in the recipes
+  All fold marks in the recipe files were redefined, now they look cleaner. Also
+  I've added vim modeline, which automatically activates the folding in those
+  files.
+  Icon styles are moved from separate file to recipes themselves.
+
+Tue Jul 19 21:03:21 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Cleanup of 'fvwm/config' file
+
+Tue Jul 19 21:01:23 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated 'fvwm-crystal.apps' script
+
+Tue Jul 19 20:32:34 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated 'fvwm-crystal' initialization script, getting ready for a Makefile
+
+Sat Jul 16 18:03:06 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Adding Russian translation (ru_RU.KOI8-R)
+
+Wed Jul 13 21:30:21 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added directory.png as the directory icon in wallpaper menu
+
+Wed Jul 13 21:25:30 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updated application database, new application icons and styles
+  Many new applications added to the database, everyone has a corresponding
+  icon, there are also styles for them included.
+  
+  ApplicationDatabase was completely rearranged, you can use folding in vim for
+  navigation. Also app groups are rearranged.
+
+Wed Jul 13 21:13:03 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Cleanup (missing "+ I")
+
+Sun Jul 10 19:37:08 CEST 2005  liori@interia.pl
+  * User-defined configuration storage path.
+
+Mon Jul 11 12:37:29 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added new configuration options in FvwmIconMans introduced in FVWm 2.5.13
+
+Sun Jul 10 20:05:51 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Updates in ApplicationDatabase, application icons and styles
+  I've added many missing icons, also some Styles (but not all). Some
+  applications were removed from the database. There is also new icon size,
+  48x48, for big panels (however it's not full, just a few icons right now).
+
+Fri Jul  8 23:54:45 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added support for gkrellm2 style
+
+Fri Jul  8 20:23:19 CEST 2005  Nicolas Vilz 'niv' <niv@iaglans.de>
+  * thunderbird-icons-in-pager
+  Altered style names in Application-Icons and Applications so that Thunderbird 
+  is not that X-Icon in Pager.
+  
+
+Fri Jul  8 17:31:10 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * FvwmConsole and QuakeConsole bindings are moved to components/desktop/Keyboard
+
+Fri Jul  8 10:29:58 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Added 'cat_default.png' icon for fvwm-crystal.apps script
+
+Fri Jul  8 00:18:46 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Main configuration file name reverted back to old 'config' instead of 'fvwm-crystal.config'
+
+Fri Jul  8 00:08:58 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * XScreenSaver is now started from StartFunction
+
+Thu Jul  7 23:32:06 CEST 2005  Maciej Delmanowski <harnir@post.pl>
+  * Initialization of the darcs repository

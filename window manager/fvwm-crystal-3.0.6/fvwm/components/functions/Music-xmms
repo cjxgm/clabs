@@ -1,0 +1,149 @@
+# Support for XMMS music player
+# Written by: Maciej Delmanowski <harnir@post.pl>
+
+# Where are stored XMMS playlists
+SetEnv XMMS_Playlists "$[FVWM_USERDIR]/playlists"
+
+# Styles for XMMS windows
+Style xmms		StaysOnTop
+Style XMMS_Player	StartIconic, NoIcon, NoTitle, Sticky, WindowListSkip
+Style XMMS_Playlist	StartIconic, NoIcon, NoTitle, Sticky, WindowListSkip
+Style XMMS_Equalizer	StartIconic, NoIcon, NoTitle, Sticky, WindowListSkip
+
+# If there is no selected mixer, load the default
+CheckPreferences DefaultMixer "Include components/functions/Mixer-xmms"
+
+# Main functions and menus
+DestroyMenu /Music
+AddToMenu /Music
++ DynamicPopupAction Function /Music-generator
+
+DestroyFunc /Music-generator
+AddToFunc /Music-generator
++ I DestroyMenu recreate /Music
++ I AddToMenu /Music '$[gt.Load playlist]'		Popup /Music/LoadPlaylist
++ I AddToMenu /Music '$[gt.Save playlist...]'	Music-SavePlaylist
++ I AddToMenu /Music '$[gt.Clear playlist]'	Music-ClearPlaylist
++ I AddToMenu /Music '$[gt.Remove current song]'	Music-RemoveSong
++ I AddToMenu /Music '$[gt.Remove playlist]'	Popup /Music/RemovePlaylist
++ I AddToMenu /Music "" Nop
++ I PipeRead 'xmms-shell -e "volume" | head -1 | sed -e "s/Left channel volume:\ //" | sed -e "s:[ \t]::g" | sed -e "s:^.\\+$:AddToMenu\ /Music \'$[gt.Volume] \(&%%\)\' Popup /Mixer:"'
+
++ I AddToMenu /Music '$[gt.Toggle random]'	Music-ToggleRandom
++ I AddToMenu /Music '$[gt.Toggle repeat]'	Exec exec xmms-shell -e "repeat toggle"
++ I AddToMenu /Music "" Nop
++ I AddToMenu /Music '$[gt.Stop playback]'	Music-Stop
++ I AddToMenu /Music '$[gt.Show/hide player]'	Music-GUI
++ I AddToMenu /Music '$[gt.Play/Pause]'		Music-PlayPause
+
+# ---------------------------------------------------------------------------
+# Basic control functions
+DestroyFunc Music-Play
+AddToFunc Music-Play
++ I Exec exec xmms --play
+
+DestroyFunc Music-Pause
+AddToFunc Music-Pause
++ I Exec exec xmms --pause
+
+DestroyFunc Music-Stop
+AddToFunc Music-Stop
++ I Exec exec xmms --stop
+
+DestroyFunc Music-PlayPause
+AddToFunc Music-PlayPause
++ I Exec exec xmms --play-pause
+
+DestroyFunc Music-Next
+AddToFunc Music-Next
++ I Exec exec xmms --fwd
+
+DestroyFunc Music-Prev
+AddToFunc Music-Prev
++ I Exec exec xmms --rew
+
+DestroyFunc Music-Forward
+AddToFunc Music-Forward
++ I Exec exec xmms-shell -e "forward"
+
+DestroyFunc Music-Backward
+AddToFunc Music-Backward
++ I Exec exec xmms-shell -e "backward"
+
+DestroyFunc Music-ToggleRandom
+AddToFunc Music-ToggleRandom
++ I Exec exec xmms-shell -e "shuffle toggle"
+
+DestroyFunc Music-RemoveSong
+AddToFunc Music-RemoveSong
++ I Exec exec xmms-shell -e "remove `xmms-shell -e currenttrack | sed -e 's/Current song: //' -e 's/\..*//'`"
+
+DestroyFunc Music-GUI
+AddToFunc Music-GUI
++ I All (XMMS_Player) Iconify toggle
+
+DestroyFunc Music-Find
+AddToFunc Music-Find
++ I Style XmmsFind* NoTitle
++ I Style XmmsFind* StaysOnTop
++ I Style XmmsFind* Sticky
++ I Style XmmsFind* StartNormal
++ I Exec pidof xmms && exec xmmsfind_remote
++ I TestRc (Match) Wait XmmsFind*
++ I All (XmmsFind*, CurrentPage) Focus
+
+# ---------------------------------------------------------------------------
+# Playlist functions
+
+DestroyMenu /Music/LoadPlaylist
+AddToMenu /Music/LoadPlaylist
++ DynamicPopupAction Function /Music/LoadPlaylist-generator
+
+DestroyFunc /Music/LoadPlaylist-generator
+AddToFunc /Music/LoadPlaylist-generator
++ I DestroyMenu recreate /Music/LoadPlaylist
++ I AddToMenu /Music/LoadPlaylist
++ I PipeRead 'for i in $[XMMS_Playlists]/*.m3u $[XMMS_Playlists]/*.pls; do \
+  name=$(basename "$i"); \
+  sname=${name%%.m3u}; \
+  sname=${sname%%.pls}; \
+  echo \"AddToMenu /Music/LoadPlaylist \'$sname\' Exec exec xmms -e \'$i\'\"; done'
+
+DestroyFunc Music-SavePlaylist
+AddToFunc Music-SavePlaylist
++ I Exec exec mkdir -p $[XMMS_Playlists]
++ I Module FvwmForm Music-SavePlaylist-Dialog
+
+All (Music-SavePlaylist-Dialog) Close
+DestroyModuleConfig Music-SavePlaylist-Dialog: *
+*Music-SavePlaylist-Dialog: Title "$[gt.Save playlist]"
+*Music-SavePlaylist-Dialog: Text "$[gt.Name of the playlist]"
+*Music-SavePlaylist-Dialog: Line center
+*Music-SavePlaylist-Dialog: Input PlaylistName 40 ""
+*Music-SavePlaylist-Dialog: Line center
+*Music-SavePlaylist-Dialog: Line center
+*Music-SavePlaylist-Dialog: Button quit " $[gt.Cancel] " ^[
+*Music-SavePlaylist-Dialog: Command Nop
+*Music-SavePlaylist-Dialog: Button quit " $[gt.Save] " ^M
+*Music-SavePlaylist-Dialog: Command Exec exec xmms-shell -e "save '$[XMMS_Playlists]/$(PlaylistName).m3u'"
+*Music-SavePlaylist-Dialog: Line center
+
+DestroyFunc Music-ClearPlaylist
+AddToFunc Music-ClearPlaylist
++ I Exec exec xmms-shell -e "clear"
+
+DestroyMenu /Music/RemovePlaylist
+AddToMenu /Music/RemovePlaylist
++ DynamicPopupAction Function /Music/RemovePlaylist-generator
+
+DestroyFunc /Music/RemovePlaylist-generator
+AddToFunc /Music/RemovePlaylist-generator
++ I DestroyMenu recreate /Music/RemovePlaylist
++ I AddToMenu /Music/RemovePlaylist
++ I PipeRead 'for i in $[XMMS_Playlists]/*.m3u $[XMMS_Playlists]/*.pls; do \
+  name=$(basename "$i"); \
+  sname=${name%%.m3u}; \
+  sname=${sname%%.pls}; \
+  echo \"AddToMenu /Music/RemovePlaylist \'$sname\' Exec rm -f \'$i\'\"; done'
+
+# vim:ft=fvwm

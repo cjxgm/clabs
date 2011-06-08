@@ -1,0 +1,19 @@
+# Colorset setup
+
+# What colorset numbers do we use?
+SetEnv cs-window-inactive "9"
+SetEnv cs-window-active "10"
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# Colorsets
+
+Colorset $[cs-window-inactive] \
+Foreground "white", Background "white", \
+Hilight "#cccccc", Shadow "#cccccc", \
+Tint "white" 20, RootTransparent
+
+Colorset $[cs-window-active] \
+Foreground "orange", Background "orange", \
+Hilight "orange", Shadow "orange", \
+Tint "darkgreen" 50, RootTransparent
+

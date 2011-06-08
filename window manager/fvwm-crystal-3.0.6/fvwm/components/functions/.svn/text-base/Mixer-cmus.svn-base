@@ -1,0 +1,32 @@
+# Support for C* Music Player
+# Written by: Maciej Delmanowski <harnir@post.pl>
+
+# These functions control the mixer volume using 'cmus-remote' commands.
+
+DestroyFunc Mixer-Volume
+AddToFunc Mixer-Volume
++ I Exec cmus-remote --volume $0% > /dev/null
+
+DestroyFunc Mixer-Volume-Up
+AddToFunc Mixer-Volume-Up
++ I Exec cmus-remote --volume +$0% > /dev/null
+
+DestroyFunc Mixer-Volume-Down
+AddToFunc Mixer-Volume-Down
++ I Exec cmus-remote --volume -$0% > /dev/null
+
+DestroyFunc Mixer-GUI
+AddToFunc Mixer-GUI
++ I Nop
+
+# Mixer menu
+DestroyMenu /Mixer
+AddToMenu /Mixer
++ "100%%" Mixer-Volume 100
++ "90%%" Mixer-Volume 90
++ "80%%" Mixer-Volume 80
++ "50%%" Mixer-Volume 50
++ "30%%" Mixer-Volume 30
++ "0%%" Mixer-Volume 0
+
+# vim:ft=fvwm

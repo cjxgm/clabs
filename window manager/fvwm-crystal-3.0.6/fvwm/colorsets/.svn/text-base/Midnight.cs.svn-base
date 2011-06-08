@@ -1,0 +1,57 @@
+# Midnight colorset
+# Written by: Maciej Delmanowski <harnir@linux.net.pl>
+
+SetEnv Colorset-Name "Midnight"
+SetEnv Colorset-Author "Maciej Delmanowski <harnir@linux.net.pl>"
+
+# What colorsets do we use?
+Read $./colorset-definition
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# QuakeConsole, thumbnailed windows
+Colorset $[cs-quakeconsole] \
+Foreground "black", Background "black", \
+Hilight "black", Shadow "black", \
+IconAlpha 70
+
+
+Colorset $[cs-panel-inactive] \
+Foreground "gray", Background "#444444", \
+Tint "black" 20, RootTransparent, \
+fgTint, IconAlpha, IconTint
+
+Colorset $[cs-panel-active] \
+Foreground "darkgray", Background "darkgray", \
+Hilight "darkgray", Shadow "darkgray", \
+Tint "black" 40, RootTransparent
+
+Colorset $[cs-panel-wininactive] \
+Foreground "#444444", Background "#444444", \
+Hilight "#444444", Shadow "#444444", \
+Tint "black" 30, RootTransparent
+
+Colorset $[cs-panel-winactive] \
+Foreground "gray", Background "gray", \
+Hilight "#777777", Shadow "#777777", \
+Tint "black" 60, RootTransparent
+
+Colorset $[cs-panel-border] \
+Background "#444444"
+
+Colorset $[cs-menu-inactive] \
+Foreground "lightgray", Background "gray", \
+Hilight "#444444", Shadow "#444444", \
+Tint "black" 30, RootTransparent
+
+Colorset $[cs-menu-active] \
+Foreground "lightgray", Background "#666666", \
+Hilight "#333333", Shadow "darkgray"
+
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# Additional variables
+SetEnv ThumbBorderColor "gray"
+SetEnv ExternalFontColor "gray40"
+
+SetEnv TrayerTint "0X000000"
+SetEnv TrayerAlpha "205"

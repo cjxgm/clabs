@@ -1,0 +1,51 @@
+# FVWM-Crystal version
+
+# Setup colorsets
+Read $./Colorsets
+
+DestroyDecor recreate WindowDecoration
+AddToDecor WindowDecoration
+
++ TitleStyle Active TiledPixmap $./window-active-title.png
++ TitleStyle Inactive TiledPixmap $./window-inactive-title.png
++ TitleStyle LeftJustified Height 17 -- flat
+
++ BorderStyle -- HiddenHandles
++ BorderStyle -- Flat
+
++ ButtonStyle 1 \
+	Active (Pixmap $./window-active-close-left.png) \
+	Inactive (Pixmap $./window-inactive-close-left.png)
+
++ ButtonStyle 2 \
+	Active (Pixmap $./window-active-close-right.png) \
+	Inactive (Pixmap $./window-inactive-close-right.png)
+
++ ButtonStyle 4 \
+	Active (Pixmap $./window-active-maximize.png) \
+	Inactive (Pixmap $./window-inactive-maximize.png)
+
++ ButtonStyle 6 \
+	Active (Pixmap $./window-active-options.png) \
+	Inactive (Pixmap $./window-inactive-options.png)
+
++ ButtonStyle 8 \
+	Active (Pixmap $./window-active-arrows.png) \
+	Inactive (Pixmap $./window-inactive-arrows.png)
+
++ ButtonStyle All -- UseTitleStyle
++ ButtonStyle All -- flat
+
+Style * HandleWidth 1, BorderWidth 1
+Style * Colorset                $[cs-window-inactive], \
+        BorderColorset          $[cs-window-inactiveborder], \
+        HilightColorset         $[cs-window-active], \
+        HilightBorderColorset   $[cs-window-activeborder]
+
+Style * Font "xft:Verdana:pixelsize=11"
+
+Style * UseDecor WindowDecoration
+
+# Setup button functions
+Include components/decorations/Buttons-fvwm-crystal
+

@@ -1,0 +1,337 @@
+# translation of fvwm-crystal.po to Slovak
+# Slovak translation for FVWM-Crystal
+# Copyright (C) 2005 FVWM-Crystal team
+# This file is distributed under the same license as the fvwm-crystal package.
+# Maciej Delmanowski <harnir@post.pl>, 2005.
+# Marian Scerbak <masce@zoznam.sk>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: fvwm-crystal\n"
+"POT-Creation-Date: 2005-07-04 14:23+0100\n"
+"PO-Revision-Date: 2005-10-18 20:43+0200\n"
+"Last-Translator: Marián ©èerbák <masce@zoznam.sk>\n"
+"Language-Team: Slovak\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-2\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.3.1\n"
+
+#
+# Main menu - usually found in recipes/*
+#
+msgid "Window decorations"
+msgstr "Dekorácie okien"
+
+msgid "Button model"
+msgstr "©týl tlaèidiel"
+
+msgid "Colorsets"
+msgstr "Farby"
+
+msgid "Wallpaper"
+msgstr "Pozadie"
+
+msgid "Screensaver"
+msgstr "©etriè obrazovky"
+
+msgid "Screenshot"
+msgstr "Snímka obrazovky"
+
+msgid "Developer menu"
+msgstr "Vývojárske menu"
+
+msgid "About FVWM-Crystal"
+msgstr "O FVWM-Crystal"
+
+msgid "Exit"
+msgstr "Ukonèi»"
+
+#
+# Applications menu
+#
+msgid "Applications"
+msgstr "Aplikácie"
+
+#
+# Wallpaper menu
+#
+msgid "Random"
+msgstr "Náhodné"
+
+#
+# String used in submenus (window decorations and colorsets)
+#
+msgid "System"
+msgstr "Systémové"
+
+msgid "User"
+msgstr "U¾ívateµské"
+
+#
+# Screensaver menu
+#
+msgid "Force suspend"
+msgstr "Re¹tart monitora"
+
+msgid "Activate"
+msgstr "Aktivova»"
+
+msgid "Lock screen"
+msgstr "Uzamknú» obrazovku"
+
+msgid "Preferences"
+msgstr "Nastavenia"
+
+msgid "Stop screensaver"
+msgstr "Zastavi» ¹etriè obrazovky"
+
+msgid "Start screensaver"
+msgstr "Zapnú» ¹etriè obrazovky"
+
+#
+# Exit menu
+#
+msgid "Logout"
+msgstr "Odhlási»"
+
+msgid "Restart"
+msgstr "Re¹tart"
+
+msgid "Turn off computer"
+msgstr "Vypnú» poèítaè"
+
+msgid "Reboot computer"
+msgstr "Re¹tartova» poèítaè"
+
+msgid "I am sure"
+msgstr "Áno, som si istý"
+
+#
+# Screenshot menu
+#
+msgid "Fullscreen"
+msgstr "Celá obrazovka"
+
+msgid "Delayed fullscreen"
+msgstr "Celá obrazovka s oneskorením"
+
+msgid "Frame"
+msgstr "Okno"
+
+#
+# Music menu
+#
+msgid "Music"
+msgstr "Hudba"
+
+msgid "Player is stopped"
+msgstr "Prehrávaè zastavený"
+
+msgid "Load playlist"
+msgstr "Otvori» playlist"
+
+msgid "Save playlist..."
+msgstr "Ulo¾i» playlist ..."
+
+msgid "Shuffle playlist"
+msgstr "Zmeni» playlist"
+
+msgid "Clear playlist"
+msgstr "Vyèisti» playlist"
+
+msgid "Update database"
+msgstr "Obnovi» databázu"
+
+msgid "Remove current song"
+msgstr "Odstráni» aktuálnu skladbu"
+
+msgid "Remove playlist"
+msgstr "Odstráni» playlist"
+
+msgid "Playlist editor"
+msgstr "Upravi» playlist"
+
+msgid "Crossfade"
+msgstr "Prelínanie"
+
+msgid "Volume"
+msgstr "Hlasitos»"
+
+msgid "Toggle random"
+msgstr "Náhodné prehrávanie"
+
+msgid "Toggle repeat"
+msgstr "Opakované prehrávanie"
+
+msgid "Stop playback"
+msgstr "Zastavi» prehrávanie"
+
+msgid "Show/hide player"
+msgstr "Ukáza»/skry» prehrávaè"
+
+msgid "Play/Pause"
+msgstr "Hra»/Pauza"
+
+msgid "Everything"
+msgstr "V¹etko"
+
+msgid "Save playlist"
+msgstr "Ulo¾i» playlist"
+
+msgid "Name of the playlist"
+msgstr "Názov playlistu"
+
+msgid "Cancel"
+msgstr "Zru¹i»"
+
+msgid "Save"
+msgstr "Ulo¾i»"
+
+#
+# Window menus
+#
+msgid "Iconify"
+msgstr "Minimalizova»"
+
+msgid "Close"
+msgstr "Zavrie»"
+
+msgid "Destroy"
+msgstr "Zru¹i»"
+
+msgid "Identify"
+msgstr "Identifikova»"
+
+msgid "Maximize"
+msgstr "Maximalizova»"
+
+msgid "Maximize horizontally"
+msgstr "Maximalizova» horizontálne"
+
+msgid "Maximize vertically"
+msgstr "Maximalizova» vertikálne"
+
+msgid "Take all free space"
+msgstr "Zväè¹i» na voµnú plochu"
+
+msgid "Take all horizontal space"
+msgstr "Zväè¹i» na voµnú plochu horizontálne"
+
+msgid "Take all vertical space"
+msgstr "Zväè¹i» na voµnú plochu vertikálne"
+
+msgid "Stay raised"
+msgstr "Na najvy¹¹iu vrstvu"
+
+msgid "Normal mode"
+msgstr "Normálna vrstva"
+
+msgid "Stay lowered"
+msgstr "Na najni¾¹iu vrstvu"
+
+msgid "Stick"
+msgstr "Prilepi»"
+
+msgid "Refresh"
+msgstr "Obnovi»"
+
+msgid "Move to upper page"
+msgstr "Presunú» hore"
+
+msgid "Move to lower page"
+msgstr "Presunú» dole"
+
+msgid "Move to left page"
+msgstr "Presunú» vµavo"
+
+msgid "Move to previous page"
+msgstr "Na predchádzajúcu stranu"
+
+msgid "Move to right page"
+msgstr "Presunú» vpravo"
+
+msgid "Jump to upper page"
+msgstr "Skoèi» vy¹¹ie"
+
+msgid "Jump to lower page"
+msgstr "Skoèi» ni¾¹ie"
+
+msgid "Jump to left page"
+msgstr "Skoèi» vµavo"
+
+msgid "Jump to previous page"
+msgstr "Skoèi» na popredie"
+
+msgid "Jump to right page"
+msgstr "Skoèi» vpravo"
+
+msgid "Move to page"
+msgstr "Presunú» na stranu"
+
+#
+# About dialog
+#
+msgid "Version"
+msgstr "Verzia"
+
+msgid "Author"
+msgstr "Autor"
+
+msgid "FVWM version"
+msgstr "Verzia FVWM"
+
+#
+# Developer menu
+#
+msgid "Identify window"
+msgstr "Identifikova» okno"
+
+msgid "Toggle FvwmConsole"
+msgstr "Spusti» Fvwm Konzolu"
+
+#
+# Preferences menu
+#
+msgid "Used recipe"
+msgstr "Pou¾itý predpis"
+
+msgid "Window focus policy"
+msgstr "Spôsob aktivovania okien"
+
+msgid "Default terminal"
+msgstr "Predvolený terminál"
+
+msgid "QuakeConsole terminal"
+msgstr "Terminál pre QuakeConsole"
+
+msgid "Music player"
+msgstr "Prehrávaè hudby"
+
+msgid "New recipe will be used after next startup"
+msgstr "Nový predpis bude aktivovaný pri ïal¹om ¹tarte"
+
+msgid "Desktop manager"
+msgstr "Správca plochy"
+
+msgid "None"
+msgstr "®iadny"
+
+msgid "Selected desktop manager will be used"
+msgstr "Vybratý správca plochy bude pou¾itý"
+
+msgid "at the next start of your X session"
+msgstr "po nasledujúcom ¹tarte sedenia"
+
+msgid "Not now"
+msgstr "Neskôr"
+
+msgid "Privileged terminals"
+msgstr "Privilegované terminály"
+
+msgid "On"
+msgstr "Zapnuté"
+
+msgid "Off"
+msgstr "Vypnuté"
+

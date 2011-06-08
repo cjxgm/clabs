@@ -1,0 +1,182 @@
+# Light desktop
+# Written by: Maciej Delmanowski <harnir@linux.net.pl>
+#
+# 2007.04.22 - Dominique Michel <dominique_libre@sourceforge.net> support for:
+# - Stalonetray, NotificationArea preferences and Music-alsaplayer support.
+#
+# You can use folding to navigate this file
+
+# ImagePath {{{1
+SetEnv Icon_Theme "Default"
+ImagePath $[FVWM_USERDIR]/icons/$[Icon_Theme]:$[FVWM_SYSTEMDIR]/icons/$[Icon_Theme]
+
+# Includes and FVWM modules {{{1
+Module FvwmCommandS
+
+# Default FVWM-Crystal functions, initialization {{{2
+Include components/desktop/FVWM-Crystal_Functions
+Include components/functions/Clear-FVWM-Settings
+Include components/desktop/FVWM-Crystal_Preferences
+Append preferences/Startup
+
+# Preferred applications {{{2
+Include components/functions/Screenshot-import
+Include components/apps/XScreenSaver
+Include components/apps/FvwmMiniConsole
+Include components/apps/QuakeConsole
+Include components/apps/OpenOffice.org
+Include components/functions/NotificationAreaManager-$[NotificationAreaManager]
+Include preferences/NotificationArea-Width
+Include components/functions/Music-$[MusicPlayer]
+
+# Desktop & window bindings {{{2
+Include components/bindings/Desktop-RMB-OpenTerminal
+Include components/bindings/Desktop-MMB-EdgeScroll
+Include components/bindings/Desktop-MMB-TogglePanels
+Include components/bindings/Window-Basic
+Include components/bindings/Window-Border
+
+# Keyboard bindings {{{2
+Include components/desktop/Keyboard
+Include components/desktop/Keyboard_NumLock
+Include components/desktop/Numpad
+
+# Use window thumbnails instead of simple icons on the desktop {{{2
+Include components/desktop/Icon-Thumbnails
+
+# Various styles {{{2
+Include components/desktop/FVWM-Crystal_Styles
+Include components/styles/CursorStyle-Border
+
+# Desktop settings {{{1
+EdgeScroll	0	0
+EdgeResistance	0	100
+HideGeometryWindow 	Move, Resize
+OpaqueMoveSize	100
+EdgeThickness	1
+
+EWMH-Desktop 3 3 3 3
+EWMH-Panel-Top 30
+
+# Main "/FVWM-Crystal" menu {{{1
+DestroyMenu /FVWM-Crystal
+AddToMenu /FVWM-Crystal
++ '%22x22/fvwm-crystal/preferences-desktop-screensaver.png%$[gt.Screensaver]' Popup /Screensaver
++ '%22x22/fvwm-crystal/camera-photo.png%$[gt.Screenshot]' Popup /Screenshot
++ '%22x22/fvwm-crystal/audio-x-generic.png%$[gt.Music]' Popup /Music
++ "" Nop
++ '%22x22/fvwm-crystal/preferences-desktop-theme.png%$[gt.Window decorations]' Popup /Window-Decorations
++ '%22x22/fvwm-crystal/colorsets.png%$[gt.Colorsets]' Popup /Colorsets
++ '%22x22/fvwm-crystal/preferences-desktop-wallpaper.png%$[gt.Wallpaper]' Popup /Wallpaper
++ '%22x22/fvwm-crystal/preferences-desktop.png%$[gt.Preferences]' Popup /Preferences
++ "" Nop
++ '%22x22/fvwm-crystal/applications-development.png%$[gt.Developer menu]' Popup /Developer
++ '%22x22/fvwm-crystal/fvwm-crystal.png%$[gt.About FVWM-Crystal]' Include components/functions/About
++ '%22x22/fvwm-crystal/system-log-out.png%$[gt.Exit]' Popup /Exit
+
+# Main "/ApplicationsAndRootMenu" menu {{{1
+PipeRead 'fvwm-crystal.apps --database=$[FVWM_DISTROMENUDIR]/Applications --database=$[FVWM_SYSTEMDIR]/Applications --database=$[FVWM_USERDIR]/Applications --search-icons-in=$[FVWM_USERDIR]/icons/$[Icon_Theme]/22x22/categories:$[FVWM_USERDIR]/icons/$[Icon_Theme]/22x22/apps:$[FVWM_SYSTEMDIR]/icons/$[Icon_Theme]/22x22/categories:$[FVWM_SYSTEMDIR]/icons/$[Icon_Theme]/22x22/apps:$[FVWM_DISTROMENUDIR]/icons/$[Icon_Theme]/22x22/categories:$[FVWM_DISTROMENUDIR]/icons/$[Icon_Theme]/22x22/apps --default-file-icon=22x22/apps/default.png --default-dir-icon=22x22/categories/directory.png --min-submenu-length=5 --menuname-suffix=AndRootMenu --sort=prio --no-panel --check-execs'
+AddToMenu /ApplicationsAndRootMenu
++ "" Nop
++ '%22x22/fvwm-crystal/preferences-desktop-screensaver.png%$[gt.Screensaver]' Popup /Screensaver
++ '%22x22/fvwm-crystal/camera-photo.png%$[gt.Screenshot]' Popup /Screenshot
++ '%22x22/fvwm-crystal/audio-x-generic.png%$[gt.Music]' Popup /Music
++ "" Nop
++ '%22x22/fvwm-crystal/preferences-desktop-theme.png%$[gt.Window decorations]' Popup /Window-Decorations
++ '%22x22/fvwm-crystal/colorsets.png%$[gt.Colorsets]' Popup /Colorsets
++ '%22x22/fvwm-crystal/preferences-desktop-wallpaper.png%$[gt.Wallpaper]' Popup /Wallpaper
++ '%22x22/fvwm-crystal/preferences-desktop.png%$[gt.Preferences]' Popup /Preferences
++ "" Nop
++ '%22x22/fvwm-crystal/applications-development.png%$[gt.Developer menu]' Popup /Developer
++ '%22x22/fvwm-crystal/fvwm-crystal.png%$[gt.About FVWM-Crystal]' Include components/functions/About
++ '%22x22/fvwm-crystal/system-log-out.png%$[gt.Exit]' Popup /Exit
+
+# A small workaround made to allow desktop click which close program's menu
+# and don't open main FVWM-Crystal menu at the same time (usually it's made
+# using LMB). Hold LMB on the desktop to open the Applications menu
+DestroyFunc DesktopMenu
+AddToFunc DesktopMenu
++ H Menu /ApplicationsAndRootMenu $[MenuPosition_BelowLeft]
+
+Mouse 1 R $[Mod] DesktopMenu
+
+# Applications menu {{{1
+# This creates the menu with applications available under Alt+Win_R
+PipeRead 'fvwm-crystal.apps --database=$[FVWM_DISTROMENUDIR]/Applications --database=$[FVWM_SYSTEMDIR]/Applications --database=$[FVWM_USERDIR]/Applications --search-icons-in=$[FVWM_USERDIR]/icons/$[Icon_Theme]/22x22/categories:$[FVWM_USERDIR]/icons/$[Icon_Theme]/22x22/apps:$[FVWM_SYSTEMDIR]/icons/$[Icon_Theme]/22x22/categories:$[FVWM_SYSTEMDIR]/icons/$[Icon_Theme]/22x22/apps:$[FVWM_DISTROMENUDIR]/icons/$[Icon_Theme]/22x22/categories:$[FVWM_DISTROMENUDIR]/icons/$[Icon_Theme]/22x22/apps --default-file-icon=22x22/apps/default.png --default-dir-icon=22x22/categories/directory.png --min-submenu-length=5 --sort=prio --panel-icons=topapp --panel-action1=menu --panel-action2=none --panel-action3=topapp --menu-pos=S --no-panel --check-execs'
+
+# Pager {{{1
+All (FvwmPager) Close
+DestroyModuleConfig FvwmPager: *
+
+SetEnv Desk_Pages_X "8"
+SetEnv Desk_Pages_Y "1"
+
+PipeRead 'echo SetEnv FvwmPager_Width $((28*$[Desk_Pages_X])); echo SetEnv FvwmPager_Height $((24*$[Desk_Pages_Y]))'
+PipeRead 'echo *FvwmPager: Geometry $[FvwmPager_Width]x$[FvwmPager_Height]+$((($[vp.width]-$[FvwmPager_Width])/2))+3'
+PipeRead 'echo DesktopSize $[Desk_Pages_X]x$[Desk_Pages_Y]'
+
+*FvwmPager: MiniIcons
+*FvwmPager: Font none
+*FvwmPager: WindowBorderWidth 1
+*FvwmPager: Window3DBorders
+#*FvwmPager: NoSeparators
+*FvwmPager: UseSkipList
+*FvwmPager: Colorset * $[cs_panel_inactive]
+*FvwmPager: HilightColorset * $[cs_panel_active]
+*FvwmPager: WindowColorsets $[cs_panel_wininactive] $[cs_panel_winactive]
+
+Module FvwmPager
+
+# Change desktop pages using mouse wheel on pager
+Mouse (FvwmPager) 4 W $[Mod] GotoPage-Right
+Mouse (FvwmPager) 5 W $[Mod] GotoPage-Left
+
+# Settings for icons on the desktop {{{1
+Style * IconBox 1200x800+30-30, IconFill left bottom, IconGrid 30 30
+Style * StickyIcon
+
+# Settings of Trayer {{{1
+# Settings of stalonetray {{{2
+DestroyFunc NotificationArea-Stalone
+AddToFunc NotificationArea-Stalone
++ I SetEnv trayer_ic_size "24"
++ I SetEnv trayer_area_width "$[trayer_width]"
++ I SetEnv trayer_area_eigth "24"
++ I SetEnv trayer_x "-1"
++ I SetEnv trayer_y "+3"
++ I SetEnv trayer_ic_grav "W"
++ I SetEnv trayer_vert ""
+
+# Settings of trayer {{{2
+DestroyFunc NotificationArea-Trayer
+AddToFunc NotificationArea-Trayer
++ I SetEnv trayer_width_t "request"
++ I SetEnv trayer_heigth_t "pixel"
++ I SetEnv trayer_edge "top"
++ I SetEnv trayer_align "right"
++ I SetEnv trayer_marge "3"
++ I SetEnv trayer_dist "1"
+
+Test (EnvMatch NotificationAreaManager stalonetray) NotificationArea-Stalone
+Test (EnvMatch NotificationAreaManager trayer) NotificationArea-Trayer
+TrayerPanel
+
+# Settings of Trayer {{{1
+AddToFunc ExitFunction I Exec exec killall trayer
+
+AddToFunc StartFunction I Exec exec trayer \
+--SetDockType false \
+--widthtype request \
+--heighttype pixel \
+--height 24 \
+--edge top \
+--align right \
+--transparent true \
+--alpha $[TrayerAlpha] \
+--tint $[TrayerTint] \
+--margin 3 \
+--distance 1
+
+
+# ViM modeline {{{1
+# vim:foldmethod=marker:foldenable:foldlevel=0:filetype=fvwm

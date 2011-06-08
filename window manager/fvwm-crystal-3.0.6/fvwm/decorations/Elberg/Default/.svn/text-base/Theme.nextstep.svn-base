@@ -1,0 +1,49 @@
+# NeXTStep version
+
+# Setup colorsets
+Read $./Colorsets
+
+DestroyDecor recreate WindowDecoration
+AddToDecor WindowDecoration
+
++ TitleStyle Active MultiPixmap \
+	Main tiled	$./title-active-background.png \
+	UnderText	$./title-active-text.png \
+	LeftOfText	$./title-active-text-left.png \
+	RightOfText	$./title-active-text-right.png
++ TitleStyle Inactive MultiPixmap \
+	Main tiled	$./title-inactive-background.png \
+	UnderText	$./title-inactive-text.png \
+	LeftOfText	$./title-inactive-text-left.png \
+	RightOfText	$./title-inactive-text-right.png
++ TitleStyle LeftJustified Height 18 -- flat noinset
+
++ BorderStyle -- Handles
++ BorderStyle -- Raised
+
++ ButtonStyle 1 \
+	ActiveUp (Pixmap $./window-active-iconify.png) \
+	ActiveDown (Pixmap $./window-active-iconify-down.png) \
+	Inactive (Pixmap $./window-inactive-iconify.png)
+
++ ButtonStyle 2 \
+	ActiveUp (Pixmap $./window-active-close.png) \
+	ActiveDown (Pixmap $./window-active-close-down.png) \
+	Inactive (Pixmap $./window-inactive-close.png)
+
++ ButtonStyle All -- UseTitleStyle
++ ButtonStyle All -- flat
+
+Style * HandleWidth 3, BorderWidth 3
+Style * Colorset                $[cs-window-inactive], \
+        BorderColorset          $[cs-window-inactiveborder], \
+        HilightColorset         $[cs-window-active], \
+        HilightBorderColorset   $[cs-window-activeborder]
+
+Style * Font shadow="2 1":"xft:Arial:pixelsize=12:Bold"
+
+Style * UseDecor WindowDecoration
+
+# Setup button functions
+Include components/decorations/Buttons-nextstep
+

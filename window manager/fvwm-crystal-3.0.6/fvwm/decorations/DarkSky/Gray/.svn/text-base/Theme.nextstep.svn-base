@@ -1,0 +1,44 @@
+# NeXTStep version
+
+# Setup colorsets
+Read $./Colorsets
+
+DestroyDecor recreate WindowDecoration
+AddToDecor WindowDecoration
+
++ TitleStyle InActive Colorset $[cs-window-inactive]
++ TitleStyle Active Colorset $[cs-window-active]
++ TitleStyle LeftJustified
++ TitleStyle -- Raised
++ TitleStyle Height 18
+
++ BorderStyle -- Raised HiddenHandles
+
+# Iconify
++ ButtonStyle 1 \
+	Active (Pixmap $./button-active-iconify.png) \
+	Inactive (Pixmap $./button-inactive-iconify.png)
+
+# Close
++ ButtonStyle 2 \
+	Active (Pixmap $./button-active-close.png) \
+	Inactive (Pixmap $./button-inactive-close.png)
+
++ ButtonStyle All -- UseTitleStyle
++ ButtonStyle All -- Raised
+
+Style * HandleWidth 4, BorderWidth 4
+Style * Colorset                $[cs-window-inactive], \
+        BorderColorset          $[cs-window-inactiveborder], \
+        HilightColorset         $[cs-window-active], \
+        HilightBorderColorset   $[cs-window-activeborder]
+
+Style * Font "Shadow=1 SE:xft:Sans:pixelsize=10:Bold:minspace=true"
+
+Style * MwmBorder
+
+Style * UseDecor WindowDecoration
+
+# Setup button functions
+Include components/decorations/Buttons-nextstep
+

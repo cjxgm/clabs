@@ -1,0 +1,4 @@
+#!/bin/sh
+
+exec startBristol -b3 -jack $@
+

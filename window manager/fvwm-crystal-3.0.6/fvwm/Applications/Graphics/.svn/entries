@@ -1,0 +1,88 @@
+8
+
+dir
+33
+svn://svn.gna.org/svn/fvwm-crystal/trunk/fvwm/Applications/Graphics
+svn://svn.gna.org/svn/fvwm-crystal
+
+
+
+2008-04-27T19:31:43.576012Z
+18
+libre
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+998a5334-0c22-0410-ba51-aa63de30526d
+
+Scanning
+dir
+
+Vector_Graphics
+dir
+
+Photography
+dir
+
+Viewers
+dir
+
+2D_Graphics
+dir
+
+~kcolorchooser~KColorChooser
+file
+
+
+
+
+2008-06-22T18:54:16.000000Z
+58c5823c04b8c4c54150e26365ebcf76
+2008-04-27T19:31:43.576012Z
+18
+libre
+has-props
+
+3D_Graphics
+dir
+
+Engineering
+dir
+
+~gcolor2~gColor2
+file
+
+
+
+
+2008-06-22T18:54:16.000000Z
+3e379315c6ee1e694221e2374f41704e
+2008-04-27T19:31:43.576012Z
+18
+libre
+has-props
+
+~kcoloredit~kcoloredit
+file
+
+
+
+
+2008-06-22T18:54:16.000000Z
+15f10b13fe8eff497c37528dc56c08cc
+2008-04-27T19:31:43.576012Z
+18
+libre
+has-props
+

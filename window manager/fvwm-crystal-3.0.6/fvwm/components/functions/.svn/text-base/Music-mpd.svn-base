@@ -1,0 +1,166 @@
+# Support for MPD music player
+# Written by: Maciej Delmanowski <harnir@post.pl>
+# sed commands by: Grzegorz Niew�owski <hoppke@dobremiasto.net>
+
+# Overview:
+# This is a set of function for controlling the Music Player Daemon
+# (http://www.musicpd.org/). It is done using the 'mpc' command-line frontend.
+
+
+# If there is no selected mixer, load the default
+CheckPreferences DefaultMixer "Include components/functions/Mixer-mpd"
+
+# ---------------------------------------------------------------------------
+# Main menu
+DestroyMenu /Music
+AddToMenu /Music
++ DynamicPopupAction Function /Music-generator
+
+DestroyFunc /Music-generator
+AddToFunc /Music-generator
++ I DestroyMenu recreate /Music
++ I PipeRead 'mpc | head -n 1 | sed -e "s;volume:\d*.*;$[gt.Player is stopped];" | sed -e "s:^.*$:AddToMenu /Music \'&\' :"'
++ I AddToMenu /Music "" Nop
++ I AddToMenu /Music '$[gt.Load playlist]'		Popup /Music/LoadPlaylist
++ I AddToMenu /Music '$[gt.Save playlist...]'		Music-SavePlaylist
++ I AddToMenu /Music '$[gt.Shuffle playlist]'		Music-Shuffle
++ I AddToMenu /Music '$[gt.Clear playlist]'		Music-ClearPlaylist
++ I AddToMenu /Music '$[gt.Update database]'		Music-Update
++ I AddToMenu /Music '$[gt.Remove current song]'	Music-RemoveSong
++ I AddToMenu /Music '$[gt.Remove playlist]'		Popup /Music/RemovePlaylist
++ I AddToMenu /Music '$[gt.Playlist editor]'		Script scripts/FvwmMPD/FvwmApplet-MpdPlEd
+
++ I AddToMenu /Music "" Nop
++ I PipeRead 'mpc crossfade | sed -e "s/crossfade:\ //" | sed -e "s:^.\\+$:AddToMenu\ /Music \'$[gt.Crossfade] \(&\)\' Popup /Music/Crossfade:"'
++ I PipeRead 'mpc volume | sed -e "s/volume:\ //" | sed -e "s:%:%%:" | sed -e "s:[ \t]::g" | sed -e "s:^.\\+$:AddToMenu\ /Music \'$[gt.Volume] \(&\)\' Popup /Mixer:"'
++ I AddToMenu /Music '$[gt.Toggle random]' Music-ToggleRandom
++ I AddToMenu /Music '$[gt.Toggle repeat]' Exec mpc repeat
+# Function below doesn't work for me (harnir), if it does for you, conatct me
+# (harnir@post.pl).
++ I PipeRead 'mpc | sed -ne "s=.*repeat: \(on\|off\).*random: \(on\|off\).*=AddToMenu\ \/Music \'Toggle repeat (\1)\' Exec mpc repeat\nAddToMenu \/Music \'Toggle random (\2)\' Exec mpc random=gp"'
++ I AddToMenu /Music "" Nop
++ I AddToMenu /Music '$[gt.Stop playback]'		Music-Stop
++ I AddToMenu /Music '$[gt.Show/hide player]'		Music-GUI
++ I AddToMenu /Music '$[gt.Play/Pause]'		Music-PlayPause
+
+DestroyMenu /Music/Crossfade
+AddToMenu /Music/Crossfade
++ "0"	Exec mpc crossfade 0
++ ""	Nop
++ "1"	Exec mpc crossfade 1
++ "2"	Exec mpc crossfade 2
++ "4"	Exec mpc crossfade 4
++ "6"	Exec mpc crossfade 6
++ "8"	Exec mpc crossfade 8
++ "10"	Exec mpc crossfade 10
+
+# ---------------------------------------------------------------------------
+# Basic control functions
+DestroyFunc Music-Play
+AddToFunc Music-Play
++ I Exec mpc play > /dev/null
+
+DestroyFunc Music-Pause
+AddToFunc Music-Pause
++ I Exec mpc pause > /dev/null
+
+DestroyFunc Music-Stop
+AddToFunc Music-Stop
++ I Exec mpc stop > /dev/null
+
+DestroyFunc Music-PlayPause
+AddToFunc Music-PlayPause
++ I Exec mpc toggle > /dev/null
+
+DestroyFunc Music-Next
+AddToFunc Music-Next
++ I Exec mpc next > /dev/null
+
+DestroyFunc Music-Prev
+AddToFunc Music-Prev
++ I Exec mpc prev > /dev/null
+
+DestroyFunc Music-Forward
+AddToFunc Music-Forward
++ I Exec mpc random > /dev/null; mpc next > /dev/null; mpc random > /dev/null
+
+DestroyFunc Music-Backward
+AddToFunc Music-Backward
++ I Exec mpc random > /dev/null; mpc prev > /dev/null; mpc random > /dev/null
+
+DestroyFunc Music-ToggleRandom
+AddToFunc Music-ToggleRandom
++ I Exec mpc random > /dev/null
+
+# This function removes currently played song from the playlist
+DestroyFunc Music-RemoveSong
+AddToFunc Music-RemoveSong
++ I Exec mpc del `mpc | sed -n 's:.* #\([0-9]\+\)/[0-9]\+.*:\1:p'`
+
+DestroyFunc Music-Shuffle
+AddToFunc Music-Shuffle
++ I Exec mpc shuffle > /dev/null
+
+# Show or hile a Gnome mpd frontend
+DestroyFunc Music-GUI
+AddToFunc Music-GUI
++ I All (gmpc) Close
++ I TestRc (False) None (gmpc) X gmpc
+
+DestroyFunc Music-Find
+AddToFunc Music-Find
++ I Nop
+
+DestroyFunc Music-Update
+AddToFunc Music-Update
++ I Exec mpc update > /dev/null
+
+# ---------------------------------------------------------------------------
+# Playlist functions
+DestroyMenu /Music/LoadPlaylist
+AddToMenu /Music/LoadPlaylist
++ DynamicPopupAction Function /Music/LoadPlaylist-generator
+
+DestroyFunc /Music/LoadPlaylist-generator
+AddToFunc /Music/LoadPlaylist-generator
++ I DestroyMenu recreate /Music/LoadPlaylist
++ I PipeRead 'mpc lsplaylists | sed -e "s:^.*$:AddToMenu /Music/LoadPlaylist \'&\' Exec mpc load \'&\' \> /dev/null:"'
++ I AddToMenu /Music/LoadPlaylist "" Nop
++ I AddToMenu /Music/LoadPlaylist '$[gt.Everything]' Music-LoadAll
+
+DestroyFunc Music-SavePlaylist
+AddToFunc Music-SavePlaylist
++ I Module FvwmForm Music-SavePlaylist-Dialog
+
+All (Music-SavePlaylist-Dialog) Close
+DestroyModuleConfig Music-SavePlaylist-Dialog: *
+*Music-SavePlaylist-Dialog: Title "$[gt.Save playlist]"
+*Music-SavePlaylist-Dialog: Text "$[gt.Name of the playlist]"
+*Music-SavePlaylist-Dialog: Line center
+*Music-SavePlaylist-Dialog: Input PlaylistName 40 ""
+*Music-SavePlaylist-Dialog: Line center
+*Music-SavePlaylist-Dialog: Line center
+*Music-SavePlaylist-Dialog: Button quit " $[gt.Cancel] " ^[
+*Music-SavePlaylist-Dialog: Command Nop
+*Music-SavePlaylist-Dialog: Button quit " $[gt.Save] " ^M
+*Music-SavePlaylist-Dialog: Command Exec mpc save "$(PlaylistName)"
+*Music-SavePlaylist-Dialog: Line center
+
+DestroyFunc Music-LoadAll
+AddToFunc Music-LoadAll
++ I Exec mpc ls | mpc add > /dev/null
+
+DestroyFunc Music-ClearPlaylist
+AddToFunc Music-ClearPlaylist
++ I Exec mpc clear > /dev/null
+
+DestroyMenu /Music/RemovePlaylist
+AddToMenu /Music/RemovePlaylist
++ DynamicPopupAction Function /Music/RemovePlaylist-generator
+
+DestroyFunc /Music/RemovePlaylist-generator
+AddToFunc /Music/RemovePlaylist-generator
++ I DestroyMenu recreate /Music/RemovePlaylist
++ I PipeRead 'mpc lsplaylists | sed -e "s:^.*$:AddToMenu /Music/RemovePlaylist \'&\' Exec mpc rm \'&\' \> /dev/null:"'
+
+# vim:ft=fvwm

@@ -1,0 +1,54 @@
+8
+
+dir
+33
+svn://svn.gna.org/svn/fvwm-crystal/trunk/fvwm/Applications/Settings/Printing
+svn://svn.gna.org/svn/fvwm-crystal
+
+
+
+2008-04-27T19:31:43.576012Z
+18
+libre
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+998a5334-0c22-0410-ba51-aa63de30526d
+
+~kcmshell~Printers
+file
+
+
+
+
+2008-06-22T18:54:16.000000Z
+87228afe95e9f236da73ef4d4e198a88
+2008-04-27T19:31:43.576012Z
+18
+libre
+has-props
+
+~cups-config~Cups-Config
+file
+
+
+
+
+2008-06-22T18:54:16.000000Z
+5ae5a87b03d7fea51a319eae87895308
+2008-04-27T19:31:43.576012Z
+18
+libre
+has-props
+

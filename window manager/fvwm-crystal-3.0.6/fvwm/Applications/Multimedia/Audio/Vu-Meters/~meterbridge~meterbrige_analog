@@ -1,0 +1,4 @@
+#!/bin/sh
+
+exec meterbridge -r 12 -t vu in_1 in_2  $@
+

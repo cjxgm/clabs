@@ -1,0 +1,50 @@
+# MacOS X version
+
+# Setup colorsets
+Read $./Colorsets
+
+DestroyDecor recreate WindowDecoration
+AddToDecor WindowDecoration
+
++ TitleStyle InActive Colorset $[cs-window-inactive]
++ TitleStyle Active Colorset $[cs-window-active]
++ TitleStyle LeftJustified
++ TitleStyle -- flat
++ TitleStyle Height 22
+
++ BorderStyle -- HiddenHandles
++ BorderStyle -- Flat
+
+# Close
++ ButtonStyle 1 Inactive Pixmap $./window-inactive-close.png
++ ButtonStyle 1 ActiveUp Pixmap $./window-active-close.png
++ ButtonStyle 1 ActiveDown Pixmap $./window-active-close-down.png
+
+# Iconify
++ ButtonStyle 3 Inactive Pixmap $./window-inactive-iconify.png
++ ButtonStyle 3 ActiveUp Pixmap $./window-active-iconify.png
++ ButtonStyle 3 ActiveDown Pixmap $./window-active-iconify-down.png
+
+# Maximize
++ ButtonStyle 5 Inactive Pixmap $./window-inactive-maximize.png
++ ButtonStyle 5 ActiveUp Pixmap $./window-active-maximize.png
++ ButtonStyle 5 ActiveDown Pixmap $./window-active-maximize-down.png
+
++ ButtonStyle 7 MiniIcon
+
++ ButtonStyle All -- UseTitleStyle
++ ButtonStyle All -- flat
+
+Style * HandleWidth 1, BorderWidth 1
+Style * Colorset                $[cs-window-inactive], \
+        BorderColorset          $[cs-window-inactive], \
+        HilightColorset         $[cs-window-active], \
+        HilightBorderColorset   $[cs-window-active]
+
+Style * Font "xft:Verdana:pixelsize=13:weight=bold"
+
+Style * UseDecor WindowDecoration
+
+# Setup button functions
+Include components/decorations/Buttons-macosx-MiniIcon
+

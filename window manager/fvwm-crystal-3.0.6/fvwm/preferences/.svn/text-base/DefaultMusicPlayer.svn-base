@@ -1,0 +1,12 @@
+# Automatically select installed player
+FindCommand MusicPlayer mpd quodlibet audacious mocp xmms xmms2 cdcd
+SetEnv MusicPlayer $[MusicPlayer]
+
+# Select your preferred music player
+#SetEnv MusicPlayer mpd
+#SetEnv MusicPlayer quodlibet
+#SetEnv MusicPlayer xmms
+#SetEnv MusicPlayer xmms2
+#SetEnv MusicPlayer cdcd
+#SetEnv MusicPlayer alsaplayer
+

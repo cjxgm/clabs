@@ -1,0 +1,49 @@
+# MS Windows version
+
+# Setup colorsets
+Read $./Colorsets
+
+DestroyDecor recreate WindowDecoration
+AddToDecor WindowDecoration
+
++ TitleStyle InActive Colorset $[cs-window-inactive]
++ TitleStyle Active Colorset $[cs-window-active]
++ TitleStyle LeftJustified
++ TitleStyle -- flat
++ TitleStyle Height 20
+
++ BorderStyle -- HiddenHandles
++ BorderStyle -- Flat
+
++ ButtonStyle 1 \
+	Active (Pixmap $./button-active-menu.png) \
+	Inactive (Pixmap $./button-inactive-menu.png)
+
++ ButtonStyle 2 \
+	Active (Pixmap $./button-active-close.png) \
+	Inactive (Pixmap $./button-inactive-close.png)
+
++ ButtonStyle 4 \
+	Active (Pixmap $./button-active-maximize.png) \
+	Inactive (Pixmap $./button-inactive-maximize.png)
+
++ ButtonStyle 6 \
+	Active (Pixmap $./button-active-iconify.png) \
+	Inactive (Pixmap $./button-inactive-iconify.png)
+
++ ButtonStyle All -- UseTitleStyle
++ ButtonStyle All -- flat
+
+Style * HandleWidth 1, BorderWidth 1
+Style * Colorset                $[cs-window-inactive], \
+        BorderColorset          $[cs-window-inactive], \
+        HilightColorset         $[cs-window-active], \
+        HilightBorderColorset   $[cs-window-active]
+
+Style * Font "xft:Verdana:pixelsize=12:Bold"
+
+Style * UseDecor WindowDecoration
+
+# Setup button functions
+Include components/decorations/Buttons-windows
+

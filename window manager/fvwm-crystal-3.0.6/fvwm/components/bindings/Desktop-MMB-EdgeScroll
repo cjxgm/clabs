@@ -1,0 +1,9 @@
+# Default desktop bindings
+
+# Toggle EdgeScroll on MMB
+Mouse 2 RI $[Mod0] EdgeScroll-Toggle Mouse 2 RI $[Mod0]
+
+# Toggle EdgeScroll with NumLock
+Mouse 2 RI $[Mod0]2 EdgeScroll-Toggle Mouse 2 RI $[Mod0]
+
+# vim:ft=fvwm

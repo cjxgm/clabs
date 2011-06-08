@@ -1,0 +1,306 @@
+FVWM-Crystal Mouse Bindings Reference
+Written by: Maciej Delmanowski <harnir@gna.org>
+------------------------------------------------
+
+In this file you can find all mouse bindings used in FVWM-Crystal desktop.
+
+Legend:
+	Alt - Meta (Alt)
+	Win_L - Windows Left
+	Win_R - Windows Right
+	Menu - a "menu" key
+	KP_ - means that following key is on the numeric keyboard
+	LMB - Left Mouse Button
+	RMB - Right Mouse Button
+	MMB - Middle Mouse Button
+
+
+The Desktop
+-----------------------------------------------------------------------------
+LMB (+ hold)
+	In selected recipes open applications or system menu.
+
+RMB
+	Open a terminal window.
+
+MMB
+	Toggle the ability to switch desktop pages using screen edge (off/on,
+	defult off).
+
+Alt + MMB
+	Hide or show desktop panels.
+
+
+Window thumbnails
+-----------------------------------------------------------------------------
+Doubleclick LMB
+	Bring back minimized window.
+
+RMB
+	Open a terminal window.
+
+Alt + MMB
+	Close selected window.
+
+
+Window
+-----------------------------------------------------------------------------
+Alt + LMB
+	Raise selected window.
+
+Alt + LMB + drag
+	Raise window and move it on the screen.
+
+Alt + RMB
+	Lower selected window.
+
+Alt + RMB + drag
+	Move window on the screen without raising.
+
+Alt + MMB
+	Resize selected window (move bottom-right corner).
+
+
+Window's titlebar
+-----------------------------------------------------------------------------
+LMB
+	Raise selected window.
+
+LMB + drag
+	Raise window and move it on the screen.
+
+RMB
+	Lower selected window.
+
+RMB + drag
+	Move window on the screen without raising.
+
+MMB
+	Shade or unshade window.
+
+MMB + drag
+	Resize selected window (choose window edge(s) to move).
+
+
+Titlebar buttons
+-----------------------------------------------------------------------------
+LMB, RMB, MMB + hold
+	Show button menu(s).
+
+FVWM-Crystal button model:
+	Close buttons:
+		LMB
+			Close selected window.
+	
+		RMB
+			Iconify selected window.
+	
+		MMB
+			Identify selected window.
+	
+		Alt + MMB
+			Destroy (kill) selected window.
+	
+	Maximize button:
+		LMB
+			Maximize window.
+		
+		Alt + LMB
+			Take the free space (to the next windows).
+
+		RMB
+			Maximize window horizontally.
+
+		Alt + RMB
+			Take the free space horizontally.
+
+		MMB
+			Maximize window vertically.
+
+		Alt + MMB
+			Take the free space horizontally.
+
+	Window options button:
+		LMB
+			Set window to stay on top.
+
+		Alt + LMB
+			Set window to stay on bottom.
+		
+		RMB
+			Toggle sticky window mode.
+
+		MMB
+			Set window in "normal" mode (clears stay on
+			top/bottom).
+
+	Arrows button:
+		LMB
+			Move selected window to the left (upper) desktop page.
+
+		Alt + LMB
+			Go to the left (upper) page with selected window.
+
+		RMB
+			Move selected window to the right (lower) desktop page.
+
+		Alt + RMB
+			Go to the right (lower) page with selected window.
+
+		MMB
+			Move selected window to the previously active desktop
+			page.
+
+		Alt + MMB
+			Go to the previously active desktop page with selected
+			window.
+
+Other button models:
+	Close button:
+		LMB
+			Close window.
+
+		RMB (in OS/2 and NeXTStep button model)
+			Iconify window.
+
+	Maximize button:
+		LMB
+			Maximize window.
+		
+		Alt + LMB
+			Take the free space (to the next windows).
+
+		RMB
+			Maximize window horizontally.
+
+		Alt + RMB
+			Take the free space horizontally.
+
+		MMB
+			Maximize window vertically.
+
+		Alt + MMB
+			Take the free space horizontally.
+
+	Iconify button:
+		LMB
+			Iconify window.
+
+
+Applications panel
+-----------------------------------------------------------------------------
+LMB
+	Open the menu of selected application group.
+
+RMB
+	Launch application which is shown on the app panel.
+
+
+Desktop pager
+-----------------------------------------------------------------------------
+LMB
+	Switch to selected desktop/page.
+
+RMB
+	Switch to selected region.
+
+MMB
+	Move selected miniature window to a different desktop page, or move
+	outside the pager window to the current desktop.
+
+
+Window panel (shows currently opened windows)
+-----------------------------------------------------------------------------
+LMB
+	Go to the window's desktop page, raise and focus it.
+
+RMB
+	Bring selected window to the current page, raise and focus it.
+
+MMB
+	Iconify/deiconify selected window.
+
+
+Icon panel (shows currently iconified windows)
+-----------------------------------------------------------------------------
+LMB
+	Bring back iconified window on the current page, raise and focus it.
+
+RMB
+	Go to the window's desktop page, bring window back, raise and focus
+	it.
+
+
+Clock
+-----------------------------------------------------------------------------
+LMB, MMB
+	Toggle between date and time display.
+
+RMB
+	Toggle between 12h and 24h time format.
+
+
+"FVWM-Crystal" button
+-----------------------------------------------------------------------------
+LMB
+	Open the system menu.
+
+RMB
+	Change wallpaper randomly.
+
+
+"Play" button
+-----------------------------------------------------------------------------
+LMB
+	Open the music player menu.
+
+RMB
+	Toggle playback/pause.
+
+MMB
+	Show/hide music player's window(s).
+
+Mouse wheel
+	Raise or lower volume.
+
+
+"Forward" button
+-----------------------------------------------------------------------------
+LMB
+	Select next song on the playlist or select next random song (depends
+	on the shuffle mode).
+
+RMB
+	Select previous song on the playlist or select previous random song
+	(depends on the shuffle mode).
+
+Mouse wheel
+	Select next/previous random song or select next/previous song on
+	the playlist (depends on the shuffle mode, opposite function of the
+	mouse buttons).
+
+
+"Windows" button
+-----------------------------------------------------------------------------
+LMB
+	Show list of currently opened windows.
+
+RMB
+	Show list of currently iconified windows.
+
+MMB
+	Place again all windows on the current desktop page.
+
+
+"Desktop" button
+-----------------------------------------------------------------------------
+LMB or RMB
+	Show/hide desktop pager window.
+
+MMB
+	Go to previously active desktop page.
+
+Mouse wheel
+	Go to next/previous desktop page.
+
+

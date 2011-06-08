@@ -1,0 +1,54 @@
+8
+
+dir
+33
+svn://svn.gna.org/svn/fvwm-crystal/trunk/fvwm/Applications/Multimedia/Audio/Dj
+svn://svn.gna.org/svn/fvwm-crystal
+
+
+
+2008-04-27T19:31:43.576012Z
+18
+libre
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+998a5334-0c22-0410-ba51-aa63de30526d
+
+~djplay~Djplay
+file
+
+
+
+
+2008-06-22T18:54:20.000000Z
+64e53272b7e0d56aa36aea343c7bb0b0
+2008-04-27T19:31:43.576012Z
+18
+libre
+has-props
+
+~fweelin~Freewheeling
+file
+
+
+
+
+2008-06-22T18:54:20.000000Z
+1ed1bae2bcf535e4a951bbd26b1d836b
+2008-04-27T19:31:43.576012Z
+18
+libre
+has-props
+

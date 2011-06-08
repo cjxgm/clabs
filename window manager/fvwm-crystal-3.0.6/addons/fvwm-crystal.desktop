@@ -1,0 +1,14 @@
+# /usr/share/xsessions/fvwm-crystal.desktop 
+[Desktop Entry]
+Encoding=UTF-8
+Name=FVWM-Crystal
+Comment=Umm... Nice desktop. Transparent, and all...
+Exec=fvwm-crystal
+#Exec=gnome-session --choose-session=FVWM-Crystal
+Terminal=False
+TryExec=fvwm-crystal
+Type=Application
+
+[Window Manager]
+SessionManaged=true
+

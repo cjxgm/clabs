@@ -1,0 +1,30 @@
+# Support for CDCD CDAudio player - mixer control
+# Written by: Maciej Delmanowski <harnir@post.pl>
+# sed commands by: Grzegorz Niew�owski <hoppke@dobremiasto.net>
+
+DestroyFunc Mixer-Volume
+AddToFunc Mixer-Volume
++ I Exec exec cdcd setvol $0 > /dev/null
+
+DestroyFunc Mixer-Volume-Up
+#AddToFunc Mixer-Volume-Up
+#+ I Nop
+
+DestroyFunc Mixer-Volume-Down
+#AddToFunc Mixer-Volume-Down
+#+ I Nop
+
+DestroyFunc Mixer-GUI
+#AddToFunc Mixer-GUI
+#+ I Nop
+
+DestroyMenu /Mixer
+AddToMenu /Mixer
++ "100%%" Mixer-Volume 100
++ "90%%" Mixer-Volume 90
++ "80%%" Mixer-Volume 80
++ "50%%" Mixer-Volume 50
++ "30%%" Mixer-Volume 30
++ "0%%" Mixer-Volume 0
+
+# vim:ft=fvwm

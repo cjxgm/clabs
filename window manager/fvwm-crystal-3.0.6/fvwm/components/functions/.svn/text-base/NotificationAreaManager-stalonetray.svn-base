@@ -1,0 +1,41 @@
+# Support for stalonetray
+# Written by: Dominique Michel <dominique_libre@sourceforge.net>
+# for FVWM-Crystal, 2007
+
+# stalonetray syntax:
+# stalonetray --dbg-level 1
+# --background <color>
+# --geometry <widthxheigth+x+y>
+# --grow-gravity <one of N, S, W, E, NW, NE, SW, SE>
+# --icon-gravity <one of NW, NE, SW, SE>
+# --icon-size <n> (default 24)
+# --max-width <n> (default 0; no limit)
+# --max-heigth <n> (idem)
+# --parent-bg <bool> (default false)
+# --ignore-icon-resize <bool> (default false)
+# --respect-icon-hints <bool> (default false)
+# --skip-taskbar <bool> (default false)
+# --transparent <bool> (default false)
+# --vertical (default horizontal)
+
+# Settings of Trayer {{{1
+AddToFunc StartFunction I Exec exec killall stalonetray
+
+DestroyFunc TrayerPanel
+AddToFunc TrayerPanel
++ I DestroyModuleConfig FvwmStalonePanel: *
++ I *FvwmStalonePanel: Frame 0
++ I *FvwmStalonePanel: Font none
++ I *FvwmStalonePanel: ActiveColorset $[cs-panel-active]
++ I *FvwmStalonePanel: Colorset $[cs-panel-inactive]
++ I *FvwmStalonePanel: Columns 1
++ I *FvwmStalonePanel: Rows 1
++ I *FvwmStalonePanel: (1x1, Padding 0 0, Swallow (NoClose) "stalonetray" 'Exec stalonetray \
+--dbg-level 1 \
+--parent-bg \
+--icon-size $[trayer_ic_size] \
+-geometry $[trayer_area_width]x$[trayer_area_eigth]$[trayer_x]$[trayer_y] \
+--icon-gravity $[trayer_ic_grav]')
++ I Module FvwmButtons -g $[trayer_area_width]x$[trayer_area_eigth]$[trayer_x]$[trayer_y] FvwmStalonePanel
+
+# vim:ft=fvwm

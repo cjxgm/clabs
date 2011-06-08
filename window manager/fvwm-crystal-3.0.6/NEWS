@@ -1,0 +1,629 @@
+Version 3.0.6
+
+This is a bug fixes release and my first as FVWM-Crystal administrator.
+
+It correct a very critical bug on POSIX system.
+Thanks to gentoo for the fix. Every user is encouraged to upgrade.
+
+The problem was that FVWM-Crystal was using environment variables with "-"
+inside their name. That breaks POSIX. (If you don't know what POSIX is about,
+read that this can break your system!) All those names was replaced by the
+same name with "_" instead of "-".
+
+The only solution on the short term was to replace all the "-" in those names
+by "_". For that, I applied the fix for FVWM-Crystal-3.0.5 provided by gentoo.
+
+Thanks to the gentoo devs for providing this fix.
+See http://bugs.gentoo.org/show_bug.cgi?id=210580
+
+A few minor issues are also fixed: 
+
+- all the ascii files are encoded using UTF-8
+
+- bin/fvwm-crystal use the new and now old fvwm2 executable name: fvwm.
+
+     #   #   #   #   #   #   #   #
+
+Important information for the users updating an existing FVWM-Crystal installation
+##################################################################################
+
+The consequence of that change is that you will need to update your user
+configuration. For that, I modified the gentoo specific envfix.sh script in
+order that it can be run against your user configuration. I splitted it into
+2 files for commodity.
+
+Put varfix.sh into ~/bin and searchvartofix into $[FVWM_USERDIR] (usualy
+~/.fvwm-crystal). Change into $[FVWM_USERDIR] and run "./searchvartofix".
+
+This will change all the "-" into "_" into all the FVWM-Crystal-3.0.5
+environment variable names, and that into all the files in $[FVWM_USERDIR].
+When it is done, you can remove varfix.sh and searchvartofix.
+
+If you added custom env variables with "-" into their names, you must change
+them by hand (or add them into varfix.sh before running searchvartofix if
+you are sure of what you are doing with sed).
+
+     #   #   #   #   #   #   #   #
+
+An important move from darcs to svn was done. The raison is that I was also
+experimenting troubles with my own darcs repository during the 3.0.5 preparation.
+And I just don't have time to waste with such troubles.
+
+Because of that those of you, who are using Crystal from the darcs repo, will
+have  to move to the svn repo. It will work the same way but using svn commands. 
+Look at the website for the instructions.
+
+See you in the streets!
+Dominique Michel <libre@fvwm-crystal.org>
+
+-----------------------------------------------------------------------------
+
+Version 3.0.5
+
+Welcome to yet another, long awaited release of FVWM-Crystal project! This
+time it's a "development" version, not polished, rather sturdy, but working as
+usual. There are new recipes, support for new applications and, of course,
+bugfixes (and new bugs).
+
+But before I'll start listing all of the new features, I want to give huge
+thanks to Dominique Michel, the person who almost single handedy created this
+version. At first, Dominique started his own fork of Crystal, called "Crystal
+Audio", but after a while I've asked him to combine his modifications in the
+main tree, and here they are. At one point in the Crystal's development there
+were so much different patches in my darcs repository (some of them applied
+from Michel's emails, some grabbed from his own darcs repo), that my copy of
+the repository became extremely slow and sluggish. I've tried to resolve the
+problems, but the easiest way to do that was to abandon my own version of the
+repository, and just start from scratch using Dominiques version. Because of
+that those of you, who are using Crystal from the darcs repo, may experience
+problems on the upgrade; I'm suggesting downloading a new fresh copy of the
+repository and applying your changes on it.
+
+Now it's time to list some of the major features of the upcomming version!
+
+- two new recipies: SilentHacker (clean and aesthetic), and Thin (modified
+  version of Nebulae)
+
+- new default behaviour of the "Default" and "Default with ACPI" window lists;
+  because many of you wanted to see windows only from the current page, this
+  mode is used as a standard - you can of course modify it in the recipies
+
+- some application icons (Mozilla applications, commercial applications like
+  Acrobat Reader and others) have been removed due to the incompatibility with
+  GPL license. I'm planning to release a separate package with additional
+  non-free artwork. I hope that now there will be no problem with including
+  this release in Debian GNU/Linux - if you will find other icons which need
+  to be removed, let me know
+
+- Crystal has now support for session management, it automatically recognizes
+  that a session manager is active and gives additional controls for saving
+  and restoring sessions
+
+- new supported software: MOC, Audacious and alsaplayer music player, amixer
+  (at last!) audio mixer, stalonetray and mplayer
+
+- application database has been reorganized to be more friendly with
+  FreeDesktop.org standards
+
+- there are many new applications in the app database
+
+There are also many more numerous bugfixes and improvements, if you want, you
+can check out the ChangeLog.
+
+I hope that you will like this version - there are many things which need
+polishing, but I hope that these issues will be solved in the next release.
+Right now I'm planning to focus on the Crystal's website and the wiki, to make
+a good place with documentation on-line.
+
+Until next time!
+Maciej Delmanowski <harnir@linux.net.pl>
+
+-----------------------------------------------------------------------------
+
+Version 3.0.4
+
+Well, new release after almost three months... What's new:
+
+- main configuration is now kept in '~/.fvwm-crystal/'. If you want to keep
+  your settings, you can just rename old '~/.fvwm/' to a new one. If you won't
+  do that, you will start like with fresh installation.
+
+- there are now two packages: main 'fvwm-crystal', and a stripped-down
+  version, 'fvwm-crystal-minimal'. In the "minimal" release you will find
+  4 recipes, a selected set of application icons, and window decorations.
+  Other than that, it's good old Crystal. This version is mainly for LiveCD
+  based distributions (made especially for grml (http://www.grml.org/). You
+  can also use it to try Crystal, and if you like it - install the full
+  version.
+
+- in the new version you will find new window decoration - "MicroClear", based
+  on "Clear". There are also two new desktop recipes: "Light", with just pager
+  on the top of the screen, trayer in the corner and menu accessible under the
+  left mouse button (press and hold to open it), and "SideLine", with panels
+  in the lower-left corner and autohiding window list on the bottom of the
+  screen.
+
+- in main 'config' file you can find two new variables:
+  $FVWM_DISTROMENUDIR - a directory with application database generated by
+  distribution-based script, for example using Debian Menu system
+  $FVWM_DISTROMENUNAME - name of a menu generated by the script, used to
+  include/exclude it in the app panels or menus. By default it's set to
+  "debian".
+  All recipes are updated to use these variables. Using $FVWM_DISTROMENUNAME you
+  can change the name of the system application menu, and icon used to display
+  it. For example, you can change "debian" to "ubuntu", generate a menu with
+  that name and have it displayed with a Ubuntu logo.
+
+- Michael Stilkerich created new Clock scripts. They now get time format from
+  the user's locale settings and properly use it (by displaying 12h or 24h).
+  Using left mouse button you can toggle the display of date/time, right mouse
+  button toggles between 12h and 24h mode.
+
+- Szervac Attila created the Hungarian translation of Crystal, thanks!
+
+- Crystal now recognizes UTF-8 environment and properly sets fonts in the
+  menus. I left the fonts in window decorations intact, but if FVWM developers
+  won't do something about the UTF-8 support in FVWM, I guess I'll have to fix
+  all of them too...
+
+- there's a new Dvorak keyboard layout you can use. There's no menu option for
+  that, so if you have Dvorak keyboard, you can either put the commands below
+  to the '~/.fvwm-crystal/userconfig' file:
+
+  Include components/desktop/Keyboard-Dvorak
+  Include components/desktop/Keyboard-Dvorak_NumLock
+
+  or modify the recipe you're using.
+
+Well, that would be it. As usual, you can find complete list of changes in the
+ChangeLog. Have fun, and see you next time!
+
+Maciej Delmanowski, <harnir@linux.net.pl>
+
+
+-----------------------------------------------------------------------------
+Version 3.0.3
+
+Again a very quick release, but at least this one should be ok now - at least
+I hope... What's new:
+
+- There's a dedicated Debian menu support - if you will create
+  /Applications/debian category, it will be specially treated on the app
+  panels and menus (there will be a category icon shown, instead of an
+  application icon). /Applications/debian category is not included in the
+  database by default, instead it will be created using Debian menu system and
+  available in the FVWM-Crystal's .deb package.
+
+- I've added "Mouse Bindings Reference" in the documentation - now you can
+  know everything about your desktop bindings. :-)
+
+- 'fvwm-crystal' startup script has been changed, now it looks in the
+  '../share/fvwm-crystal/fvwm' for the config files - that means, if you have
+  Crystal installed in /usr/local directory, script must be in /usr/local/bin
+  and configuration files must be in /usr/local/share/... directory; similar
+  situation with the /usr installation. On the bright side, there's no need
+  now to edit the startup script.
+
+- Makefile has been cleaned up, it should now work smoothly. Installation
+  parameters are changed a little, instead of 'PREFIX=' you need to use
+  'prefix=' in the command line.
+
+Well, I guess that's it... If there will be any problems to fix, just let me
+know on <harnir@gna.org>. Have fun! :-)
+
+
+-----------------------------------------------------------------------------
+Version 3.0.2
+
+Bugs hunt me with each version :-) This is a "quick fix" release, just with
+small  fixes and improvements:
+
+- Makefile script was modified to support different directories with
+  'fvwm-crystal.desktop' files, some distributions use /usr/share/xsessions
+  and some use /etc/X11/Sessions; make will check which one is available and
+  put the .desktop file in it. Also there's new 'make dist', so there should
+  no problems with file permissions from now on.
+
+- I've added a ViM syntax hilighting file, 'addons/fvwm.vim'. If you use vim,
+  you can put it in ~/.vim/syntax/ directory. Also almost all configuration
+  files have now vim modeline, so they should be recognized as FVWM
+  configuration files.
+
+Recently BerliOS servers have become voulnerable - they had world-readable
+password files. Here's the full story:
+http://metawire.org/~parasitical/vulns/berliospass/
+Because of that I'm planning to move FVWM-Crystal project to another server,
+http://gna.org/, so this will be the last release on the BerliOS servers. When
+that happens, I'll let you know on the website and the mailing list about the
+change.
+
+
+-----------------------------------------------------------------------------
+Version 3.0.1
+
+It's been 3 months since FVWM-Crystal 3.0, there are now few interesting
+changes in the code, so I decided to release new version. Changes are not yet
+complete, for example localizations are not updated...
+
+New, simplified installation procedure
+--------------------------------------
+Michael Stilkerich created new 'Makefile' script, cleaner and simplified. Now
+all you need to install Crystal is to issue command:
+
+	make [PREFIX=/usr] install
+
+The [PREFIX=] part is optional and can be used to change default installation
+directory. You can now also uninstall Crystal by issuing command
+
+	make [PREFIX=/usr] uninstall
+
+
+"NumLock Hell" is over ;-)
+--------------------------
+From the beginning Crystal users suffered because of the problems with NumLock
+- FVWM recognizes it as another keyboard modifier, so when it was on, many
+keyboard bindings or mouse functions didn't work. This version will eliminate
+that problem. I couldn't use "IgnoreModifiers" function (didn't work as
+expected), so I literally copied each binding and added NumLock as another
+modifier - for example there are now "Alt + grave" and "Alt + NumLock + grave"
+bindings. This system is transparent and can be easily turned off, because
+NumLock bindings are in separate files. Currently NumLock affects only numeric
+keyboard - when it's on, you can write numbers; when it's off, you can use
+window controls. All other keyboard and mouse bindings work in either NumLock
+state.
+
+
+Icons from The Tango Project
+----------------------------
+I decided to use icons from the Tango Project (http://www.tango-project.org/)
+on desktop panels and in the menus. Also application categories got their own
+icons, visible in the application menus. You will have to update your recipes
+if, for example, you will not see icons on the panel because of the filename
+changes. This also results in colorset changes, one colorset
+($[cs-panel-inactive-MiniIon]) is removed, because it's not needed anymore
+- it was used to "colorize" b&w icons on the panels.
+
+
+Rearranged application database (again)
+---------------------------------------
+Sorry for that, it probably drives you nuts by now... ;-) I moved the app
+categories around, so they will be "compatible" with Tango Project's icons and
+probably with GNOME/KDE application categories. Of course there are new
+applications and icons supported, as usual.
+
+
+GDM login manager support
+-------------------------
+If GDM is installed and running, it's used to shutdown or reboot the computer
+instead of the 'sudo' command. You can also create new session, fullscreen or
+nested, from the Exit menu. If GDM is not present or running, old 'sudo'
+commands will be used instead.
+
+
+Updated audio & music player support
+------------------------------------
+- You can now select preffered music player and audio mixer separately, for
+  example use 'mpd' to play music and 'aumix' to control audio volume.
+- There's added support for XMMS2 player, however it's not yet complete.
+- There's new key binding: Alt + Shift + /. It toggles between random and
+  sequential playback.
+
+Changes in the recipes:
+-----------------------
+- "Nebulae" recipe has now "FVWM-Crystal" submenu in the main applications
+  menu.
+- There are new recipes: "Clean" is similar to "Clean Vertical", but has
+  horizontal desktop placement; "TopDown" has bigger pager window on the top
+  edge of the screen, and application panel on the bottom edge.
+
+
+Changes in window focus system:
+-------------------------------
+- There is now different focus method for 'ClickToFocus' and 'SloppyFocus'
+  options; the difference: while using SloppyFocus when you switch desktops,
+  at first window which has mouse pointer is focused, if there's none, last
+  used window is focused. ClickToFocus uses "old" method, without checking
+  which window has mouse pointer.
+- There is now small resistance when you try to move windows off the screen
+  edge - that should prevent the "desktop switching bug" a little, because it
+  will be now harder to move a window off the screen.
+
+
+New keyboard bindings
+---------------------
+- Alt + Home - moves mouse pointer to the top-left corner of the screen - easy
+  way to get rid of it when it stands in your way.
+- Alt + h, j, k, l - moves windows to the respective desktop edges (like movement
+  keys in Vi), centered on the edge.
+- Alt + Shift + h, j, k, l - moves windows to the desktop corners (h - top
+  left, j - bottom left, k - top right, l - bottom right).
+
+
+Other minor changes:
+--------------------
+- Transient and "Untitled" windows have now titlebars, except of
+  "OpenOffice.org" windows, because of the toolbar system
+- "Urgency hint' functions in FVWM are cleared, so now gajim should work as
+  expected (it will not focus it's window when on each received message)
+- Menus with long creation time (like the wallpapers menu) will show the
+  "busy" cursor for an indication that something is happening.
+
+
+-----------------------------------------------------------------------------
+Version 3.0
+
+Well, here it is... I would like to thank all the people who helped me with
+this project, for their ideas and support... Thanks :-) OK, enough with the
+small talk...
+
+There aren't many drastical changes from the previous release. Many bugs were
+hunt down and crushed, there is new window decoration (for all those
+dark-desktop lovers out there), there is some new documentation (description
+of the new application database).
+
+What you can notice pretty fast is lack of titlebar on the transient windows.
+That's because of new OO.org 2.0 and it's detachable toolbars - they just had
+double titlebars, so I've had to do something with that and this was the only
+solution. I hope that you will like the idea.
+
+You can now put wallpapers in '~/.fvwm/wallpapers/' directory as well as in
+'~/wallpapers/'. That makes Crystal configuration even more consistent,
+I guess...
+
+I know that you have sometimes small changes, which you had to put in
+a recipe, but these changes are good for most of them (for example new
+keybindings). There was no easy way to add them - but now it is. If you create
+a file called '~/.fvwm/userconfig', it will be loaded after all Crystal
+configuration and recipes. Now everything can be in one place :)
+
+Well, that's it. I'm packaging and releasing a full version, hope that you
+will like it. Have fun :-)
+
+Maciej Delmanowski <harnir@post.pl>
+
+
+-----------------------------------------------------------------------------
+Version 3.0.RC3
+What's new:
+
+* New application menu/panel generator
+--------------------------------------
+At least, Rafal Bisingier brings new version of his application panel
+generator, completely rewritten and with new database system. Here are it's
+most interesting features:
+
+- database is based on a directory and file structure. Each menu and submenu
+  is a category, each file is the program entry. Metainformation about
+  installed programs is included in the file name. Basically, each "file" in
+  the database is a script which is executed by FVWM when a program from
+  a menu or panel is selected (therefore all files need to have executable
+  flag set). In the script itself you can put any command(s) you want. You can
+  find more information about the database structure by executing
+  'fvwm-crystal.apps --help'
+- you can combine different "database trees" into one large menu system
+  - system-wide database and user-wide database can be easily created and
+  maintained
+- menu and panel generator is very flexible, allowing for example creation of
+  submenus that popup upwards instead of (standard) downwards, or creating
+  different menus for different places
+
+* New recipe, "Nebulae"
+-----------------------
+If you like Windows-like Start menu and toolbar, you should try this recipe :)
+Most of the features are there, including trayer and pager window shown/hidden
+using a button on the panel. When you click on the "Crystal" menu with LMB,
+a menu with available applications pops up, middle click shows the old "system
+menu".
+
+* Support for Nautilus file manager
+-----------------------------------
+If you don't like ROX-Filer, but want to have icons on the desktop, you can
+use Nautilus - it's mow selectable from the 'Preferences" menu if you want to
+have desktop manager, and which one (of both ROX and Nautilus are installed).
+Unfortunately Nautilus has it's own menu under RMB so "instant terminal" won't
+be possible... Unless you bind it to the middle mouse button which works as
+usual. And of course you can change desktop wallpaper using Crystal built-in
+menu, while using the Nautilus desktop (gconftool needs to be installed for
+this to work).
+
+* Old "Exit" menu brought back
+------------------------------
+I've been criticized because of the "safe" Exit menu, so the old one is back
+by default. If you want to use the safer version, it's still available as
+'components/functions/Exit-Safe'.
+
+* Changes in the icon system
+----------------------------
+There is new default application icon, taken from the GNOME default iconset,
+it looks nicer than transparent X, I hope. :) Image path is now relative to
+the icon theme directory, not inside it, so you can change the preferred icon
+size easier. There is also support for user-side icons (you still need to
+maintain the directory structure in your ~/.fvwm/, including the icon theme
+name) - if Crystal finds an icon in the user directory structure, it will be
+used instead of the original one.
+
+That are the most interesing changes, I think... There are also many bugfixes,
+like "black panels" after startup or shadow effect in the FvwmMPD windows.
+Just updated translations are missing from this release, which I hope will
+change with 3.0 version. Because of that I'm beginning "call for translators"
+- if you want to have FVWM-Crystal in your own (or favourite) language, send
+the translated .po files to harnir@post.pl, I happily include them in the 3.0
+release :) I'm giving you time until Haloween, 31st of October. Until then,
+have fun with new version :)
+
+Maciej Delmanowski, <harnir@post.pl>
+
+
+-----------------------------------------------------------------------------
+Version 3.0.RC2
+What's new:
+
+This time I didn't change directory structure too much, sorry guys ;)
+
+* New window decoration system
+------------------------------
+Basically, window decorations are now defined by two "factors" - how they
+should look (a theme) and what kind of buttons they should have (a button
+layout).
+
+There are currently 5 different button setups:
+- FVWM-Crystal - plain old and loved ;) button style, with two Close buttons
+  and several other enhancements
+- MS Windows - for beginners? Three buttons on the right and a menu on the
+  left
+- MacOS X - three buttons on the left, looks awsome with Aqua window
+  decoration :)
+- OS/2 - Close button on the left, iconify and maximize on the right
+- NeXTStep - for WindowMaker lovers :)
+
+All button layouts show the window menu when you press and hold one of them,
+also titlebar functions are the same (Raise|Resize|Lower).
+
+You will find all old window decorations included, from user's point of view
+there is no change here. 'Aqua' and 'Gentoo' window decorations have new set
+of button images, there are also new decorations: Clearlooks (3 color
+versions), DawnSky, Motif and SystemG. Bug which caused window decorations to
+appear oddly after some changes is removed and shouldn't be a problem any
+more.
+
+* New "Preferences" menu
+------------------------
+You can find it under the main menu. Currently you can setup preferred
+"recipe" (moved from "Developer menu"), music player, default terminal
+(separately for "normal" and QuakeConsole), focus policy and behaviour of the
+terminals.
+
+* New FvwmScript scripts
+------------------------
+You can now check current date using the clock - click once to see the date in
+"dd/mm" format, click second time or wait to see the clock.
+
+There are new scripts for ACPI functions, like battery status, CPU frequency
+and temperature. You can see them in action on "Default with ACPI" recipe.
+
+* Vertical desktops
+-------------------
+Yup, you can now have vertically aligned desktop pages, that means vertical
+pager :) There is an example "Clean Vertical" recipe included, so you can try
+it right away. Keyboard and window shortcuts are automatically updated.
+
+* New keyboard bindings
+-----------------------
+For keyboards without numeric part, such as those on notebooks/laptops, you
+can find new keyboard shortcuts:
+	Alt + minus		raise window
+	Alt + Shift + minus	lower window
+	Alt + equal		maximize
+	Alt + Shift + equal	fullscreen
+	Alt + backspace		iconify
+	Alt + Shift + backspace	close
+
+* Secure "Exit" menu
+--------------------
+Now you need to select a submenu entry to perform "dangerous" actions, such as
+Logout, Shutdown or Reboot. This may sound a bit controversial, so give me
+a hint if you like it or not.
+
+* Updates in the music support
+------------------------------
+New music players are supported: Quod Libet and cdcd (Audo CD playback).
+Unfortunately some functions are limited or missing, due to the limitations of
+these players (well, they don't support everything, you know...).
+
+There are also many bugfixes, enhancments and features, you can see them in
+the ChangeLog. Stay tuned :)
+
+Maciej Delmanowski <harnir@post.pl>
+
+-----------------------------------------------------------------------------
+Version 3.0.RC1
+What's new:
+
+The biggest change - I've rewritten all configuration files, hopefully the
+last time. I know that I've said this before, you can shoot me in the head for
+that. Why this is different? Crystal is now more open and flexible than ever
+before, new additions should be made very easy and in straightforward way.
+Oh, and of course it's not compatible with older releases, sorry for that
+(window decorations and colorsets are compatible though).
+
+Other major changes:
+
+- installation scripts: you can now install FVWM-Crystal using standard
+  './configure && make && make install' and everything should work just fine.
+  No more problems with missing functionality or dependencies, scripts will
+  tell you everything you need to know. That should also make biulding
+  distribution packages easier.
+
+- standard, UNIX-like configuration support: during startup Crystal scripts
+  look on three places for configuration files, loading first that is found:
+  a) user directory (usually '~/.fvwm')
+  b) system configuration (by default '/etc/X11/fvwm/fvwm-crystal')
+  c) directory where package was installed (usually
+  '/usr/share/fvwm-crystal/fvwm' or '/usr/local/share/fvwm-crystal/fvwm')
+  That way users can make their own changes (see below) which affect only
+  their account, system administrators can make the changes affecting all
+  users (but if user will change the same thing, the user's configuration is
+  loaded instead), and things that weren't modified are taken from the
+  original configuration.
+
+- "configuration tree": almost all files are loaded using special functions
+  which search in above places for the files being loaded. It works like this:
+  "Include components/functions/Wallpaper" will look for files called:
+  '~/.fvwm/components/functions/Wallpaper', then if it wasn't found,
+  '/etc/X11/fvwm/fvwm-crystal/components/functions/Wallpaper', and if this
+  also wasn't found,
+  '<fvwm-crystal-installation>/components/functions/Wallpaper'. That way you
+  can make changes to the original files which will be preserved for further
+  updates, and it will override the original ones. All you need to do is
+  preserve the directory structure. Not all files are working this way yet,
+  see the TODO file for details.
+
+- "desktop recipes": configuration is now divided in two "parts": there are
+  small files, usually functions, bindings, etc. located in the 'components/'
+  directory. From these files you can "compose" a desktop using special file
+  called "recipe", located in the 'recipes/' directory. Recipes themselves
+  usually load other files, such as functions and bindings. Desktop panel
+  configuration is also located in the recipe files. Recipes can be selected
+  from a handy menu, so you can decide easily, which recipe to use. Thanks to
+  this system you don't need to have usual FVWM-Crystal features, because they
+  are optional. That way it's easy to build your own desktop from scratch
+  without lose of the powerful features like window decorations or application
+  panel system. Speaking of these panels: they are no longer stored as
+  generated files; instead output of 'fvwm-crystal.apps' script is read
+  directly by FVWM using PipeRead. This way you can make more powerful panels,
+  with other things than just application icons - see the new "desktop layout"
+  or "recipe" called Dock - it's modelled after XFCE/CDE panel.
+
+- support for many applications: currently there are two examples of this
+  support: you can use either 'habak' or 'Esetroot' for setting the desktop
+  wallpaper - Crystal will search for them and use the one which is available
+  automatically. The second example is usage of music player: currently there
+  are two, MPD and XMMS. Crystal will look for 'mpd' binary, and load
+  specified functions for controlling the player; if 'mpd' is not installed,
+  Crystal will look for 'xmms' instead and load set of functions for this
+  player. You can easily add support for other music players or different
+  programs, like the screenshot tool or screensaver.
+
+- application database was greatly extended, so most applications that you use
+  will be available from the menu. Every application has it's own
+  corresponding icon (although there are missing icons for 48x48 size), so
+  there should be no more "empty" buttons on the panel or in the menus.
+
+- 'wallpapers/' directory: now you have 3 different wallpapers at the first
+  startup available, so if you have a wallpaper setting tool like 'habak' or
+  'Esetroot' installed, you will see a nice desktop at the first startup - no
+  more problems with missing wallpaper or gray desktop panels :)
+
+- new "old" icon directories: they are now similar to the '/usr/share/icons'
+  directory, for example: 'icons/Default/22x22/fvwm-crystal/',
+  'icons/Default/32x32/apps/' and so on. This way you can make your own icon
+  themes or use different icon sizes in the menus and application panels.
+
+- FVWM-Crystal uses gettext for localization strings - now it's easier to make
+  new translations and memory usage is smaller.
+
+There are also more small modifications included. I hope that you will like
+this release and give me some good feedback about it :)
+
+Maciej Delmanowski <harnir@post.pl>
+

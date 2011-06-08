@@ -1,0 +1,124 @@
+8
+
+dir
+33
+svn://svn.gna.org/svn/fvwm-crystal/trunk/doc
+svn://svn.gna.org/svn/fvwm-crystal
+
+
+
+2008-04-27T19:31:43.576012Z
+18
+libre
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+998a5334-0c22-0410-ba51-aa63de30526d
+
+LICENSE
+file
+
+
+
+
+2008-06-22T18:54:47.000000Z
+81bcece21748c91ba9992349a91ec11d
+2008-04-27T19:31:43.576012Z
+18
+libre
+
+Mouse bindings.txt
+file
+
+
+
+
+2008-06-22T18:54:47.000000Z
+03995b34edd62285bac0bf3bf48c3ba4
+2008-04-27T19:31:43.576012Z
+18
+libre
+
+TODO
+file
+
+
+
+
+2008-06-22T18:54:47.000000Z
+2527df7b564308768aaacf98ff761e0b
+2008-04-27T19:31:43.576012Z
+18
+libre
+
+Application database.txt
+file
+
+
+
+
+2008-06-22T18:54:47.000000Z
+5a2b54a49cb581267e3d1a8b38cafc43
+2008-04-27T19:31:43.576012Z
+18
+libre
+
+FAQ
+file
+
+
+
+
+2008-06-22T18:54:47.000000Z
+6ddb5e2f0a8953174ac11797da501576
+2008-04-27T19:31:43.576012Z
+18
+libre
+
+Crystal ROX! HOWTO.txt
+file
+
+
+
+
+2008-06-22T18:54:48.000000Z
+d949adf0c0c0c441b5a429516543a430
+2008-04-27T19:31:43.576012Z
+18
+libre
+
+Keyboard bindings.txt
+file
+
+
+
+
+2008-06-22T18:54:48.000000Z
+514c53fe75779c51eac0970564738079
+2008-04-27T19:31:43.576012Z
+18
+libre
+
+Tips.txt
+file
+
+
+
+
+2008-06-22T18:54:48.000000Z
+2b5e3a344575128bc7757a4f90349cee
+2008-04-27T19:31:43.576012Z
+18
+libre
+

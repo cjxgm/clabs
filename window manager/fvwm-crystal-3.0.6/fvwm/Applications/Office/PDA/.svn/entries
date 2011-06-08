@@ -1,0 +1,54 @@
+8
+
+dir
+33
+svn://svn.gna.org/svn/fvwm-crystal/trunk/fvwm/Applications/Office/PDA
+svn://svn.gna.org/svn/fvwm-crystal
+
+
+
+2008-04-27T19:31:43.576012Z
+18
+libre
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+998a5334-0c22-0410-ba51-aa63de30526d
+
+~kpilot~kPilot
+file
+
+
+
+
+2008-06-22T18:54:23.000000Z
+de0d9caa50bab88d2450ab099f733428
+2008-04-27T19:31:43.576012Z
+18
+libre
+has-props
+
+~jpilot~J-Pilot
+file
+
+
+
+
+2008-06-22T18:54:23.000000Z
+a08dd260340fa9e052d35ad697460177
+2008-04-27T19:31:43.576012Z
+18
+libre
+has-props
+

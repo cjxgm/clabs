@@ -1,0 +1,53 @@
+8
+
+dir
+33
+svn://svn.gna.org/svn/fvwm-crystal/trunk/fvwm/locale/ru_RU.UTF-8/LC_MESSAGES
+svn://svn.gna.org/svn/fvwm-crystal
+
+
+
+2008-04-27T19:31:43.576012Z
+18
+libre
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+998a5334-0c22-0410-ba51-aa63de30526d
+
+fvwm-crystal.mo
+file
+
+
+
+
+2008-06-22T18:54:12.000000Z
+bae9d334f42369cf1ecf06498048d074
+2008-04-27T19:31:43.576012Z
+18
+libre
+has-props
+
+fvwm-crystal.po
+file
+
+
+
+
+2008-06-22T18:54:12.000000Z
+32e87d4555253b3adba1d0cb2e08f895
+2008-04-27T19:31:43.576012Z
+18
+libre
+

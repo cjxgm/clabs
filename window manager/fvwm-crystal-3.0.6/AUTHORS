@@ -1,0 +1,45 @@
+Authors of FVWM-Crystal project:
+
+Maciej Delmanowski <harnir@gna.org>
+- idea
+- FVWM configuration files
+
+Rafa³ Bisingier <rafal@man.poznan.pl>
+- fvwm-crystal.apps script
+- some ideas
+
+Dominik Tomasik <d.tomasik@gaming.pl>
+- FVWM-Crystal logo
+- wallpapers
+
+Lukasz Strzygowski <lucass@gentoo.pl>
+- scripts
+- some ideas
+- Gentoo ebuild
+
+Michael Stilkerich <stilkerm@uci.edu>
+- Makefile script
+- Clock scripts
+- Debian package
+
+Myles Green <rmg57@telus.net>
+- documentation
+
+Dominique Michel <dominique.michel@citycable.ch>
+- thin recipe
+- AlsaPlayer and mplayer control
+- fvwm-crystal.generate-menu
+- lot of ideas and code
+
+Parts of the FVWM code are created by:
+
+Ber 'theBlackDragon' Geens <bert@lair.be>
+- MPD playlist editor
+
+Some of the code was derived from Taviso's configuration file
+Contact: Tavis Ormandy <taviso@gentoo.org>
+Homepage: http://dev.gentoo.org/~taviso/
+
+If you will find any code which is similar to your own, please contact with
+me (harnir@gna.org).
+

@@ -1,0 +1,52 @@
+# MS Windows version
+
+# Setup colorsets
+Read $./Colorsets
+
+DestroyDecor recreate WindowDecoration
+AddToDecor WindowDecoration
+
++ TitleStyle Inactive TiledPixmap $./title-inactive.png
++ TitleStyle Active TiledPixmap $./title-active.png
++ TitleStyle Centered
++ TitleStyle -- flat
++ TitleStyle Height 20
+
++ BorderStyle -- HiddenHandles
++ BorderStyle -- Flat
+
++ ButtonStyle 1 Inactive Pixmap $./button-gray.png
++ ButtonStyle 1 ActiveUp Pixmap $./button-white.png
++ ButtonStyle 1 ActiveDown Pixmap $./button-white-icon.png
+
+# Close
++ ButtonStyle 2 Inactive Pixmap $./button-gray.png
++ ButtonStyle 2 ActiveUp Pixmap $./button-red.png
++ ButtonStyle 2 ActiveDown Pixmap $./button-red-icon.png
+
+# Maximize
++ ButtonStyle 4 Inactive Pixmap $./button-gray.png
++ ButtonStyle 4 ActiveUp Pixmap $./button-green.png
++ ButtonStyle 4 ActiveDown Pixmap $./button-green-icon.png
+
+# Iconify
++ ButtonStyle 6 Inactive Pixmap $./button-gray.png
++ ButtonStyle 6 ActiveUp Pixmap $./button-yellow.png
++ ButtonStyle 6 ActiveDown Pixmap $./button-yellow-icon.png
+
++ ButtonStyle All -- UseTitleStyle
++ ButtonStyle All -- flat
+
+Style * HandleWidth 1, BorderWidth 1
+Style * Colorset                $[cs-window-inactive], \
+        BorderColorset          $[cs-window-inactive], \
+        HilightColorset         $[cs-window-active], \
+        HilightBorderColorset   $[cs-window-active]
+
+Style * Font "xft:Arial:pixelsize=15"
+
+Style * UseDecor WindowDecoration
+
+# Setup button functions
+Include components/decorations/Buttons-windows
+

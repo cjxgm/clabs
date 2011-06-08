@@ -1,0 +1,40 @@
+# Support for trayer
+# Written by: Dominique Michel <dominique_libre@sourceforge.net>
+# for FVWM-Crystal, 2007
+
+# trayer syntax:
+# trayer --edge <left right top bottom none>
+# --align <left center right>
+# --margin <size>
+# --widthtype request pixel percent
+# --width <size>
+# --heighttype <request pixel percent>
+# --height <size>
+# --SetDockType <bool>
+# --transparent <bool>
+# --alpha <value> (0= non transparent, 256=full transparency)
+# --tint <color>
+# --distance <length>
+# --expand <bool>
+# --padding <size>
+
+# Settings of Trayer {{{1
+AddToFunc ExitFunction I Exec exec killall trayer
+
+DestroyFunc TrayerPanel
+AddToFunc TrayerPanel
++ I Exec exec trayer \
+--SetDockType false \
+--widthtype $[trayer_width_t] \
+--heighttype $[trayer_heigth_t] \
+--height 24 \
+--edge $[trayer_edge] \
+--align $[trayer_align] \
+--transparent true \
+--alpha $[TrayerAlpha] \
+--tint $[TrayerTint] \
+--margin $[trayer_marge] \
+--distance $[trayer_dist] \
+$[trayer_width_w]
+
+# vim:ft=fvwm

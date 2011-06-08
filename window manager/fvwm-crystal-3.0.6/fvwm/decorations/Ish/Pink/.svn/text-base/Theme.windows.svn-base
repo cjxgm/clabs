@@ -1,0 +1,48 @@
+# MS Windows version
+
+# Setup colorsets
+Read $./Colorsets
+
+DestroyDecor recreate WindowDecoration
+AddToDecor WindowDecoration
+
++ TitleStyle Active TiledPixmap $./title.png
++ TitleStyle Inactive TiledPixmap $./title.png
++ TitleStyle Centered Height 22 -- flat
+
++ BorderStyle -- HiddenHandles
++ BorderStyle -- Flat
+
++ ButtonStyle 1 MiniIcon
+
++ ButtonStyle 2 \
+	ActiveUp (Pixmap $./button-active.png) \
+	ActiveDown (Pixmap $./button-active-down.png) \
+	Inactive (Pixmap $./button-inactive.png)
+
++ ButtonStyle 4 \
+	ActiveUp (Pixmap $./button-active.png) \
+	ActiveDown (Pixmap $./button-active-down.png) \
+	Inactive (Pixmap $./button-inactive.png)
+
++ ButtonStyle 6 \
+	ActiveUp (Pixmap $./button-active.png) \
+	ActiveDown (Pixmap $./button-active-down.png) \
+	Inactive (Pixmap $./button-inactive.png)
+
++ ButtonStyle All -- UseTitleStyle
++ ButtonStyle All -- flat
+
+Style * HandleWidth 1, BorderWidth 1
+Style * Colorset                $[cs-window-inactive], \
+        BorderColorset          $[cs-window-inactiveborder], \
+        HilightColorset         $[cs-window-active], \
+        HilightBorderColorset   $[cs-window-activeborder]
+
+Style * Font shadow="1":"xft:Verdana:pixelsize=12:Bold"
+
+Style * UseDecor WindowDecoration
+
+# Setup button functions
+Include components/decorations/Buttons-windows
+

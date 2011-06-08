@@ -1,0 +1,69 @@
+8
+
+dir
+33
+svn://svn.gna.org/svn/fvwm-crystal/trunk/fvwm/Applications/System
+svn://svn.gna.org/svn/fvwm-crystal
+
+
+
+2008-04-27T19:31:43.576012Z
+18
+libre
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+998a5334-0c22-0410-ba51-aa63de30526d
+
+~vmware~VMware
+file
+
+
+
+
+2008-06-22T18:54:17.000000Z
+d2e8d43505132aff8e74e4154becf158
+2008-04-27T19:31:43.576012Z
+18
+libre
+has-props
+
+~mysqlcc~MySQLCC
+file
+
+
+
+
+2008-06-22T18:54:17.000000Z
+423555539ea1b5ece260d68f5afe8a30
+2008-04-27T19:31:43.576012Z
+18
+libre
+has-props
+
+Security
+dir
+
+Documentation
+dir
+
+Monitors
+dir
+
+File_Managers
+dir
+
+Terminals
+dir
+

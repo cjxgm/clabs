@@ -1,0 +1,176 @@
+#@+leo
+#@+node:0::@file README
+#@+body
+#@@language
+-------------------------------------------------------
+*** README file for PYWM pythonic window manager
+
+by David McNab <david@rebirthing.co.nz>
+
+For information on compiling and installing, refer to the
+INSTALL file in this toplevel directory.
+
+--------------------------------------------------------
+** What is PYWM?
+
+PYWM is a comfortable, fast light window manager for X11
+desktops that can be controlled via Python script.
+
+Aim of PYWM is to create a window management infrastructure
+that is easily learned, approachable, extensible and powerful.
+
+With PYWM, you can customise almost any aspect of window
+management. For example:
+
+ * auto-launch selected programs when your window manager
+   starts, and place them at certain sizes and positions when
+   they start up.
+ 
+ * create hotkeys to manipulate windows - move, resize, close,
+   move to other desktops
+ 
+ * schedule things to occur after a delay, or at regular
+   intervals
+ 
+ * dock two or more windows together
+ 
+ * react to specific windows being created, moved, resized or
+   closed - for instance, have a different set of hotkeys active
+   for each particular window, or, ensure that certain windows
+   always be opened with a fixed size and position
+ 
+Also, you can create popup windows for your own custom menus.
+(although this is currently under development - contributions
+welcome!)
+
+PYWM uses FLWM (Fast Light Window Manager - http://flwm.sf.net)
+as its engine. Some hacks to the FLWM code have seen it
+being repackaged as a python binary module, which is imported
+by PYWM and launched.
+
+I chose FLWM as the engine because it is fast, light and
+simple, and in my mind, it gives the best trade-off between
+size, speed, features and overall usage comfort.
+
+--------------------------------------------------------
+*** How do I use PYWM?
+
+Easily.
+
+Once you have properly installed PYWM (refer to the INSTALL
+file), you can just put into your ~/.xinitrc file the
+following command:
+
+  /usr/bin/pywm-run.py
+
+This will launch a 'chooser' program when X starts up, which
+will let you launch your choice of PYWM script, or an X-Term
+fallback. The first time pywm-run.py runs, it will create
+a directory '.pywm' in your home directory and populate it
+with one of the examples, plus the xterm fallback.
+
+Refer to the README file in ~/.pywm for info on adding
+options to this menu.
+
+But if you find yourself hating pywm-launch.py, and just
+want X to start up with your own PYWM script, then put
+the following into ~/.xinitrc:
+
+  python /path/to/my/pywm/script.py
+
+Building your own custom window manager setup is as simple
+as importing 'pywm' into your python script, subclassing the
+basic window manager class, then launching it.
+
+The simplest PYWM script is:
+
+  #!/usr/bin/env python
+  
+  import pywm
+  
+  class myWindowManagerClass(pywm.WM):
+    pass
+
+  def main():
+    myWindowManager = myWindowManagerClass()
+    myWindowManager.run()
+  
+  if __name__ == '__main__':
+    run()
+  
+--------------------------------------------------------
+*** How do I customise PYWM?
+
+In your window manager script, you can create a subclass of
+pywm.WM, and in this subclass, you can define 'event handler'
+methods which override the defaults. In these handlers, you
+can take various actions according to your tastes.
+
+Comprehensive API Doco can be found in the 'html' directory.
+
+Here is a more complete boilerplate for a PYWM script:
+
+   #!/usr/bin/env python
+   
+   import pywm
+   
+   class myWindowManagerClass(pywm.WM):
+      def __init__(self, *args, **kwds):
+         # add pre-initialisation commands here
+         ...
+         pywm.WM.__init__(self, **kwds)
+         
+         # add post-initialisation commands here
+         ...
+      
+      def on_startup(self):
+         """
+         This is a callback which fires just befure the
+         wm engine enters its event loop. Put your
+         initialisations here, such as keybindings,
+         launch commands etc
+         """
+         ...
+
+      # add more callback routines here
+      ...
+
+   def run():
+      myWindowManager = myWindowManagerClass()
+      myWindowManager.run()
+   
+   if __name__ == '__main__':
+      run()
+   
+Refer to the examples directory, which contains window manager
+scripts ranging from very basic to quite complex.
+
+----------------------------------------------------------
+*** WHAT THE HECK IS THIS 'code.leo' FILE?
+
+Leo - http://leo.sourceforge.net - is a phenomenally excellent
+programmers editor 
+
+The 'literate programming' school of thought has beme a
+viable reality with Leo, which is arguably the first practical
+and usable visual literate editor.
+
+With Leo, you can create multiple distinct 'views' of your
+source code, arranged in a tree structure. These different
+views help enormously to make your cude more understandable
+and coherent. Also, via 'cloned nodes', Leo lets you share
+segments of code between different files.
+
+Yes - many code editors have a 'tree pane'. But what makes Leo
+different is that this tree structure is totally under your
+control. You are not confined to a strict module/class/method
+hierarchy.
+
+Install Leo, and open up code.leo, and you will see what I mean.
+The 'code.leo' file makes this whole project far easier to
+understand and work with.
+
+
+#@-body
+#@-node:0::@file README
+#@-leo

@@ -1,0 +1,57 @@
+# Settings for specific windows
+
+# Terminal emulators:
+# Resize window just with border, not window contents visible
+# makes some transparent terminals work faster
+Style XTerm ResizeOutline
+Style URxvt ResizeOutline
+
+# ---------------------------------------------------------------------------
+# Other applications
+#Style Untitled		!Title, !Borders
+Style wine		!Title, !Borders
+Style lxdoom		!Title, !Borders, EWMHPlacementIgnoreWorkingArea
+Style Firefox-bin	NoPPosition, EWMHNoMiniIconOverride
+Style Thunderbird-bin	NoPPosition, EWMHNoMiniIconOverride
+Style Mozilla-bin	NoPPosition, EWMHNoMiniIconOverride
+
+Style kicker		!Title, !Borders, NeverFocus, NoIcon, FixedSize, \
+			WindowListSkip, FixedPosition
+Style pypanel		!Title, StaysOnBottom, Sticky, NoIcon, NeverFocus, \
+			FixedSize, WindowListSkip, FixedPosition, !Borders
+
+Style Blender		!Title, !Borders
+Style giFToxic		EWMHMiniIconOverride
+
+Style MPlayer		NoTitle, !Borders, GnomeIgnoreHints, EWMHIgnoreStackingOrderHints
+Style "MPlayer - Video"	Title, Borders, GnomeIgnoreHints, EWMHIgnoreStackingOrderHints
+
+Style tuxeyes		!Title, !Borders, StaysOnBottom, Sticky, NoIcon, \
+			WindowListSkip
+
+Style gdesklets-daemon	!Title, !Borders, Sticky, NoIcon, \
+			WindowListSkip, NeverFocus, FixedPosition, FixedSize
+
+Style gDeskCal		!Title, !Borders, StaysOnBottom, Sticky, NoIcon, \
+			WindowListSkip, NeverFocus, FixedPosition, FixedSize
+
+Style gnome-panel	!Title, !Borders, StaysOnTop, Sticky, NoIcon
+
+Style ROX-Panel		!Title, !Borders, Sticky, NoIcon, StaysOnBottom
+
+Style FREEGLUT		!Title, !Borders 
+
+Style XMMS_Player       !Title
+Style XMMS_Playlist     !Title
+Style XMMS_Equalizer    !Title
+
+Style beep-media-player !Title
+
+Style Zinf		!Title
+
+Style OpenOffice.org*	Title, Borders, NakedTransient
+Style soffice.bin	Title, Borders, NakedTransient
+
+Style xtensoftphone	!Title, !Borders
+
+# vim:ft=fvwm

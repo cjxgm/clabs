@@ -1,0 +1,322 @@
+# SideLine desktop
+# Based on TopLine by Maciej Delmanowski <harnir@post.pl>
+# Written by: Lluis Vilanova <xscript@gmx.net>
+# Modifier by harnir
+#
+# 2007.04.22 - Dominique Michel <dominique_libre@sourceforge.net> support for:
+# - Stalonetray and NotificationArea preferences
+# - Modified Autohiding of the bottom panel. No bottom line in fullscreen mplayer.
+#
+# You can use folding to navigate this file
+
+# ImagePath {{{1
+SetEnv Icon-Theme "Default"
+ImagePath $[FVWM_USERDIR]/icons/$[Icon-Theme]:$[FVWM_SYSTEMDIR]/icons/$[Icon-Theme]
+
+# Includes and FVWM modules {{{1
+Module FvwmCommandS
+
+# Default FVWM-Crystal functions, initialization {{{2
+Include components/desktop/FVWM-Crystal_Functions
+Include components/functions/Window-Autohide
+Include components/functions/Clear-FVWM-Settings
+Include components/desktop/FVWM-Crystal_Preferences
+Append preferences/Startup
+
+# Preferred applications {{{2
+Include components/functions/Screenshot-import
+Include components/apps/XScreenSaver
+Include components/apps/FvwmMiniConsole
+Include components/apps/QuakeConsole
+Include components/apps/OpenOffice.org
+Include components/functions/NotificationAreaManager-$[NotificationAreaManager]
+Include preferences/NotificationArea-Width
+Include components/functions/Music-$[MusicPlayer]
+
+# Desktop & window bindings {{{2
+Include components/bindings/Desktop-RMB-OpenTerminal
+Include components/bindings/Desktop-MMB-EdgeScroll
+Include components/bindings/Desktop-MMB-TogglePanels
+Include components/bindings/Window-Basic
+Include components/bindings/Window-Border
+
+# Keyboard bindings {{{2
+Include components/desktop/Keyboard
+Include components/desktop/Keyboard_NumLock
+Include components/desktop/Numpad
+
+# Use icons on the desktop {{{2
+Include components/desktop/Icon-Mwm
+
+# Various styles {{{2
+Include components/desktop/FVWM-Crystal_Styles
+Include components/styles/CursorStyle-Border
+
+# Desktop settings {{{1
+EdgeScroll	0	0
+EdgeResistance	0	100
+HideGeometryWindow	Move, Resize
+OpaqueMoveSize	100
+EdgeThickness	1
+
+EWMH-Desktop 0 0 0 0
+EWMH-Panel-Left 52
+EWMH-Panel-Bottom 1
+
+# Main menu panel {{{1
+All (FvwmButtons-Panel) Close
+DestroyModuleConfig FvwmButtons-Panel: *
+*FvwmButtons-Panel: Geometry +25-0
+*FvwmButtons-Panel: BoxSize smart
+*FvwmButtons-Panel: ActiveColorset $[cs-panel-active]
+*FvwmButtons-Panel: Colorset $[cs-panel-inactive]
+*FvwmButtons-Panel: Columns 1
+*FvwmButtons-Panel: Padding 1 1
+*FvwmButtons-Panel: Frame 0
+
+# Music controls {{{2
+Test (!EnvMatch MusicPlayer alsaplayer, !EnvMatch MusicPlayer mplayer) *FvwmButtons-Panel: (1x1, Size 22 22, Icon "22x22/fvwm-crystal/media-skip-forward.png", \
+        Action (Mouse 1) Music-Next, \
+        Action (Mouse 2) Nop, \
+        Action (Mouse 3) Music-Prev, \
+	Action (Mouse 4) Music-Forward, \
+	Action (Mouse 5) Music-Backward)
+
+# Main music button, with some menus {{{2
+Test (!EnvMatch MusicPlayer alsaplayer, !EnvMatch MusicPlayer mplayer) *FvwmButtons-Panel: (1x1, Size 22 22, Icon "22x22/fvwm-crystal/media-playback-start.png", \
+Action (Mouse 1) Menu /Music $[MenuPosition-EN], \
+Action (Mouse 2) Music-GUI, \
+Action (Mouse 3) Music-PlayPause, \
+Action (Mouse 4) Mixer-Volume-Up 10, \
+Action (Mouse 5) Mixer-Volume-Down 10)
+
+# Music-alsaplayer controls {{{2
+Test (EnvMatch MusicPlayer alsaplayer) *FvwmButtons-Panel: (1x1, Size 22 22, Icon "22x22/fvwm-crystal/media-skip-forward.png", \
+        Action (Mouse 1) Menu /Playlist $[MenuPosition-EN], \
+        Action (Mouse 2) Music-Pause, \
+        Action (Mouse 3) Music-PlayPause, \
+	Action (Mouse 4) Music-Next, \
+	Action (Mouse 5) Music-Prev)
+Test (EnvMatch MusicPlayer mplayer) *FvwmButtons-Panel: (1x1, Size 22 22, Icon "22x22/fvwm-crystal/media-skip-forward.png", \
+        Action (Mouse 1) Menu /Playlist $[MenuPosition-EN], \
+        Action (Mouse 2) Music-Pause, \
+        Action (Mouse 3) Music-PlayPause, \
+	Action (Mouse 4) Music-Next, \
+	Action (Mouse 5) Music-Prev)
+
+# Main alsaplayer music button, with some menus {{{2
+Test (EnvMatch MusicPlayer alsaplayer) *FvwmButtons-Panel: (1x1, Size 22 22, Icon "22x22/fvwm-crystal/media-playback-start.png", \
+	Action (Mouse 1) Menu /Control $[MenuPosition-NE], \
+	Action (Mouse 2) Music-QJackGUI, \
+	Action (Mouse 3) Menu /Speed $[MenuPosition-NE], \
+	Action (Mouse 4) Music-Speed-Up, \
+	Action (Mouse 5) Music-Speed-Down)
+Test (EnvMatch MusicPlayer mplayer) *FvwmButtons-Panel: (1x1, Size 22 22, Icon "22x22/fvwm-crystal/media-playback-start.png", \
+	Action (Mouse 1) Menu /Control $[MenuPosition-NE], \
+	Action (Mouse 2) Music-QJackGUI, \
+	Action (Mouse 3) Menu /Speed $[MenuPosition-NE], \
+	Action (Mouse 4) Music-Speed-Up, \
+	Action (Mouse 5) Music-Speed-Down)
+
+# Main alsaplayer music button, with some menus {{{2
+Test (EnvMatch MusicPlayer alsaplayer) *FvwmButtons-Panel: (1x1, Size 22 22, Icon "22x22/fvwm-crystal/media-eject.png", \
+	Action (Mouse 1) Menu /Player $[MenuPosition-NE], \
+	Action (Mouse 2) Music-GUI, \
+	Action (Mouse 3) Menu /Music $[MenuPosition-NE], \
+	Action (Mouse 4) Mixer-Volume-Up 10, \
+	Action (Mouse 5) Mixer-Volume-Down 10)
+Test (EnvMatch MusicPlayer mplayer) *FvwmButtons-Panel: (1x1, Size 22 22, Icon "22x22/fvwm-crystal/media-eject.png", \
+	Action (Mouse 1) Menu /Player $[MenuPosition-NE], \
+	Action (Mouse 2) Music-GUI, \
+	Action (Mouse 3) Menu /Music $[MenuPosition-NE], \
+	Action (Mouse 4) Mixer-Volume-Up 10, \
+	Action (Mouse 5) Mixer-Volume-Down 10)
+
+# diamond {{{2
+*FvwmButtons-Panel: (1x1, Size 22 22, Icon "22x22/fvwm-crystal/fvwm-crystal.png", \
+Action (Mouse 1) Menu /FVWM-Crystal $[MenuPosition-EN], \
+Action (Mouse 3) Wallpaper-Random $[FVWM_SYSTEMDIR]/wallpapers $[FVWM_USERDIR]/wallpapers ~/wallpapers /usr/local/share/wallpapers /usr/share/wallpapers)
+
+# Main "diamond" menu {{{2
+DestroyMenu /FVWM-Crystal
+AddToMenu /FVWM-Crystal
++ '%22x22/fvwm-crystal/preferences-desktop-screensaver.png%$[gt.Screensaver]' Popup /Screensaver
++ '%22x22/fvwm-crystal/camera-photo.png%$[gt.Screenshot]' Popup /Screenshot
++ "" Nop
++ '%22x22/fvwm-crystal/preferences-desktop-theme.png%$[gt.Window decorations]' Popup /Window-Decorations
++ '%22x22/fvwm-crystal/colorsets.png%$[gt.Colorsets]' Popup /Colorsets
++ '%22x22/fvwm-crystal/preferences-desktop-wallpaper.png%$[gt.Wallpaper]' Popup /Wallpaper
++ '%22x22/fvwm-crystal/preferences-desktop.png%$[gt.Preferences]' Popup /Preferences
++ "" Nop
++ '%22x22/fvwm-crystal/applications-development.png%$[gt.Developer menu]' Popup /Developer
++ '%22x22/fvwm-crystal/fvwm-crystal.png%$[gt.About FVWM-Crystal]' Include components/functions/About
++ '%22x22/fvwm-crystal/system-log-out.png%$[gt.Exit]' Popup /Exit
+# }}}2
+
+Module FvwmButtons FvwmButtons-Panel
+
+# Applications panel and menu generator {{{1
+All (ApplicationPanel) Close
+DestroyModuleConfig ApplicationPanel: *
+*ApplicationPanel: Geometry +0-0
+*ApplicationPanel: BoxSize smart
+*ApplicationPanel: ActiveColorset $[cs-panel-active]
+*ApplicationPanel: Colorset $[cs-panel-inactive]
+*ApplicationPanel: Columns 1
+*ApplicationPanel: Padding 1 1
+*ApplicationPanel: Frame 0
+
+# fvwm-crystal.apps {{{2
+# Debian
+PipeRead 'fvwm-crystal.apps --database=$[FVWM_DISTROMENUDIR]/Applications --database=$[FVWM_USERDIR]/Applications --with=/Applications/$[FVWM_DISTROMENUNAME] --search-icons-in=$[FVWM_USERDIR]/icons/$[Icon-Theme]/22x22/categories:$[FVWM_USERDIR]/icons/$[Icon-Theme]/22x22/apps:$[FVWM_SYSTEMDIR]/icons/$[Icon-Theme]/22x22/categories:$[FVWM_SYSTEMDIR]/icons/$[Icon-Theme]/22x22/apps:$[FVWM_DISTROMENUDIR]/icons/$[Icon-Theme]/22x22/categories:$[FVWM_DISTROMENUDIR]/icons/$[Icon-Theme]/22x22/apps --default-file-icon=22x22/apps/default.png --default-dir-icon=22x22/categories/directory.png --min-submenu-length=5 --sort=prio --panel-icons=standard --panel-action1=menu --panel-action2=none --panel-action3=menu --menu-pos=EN --menuname-suffix="Panel" --no-menus --check-execs'
+# Preset applications
+PipeRead 'fvwm-crystal.apps --database=$[FVWM_DISTROMENUDIR]/Applications --database=$[FVWM_SYSTEMDIR]/Applications --database=$[FVWM_USERDIR]/Applications --without=/Applications/$[FVWM_DISTROMENUNAME] --search-icons-in=$[FVWM_USERDIR]/icons/$[Icon-Theme]/22x22/categories:$[FVWM_USERDIR]/icons/$[Icon-Theme]/22x22/apps:$[FVWM_SYSTEMDIR]/icons/$[Icon-Theme]/22x22/categories:$[FVWM_SYSTEMDIR]/icons/$[Icon-Theme]/22x22/apps:$[FVWM_DISTROMENUDIR]/icons/$[Icon-Theme]/22x22/categories:$[FVWM_DISTROMENUDIR]/icons/$[Icon-Theme]/22x22/apps --default-file-icon=22x22/apps/default.png --default-dir-icon=22x22/categories/directory.png --min-submenu-length=5 --sort=prio --panel-icons=topapp --panel-action1=menu --panel-action2=none --panel-action3=topapp --menu-pos=EN --menuname-suffix="Panel" --no-menus --check-execs'
+# This generates menus for the panel buttons. They are created upside-down,
+# because panel is in the bottom-left corner of the screen
+PipeRead 'fvwm-crystal.apps --database=$[FVWM_DISTROMENUDIR]/Applications --database=$[FVWM_SYSTEMDIR]/Applications --database=$[FVWM_USERDIR]/Applications --search-icons-in=$[FVWM_USERDIR]/icons/$[Icon-Theme]/22x22/categories:$[FVWM_USERDIR]/icons/$[Icon-Theme]/22x22/apps:$[FVWM_SYSTEMDIR]/icons/$[Icon-Theme]/22x22/categories:$[FVWM_SYSTEMDIR]/icons/$[Icon-Theme]/22x22/apps:$[FVWM_DISTROMENUDIR]/icons/$[Icon-Theme]/22x22/categories:$[FVWM_DISTROMENUDIR]/icons/$[Icon-Theme]/22x22/apps --default-file-icon=22x22/apps/default.png --default-dir-icon=22x22/categories/directory.png --min-submenu-length=5 --menuname-suffix="Panel" --submenu-suffix="Item 100 o100" --sort=rprio --no-panel --check-execs'
+# Hotkey menu
+PipeRead 'fvwm-crystal.apps --database=$[FVWM_DISTROMENUDIR]/Applications --database=$[FVWM_SYSTEMDIR]/Applications --database=$[FVWM_USERDIR]/Applications --search-icons-in=$[FVWM_USERDIR]/icons/$[Icon-Theme]/22x22/categories:$[FVWM_USERDIR]/icons/$[Icon-Theme]/22x22/apps:$[FVWM_SYSTEMDIR]/icons/$[Icon-Theme]/22x22/categories:$[FVWM_SYSTEMDIR]/icons/$[Icon-Theme]/22x22/apps:$[FVWM_DISTROMENUDIR]/icons/$[Icon-Theme]/22x22/categories:$[FVWM_DISTROMENUDIR]/icons/$[Icon-Theme]/22x22/apps --default-file-icon=22x22/apps/default.png --default-dir-icon=22x22/categories/directory.png --min-submenu-length=5 --sort=prio --panel-icons=topapp --panel-action1=menu --panel-action2=none --panel-action3=topapp --menu-pos=S --no-panel --check-execs'
+# }}}2
+
+Module FvwmButtons ApplicationPanel
+
+# Bottom panel {{{1
+SetEnv Desk-Pages-X "8"
+SetEnv Desk-Pages-Y "1"
+PipeRead 'echo SetEnv FvwmPager-Width $((28*$[Desk-Pages-X])); echo SetEnv FvwmPager-Height $((24*$[Desk-Pages-Y]))'
+PipeRead 'echo SetEnv FvwmButtons-Columns $(($[vp.width]/28))'
+
+All (FvwmButtons-BotPanel) Close
+DestroyModuleConfig FvwmButtons-BotPanel: *
+PipeRead 'echo *FvwmButtons-BotPanel: Geometry $(($[vp.width]-52))x$[FvwmPager-Height]-0-0'
+#*FvwmButtons-BotPanel: ButtonGeometry $[FvwmPager-Height]x$[FvwmPager-Height]
+*FvwmButtons-BotPanel: BoxSize smart
+*FvwmButtons-BotPanel: ActiveColorset $[cs-panel-active]
+*FvwmButtons-BotPanel: Colorset $[cs-panel-inactive]
+*FvwmButtons-BotPanel: Rows 1
+*FvwmButtons-BotPanel: Columns $[FvwmButtons-Columns]
+*FvwmButtons-BotPanel: Padding 0 0
+*FvwmButtons-BotPanel: Frame 0
+
+# Window list {{{2
+All (FvwmIconMan-Windows) Close
+DestroyModuleConfig FvwmIconMan-Windows: *
+
+*FvwmIconMan-Windows: Resolution Global
+*FvwmIconMan-Windows: UseWinList True
+*FvwmIconMan-Windows: DontShow Class=xmms,FvwmButtons,FvwmIconMan,FvwmPager,FvwmIdent,FvwmForm
+*FvwmIconMan-Windows: ShowNoIcons True
+*FvwmIconMan-Windows: DrawIcons Always
+*FvwmIconMan-Windows: Sort Id
+*FvwmIconMan-Windows: FollowFocus True
+*FvwmIconMan-Windows: Format "%t"
+*FvwmIconMan-Windows: Title ""
+PipeRead "echo *FvwmIconMan-Windows: ButtonGeometry $(($[vp.width]))x24"
+*FvwmIconMan-Windows: ManagerGeometry 1x1-$[FvwmPager-Width]-1
+#*FvwmIconMan-Windows: MaxButtonWidthByColumns 80
+*FvwmIconMan-Windows: Font "xft:Verdana:pixelsize=12"
+# Tips {{{3
+*FvwmIconMan-Windows: Tips needed
+*FvwmIconMan-Windows: TipsDelays 500 200
+*FvwmIconMan-Windows: TipsFont "xft:Verdana:pixelsize=12"
+*FvwmIconMan-Windows: TipsBorderWidth 0
+*FvwmIconMan-Windows: TipsColorset $[cs-panel-inactive]
+*FvwmIconMan-Windows: TipsJustification leftup
+# Button look {{{3
+*FvwmIconMan-Windows: PlainButton flat
+*FvwmIconMan-Windows: FocusButton flat
+*FvwmIconMan-Windows: SelectButton flat
+*FvwmIconMan-Windows: FocusAndSelectButton flat
+*FvwmIconMan-Windows: IconButton flat
+# Colorsets {{{3
+*FvwmIconMan-Windows: Colorset $[cs-panel-inactive]
+*FvwmIconMan-Windows: PlainColorset $[cs-panel-wininactive]
+*FvwmIconMan-Windows: FocusColorset $[cs-panel-winactive]
+*FvwmIconMan-Windows: SelectColorset $[cs-panel-active]
+*FvwmIconMan-Windows: FocusAndSelectColorset $[cs-panel-active]
+*FvwmIconMan-Windows: IconColorset $[cs-panel-inactive]
+# Actions {{{3
+*FvwmIconMan-Windows: Action Mouse 1 A SendCommand "Function Window-Focus-DefaultDesk-Raised"
+*FvwmIconMan-Windows: Action Mouse 2 $[Mod2] SendCommand "Close"
+*FvwmIconMan-Windows: Action Mouse 2 $[Mod0] SendCommand "Window-Iconify"
+*FvwmIconMan-Windows: Action Mouse 3 $[Mod] SendCommand "Function Window-Focus-CurrentDesk-Raised"
+# }}}3
+
+PipeRead 'echo SetEnv Windows-Columns $(($[FvwmButtons-Columns]-$[Desk-Pages-X]))'
+*FvwmButtons-BotPanel: ($[Windows-Columns]x1, Frame 0, Padding 0 0, \
+  Swallow(UseOld, Hints, Respawn) "FvwmIconMan-Windows" "Module FvwmIconMan FvwmIconMan-Windows"))
+# }}}2
+
+# Pager {{{2
+All (FvwmPager) Close
+DestroyModuleConfig FvwmPager: *
+
+PipeRead 'echo DesktopSize $[Desk-Pages-X]x$[Desk-Pages-Y]'
+
+*FvwmPager: MiniIcons
+*FvwmPager: Font none
+*FvwmPager: WindowBorderWidth 1
+*FvwmPager: Window3DBorders
+#*FvwmPager: NoSeparators
+*FvwmPager: UseSkipList
+*FvwmPager: Colorset * $[cs-panel-inactive]
+*FvwmPager: HilightColorset * $[cs-panel-active]
+*FvwmPager: WindowColorsets $[cs-panel-wininactive] $[cs-panel-winactive]
+
+*FvwmButtons-BotPanel: ($[Desk-Pages-X]x1, Frame 0, Padding 0 0, \
+  Swallow(UseOld, Hints, Respawn) "FvwmPager" "Module FvwmPager FvwmPager"))
+
+# Change desktop pages using mouse wheel on pager
+Mouse (FvwmPager) 4 W $[Mod] GotoPage-Right
+Mouse (FvwmPager) 5 W $[Mod] GotoPage-Left
+# }}}2
+
+Module FvwmButtons FvwmButtons-BotPanel
+
+# Override FVWM style (it's applied later)
+#Autohidng of the bottom panel.
+Style FvwmButtons-BotPanel StaysOnTop
+Style FvwmButtons-BotPanel NoIcon
+EdgeCommand Bottom All (FvwmButtons-BotPanel) Iconify
+
+# Settings for icons on the desktop {{{1
+Style * IconBox 1200x800+30+30, IconFill left top, IconGrid 30 30
+Style * StickyIcon
+
+Test (EnvMatch MusicPlayer mplayer) Style FvwmButtons-Panel StaysOnTop
+Test (EnvMatch MusicPlayer mplayer) Style FvwmButtons-Panel NoIcon
+Test (EnvMatch MusicPlayer mplayer) EdgeCommand Left All (FvwmButtons-Panel) Iconify
+
+# Settings of Trayer {{{1
+Test (!EnvMatch MusicPlayer alsaplayer, !EnvMatch MusicPlayer mplayer) SetEnv NotificationGeom 75
+Test (EnvMatch MusicPlayer alsaplayer) SetEnv NotificationGeom 99
+Test (EnvMatch MusicPlayer mplayer) SetEnv NotificationGeom 99
+
+# Settings of stalonetray {{{2
+DestroyFunc NotificationArea-Stalone
+AddToFunc NotificationArea-Stalone
++ I SetEnv trayer_ic_size "24"
++ I SetEnv trayer_area_width "24"
++ I SetEnv trayer_area_eigth "$[trayer_width]"
++ I SetEnv trayer_x "+25"
++ I SetEnv trayer_y "-$[NotificationGeom]"
++ I SetEnv trayer_ic_grav "N"
++ I SetEnv trayer_vert ""
+
+# Settings of trayer {{{2
+DestroyFunc NotificationArea-Trayer
+AddToFunc NotificationArea-Trayer
++ I SetEnv trayer_width_t "request"
++ I SetEnv trayer_heigth_t "pixel"
++ I SetEnv trayer_edge "left"
++ I SetEnv trayer_align "right"
++ I SetEnv trayer_marge "$[NotificationGeom]"
++ I SetEnv trayer_dist "25"
++ I SetEnv trayer_width_w ""
+
+Test (EnvMatch NotificationAreaManager stalonetray) NotificationArea-Stalone
+Test (EnvMatch NotificationAreaManager trayer) NotificationArea-Trayer
+Test (!EnvMatch trayer_width 0) TrayerPanel
+
+# ViM modeline {{{1
+# vim:foldmethod=marker:foldenable:foldlevel=0:ft=fvwm

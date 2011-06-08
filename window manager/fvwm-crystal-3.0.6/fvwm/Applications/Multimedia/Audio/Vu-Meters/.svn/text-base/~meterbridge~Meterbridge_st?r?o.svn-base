@@ -1,0 +1,4 @@
+#!/bin/sh
+
+exec meterbridge -t dpm in_1 in_2 $@
+

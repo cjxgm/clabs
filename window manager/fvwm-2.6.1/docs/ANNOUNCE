@@ -1,0 +1,14 @@
+FVWM 2.6.1
+==========
+
+Latest stable release fixes the following:
+
+This is a bug-fix release only, there are no new features.
+
+* Minor glitches in fvwm-menu-desktop, specifically:
+    * Perl version check to use 5.008;
+    * Checking for XML::Parser a runtime option, as this module is a
+      non-standard perl module which isn't guaranteed to be on all systems
+      when it's run.
+
+* Force the version of Fribidi to be >= 0.19.2

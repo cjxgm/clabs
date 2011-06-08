@@ -1,0 +1,64 @@
+# Support for ALSA mixer
+# Written by: Maciej Delmanowski <harnir@linux.net.pl>
+# Dominique Michel: support for alsamixergui(s) + dB volume control
+
+# Test if the sound card is capable of dB control:
+PipeRead 'echo SetEnv SnddB `amixer get Master\\\|grep db -c`'
+# PipeRead 'echo SetEnv SnddB 1'
+
+# Binding for multimedia keys
+Key XF86AudioLowerVolume A $[Mod0] Mixer-Volume-Down "5"
+Key XF86AudioRaiseVolume A $[Mod0] Mixer-Volume-Up "5"
+
+DestroyFunc Mixer-Volume
+AddToFunc Mixer-Volume
++ I Exec exec amixer set 'Master' $0 > /dev/null
+
+DestroyFunc Mixer-Volume-dB
+AddToFunc Mixer-Volume-dB
++ I Exec exec amixer -c 0 -- set 'Master' $0 > /dev/null
+
+DestroyFunc Mixer-Volume-Up
+AddToFunc Mixer-Volume-Up
++ I Exec exec amixer set 'Master' $0%+ > /dev/null
+
+DestroyFunc Mixer-Volume-Down
+AddToFunc Mixer-Volume-Down
++ I Exec exec amixer set 'Master' $0%- > /dev/null
+
+# Launch and stop alsamixer. If you have more as one sound card, install
+# alsamixer, alsamixergui and bmpdj. alsamixerguis is part of bmpdj.
+DestroyFunc Mixer-GUI
+AddToFunc Mixer-GUI
++ I All ("ALSA Mixer") Close
++ I TestRc (NoMatch) None ("ALSA Mixer") Test (x alsamixerguis) X alsamixerguis
++ I TestRc (Match) None ("ALSA Mixer") Test (x alsamixergui) X alsamixergui
++ I TestRc (Match) None ("ALSA Mixer") AT "ALSA Mixer" alsamixer
+
+# Mixer menu
+DestroyMenu /Mixer
+AddToMenu /Mixer
++ '$[gt.Show main mixer]' Mixer-GUI
++ "" Nop
+Test (!EnvMatch SnddB 0) + " 0 dB" Mixer-Volume-dB 0dB
+Test (!EnvMatch SnddB 0) + " -3 dB" Mixer-Volume-dB "-3dB"
+Test (!EnvMatch SnddB 0) + " -6 dB" Mixer-Volume-dB "-6dB"
+Test (!EnvMatch SnddB 0) + "-12 dB" Mixer-Volume-dB "-12dB"
+Test (!EnvMatch SnddB 0) + "-18 dB" Mixer-Volume-dB "-18dB"
+Test (!EnvMatch SnddB 0) + "-24 dB" Mixer-Volume-dB "-24dB"
+Test (!EnvMatch SnddB 0) + "-30 dB" Mixer-Volume-dB "-30dB"
+Test (!EnvMatch SnddB 0) + "-36 dB" Mixer-Volume-dB "-36dB"
+Test (EnvMatch SnddB 0) + "100%%" Mixer-Volume 100
+Test (EnvMatch SnddB 0) + " 90%%" Mixer-Volume 90
+Test (EnvMatch SnddB 0) + " 80%%" Mixer-Volume 80
+Test (EnvMatch SnddB 0) + " 50%%" Mixer-Volume 50
+Test (EnvMatch SnddB 0) + " 30%%" Mixer-Volume 30
++ "  0" Mixer-Volume 0
+Test (!EnvMatch SnddB 0) + "" Nop
+Test (!EnvMatch SnddB 0) + " +6 dB" Mixer-Volume-dB "6dB+"
+Test (!EnvMatch SnddB 0) + " +3 dB" Mixer-Volume-dB "3dB+"
+Test (!EnvMatch SnddB 0) + " -3 dB" Mixer-Volume-dB "3dB-"
+Test (!EnvMatch SnddB 0) + " -6 dB" Mixer-Volume-dB "6dB-"
+
+
+# vim:ft=fvwm

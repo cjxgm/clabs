@@ -1,0 +1,222 @@
+FVWM-Crystal Keyboard Bindings Reference
+Written by: Maciej Delmanowski <harnir@berlios.de>
+-----------------------------------------------------
+
+In this file you can find all keyboard bindings used in FVWM-Crystal desktop.
+
+Legend:
+	Alt - Meta (Alt)
+	Win_L - Windows Left
+	Win_R - Windows Right
+	Menu - a "menu" key
+	KP_ - means that following key is on the numeric keyboard
+	LMB - Left Mouse Button
+	RMB - Right Mouse Button
+	MMB - Middle Mouse Button
+
+
+Terminal windows
+-----------------------------------------------------------------------------
+Alt + ` (grave)
+	Opens "QuakeConsole", a terminal similar to console available in FPP
+	games, like Quake series. It's a normal terminal where you can launch
+	commands. It stays on top of other windows, is visible on all
+	desktops. When you press Alt+` again, it will roll up and hide,
+	waiting for your next press of Alt+`, when it will show up again, so
+	you can launch a command in this terminal and hide it.
+
+Alt + Shift + ` (grave)
+	It will open new terminal window, Aterm by default.
+
+Alt + ;
+	Opens FvwmConsole in the lower-left corner of the screen, where you
+	can issue FVWM commands, and sometimes see error messages. The same
+	combination will hide/unhide it.
+
+
+System and Applications menu
+-----------------------------------------------------------------------------
+Alt + Menu
+	Opens a small menu with all the menus from ApplicationPanel and
+	Docklet. You can navigate the menu using cursor keys, or h, j, k, l,
+	Escape cancels the selection, Enter selects a menu position.
+
+Alt + Win_R
+	Opens an /Applications menu which contains a list of available
+	applications. You can use arrow keys or hjkl to move between menu
+	entries, Enter to select an entry and Escape to close the menu.
+
+
+Desktop switching & moving windows between desktops
+-----------------------------------------------------------------------------
+Alt + Escape
+	Swiches between two last used pages of the desktop.
+
+Alt + F1, F2, F3, F4, F5, F6, F7, F8
+	Switches to the selected page of the desktop, from 1 to 8.
+
+Alt + Shift + F1, F2, F3, F4, F5, F6, F7, F8
+	Moves active window to selected page, from 1 to 8.
+
+Alt + [
+	Go to the page on the left side of the current one.
+
+Alt + ]
+	Go to the page on the right side of the current one.
+
+Alt + Shift + [
+	Move the focused window to the page on the left side of the current
+	one and go there.
+
+Alt + Shift + ]
+	Move the focused window to the page on the right side of the current
+	one and go there.
+
+
+Window movement on a single desktop
+-----------------------------------------------------------------------------
+Alt + h, j, k, l
+	Move windows to selected screen edge, centered:
+		  j
+		h   k
+		  l
+
+Alt + Shift + h, j, k, l
+	Move windows to selected screen corner:
+		h  k
+		j  l
+
+
+Window and icon list
+-----------------------------------------------------------------------------
+Alt + Tab
+	Shows a list of opened windows on the current page, allows you to
+	switch between them. Last active window will be at the end of the
+	list, previously active window will be at the top - that way quickly
+	pressed and released Alt+Tab will switch between two last used
+	windows.
+
+Alt + Shift + Tab
+	Shows a list of iconified windows, with thumbnails. After releasing
+	Alt selected window will show up on the current page. Escape cancels
+	this operation.
+
+
+Window resizer
+-----------------------------------------------------------------------------
+Alt + Shift + 1, 2, 3, 4, 5, 6, 7, 8, 9, 0
+	Resizes currently focused window in different ways. Try it to see what
+	happens :)
+
+
+Music player and audio mixer
+-----------------------------------------------------------------------------
+Alt + Z
+	Selects prevouse track in music player.
+
+Alt + X
+	Starts playback in music player.
+
+Alt + C
+	Pauses playback in music player.
+
+Alt + V
+	Stops playback in music player.
+
+Alt + B
+	Selects next track in music player.
+
+Alt + N
+	Selects prevous track ignoring "Shuffle" setting in music player.
+
+Alt + M
+	Selects next track ignoring "Shuffle" setting in music player.
+
+Alt + ,
+	Lowers the volume by 10%.
+
+Alt + .
+	Raises the volume by 10%.
+
+Alt + Shift + ,
+	Lowers the volume by 5%.
+
+Alt + Shift + .
+	Raises the volume by 5%.
+
+Alt + / (slash)
+	Activates the search function of the music player (currently only XMMS
+	with XMMS-Find)
+
+Alt + Shift + / (slash)
+	Toggles sequential/random playback
+
+
+Numeric keyboard - window focus
+-----------------------------------------------------------------------------
+KP_1, KP_2, KP_3, KP_4, KP_6, KP_7, KP_8, KP_9
+	Change focus in the selected direction from the currently focused
+	window.
+
+KP_5
+	Switch focus between two closest windows on the current page.
+
+
+Numeric keyboard - window movement
+-----------------------------------------------------------------------------
+Alt + KP_1, KP_2, KP_3, KP_4, KP_5, KP_6, KP_7, KP_8, KP_9
+	Move currently focused window to the selected part of the screen,
+	corresponding to the numbers on the numeric keyboard. Pressing it
+	twice very fast moves a window instantly.
+
+
+Numeric keyboard - window controls
+-----------------------------------------------------------------------------
+KP_0 or Alt + - (substract)
+	Raise currently focused window.
+
+KP_. or Alt + - (substract)
+	Lower currently focused window.
+
+KP_/
+	Shade or unshade currently focused window.
+
+Alt + KP_/
+	Stick or unstick currently focused window.
+
+KP_* or Alt + = (equal)
+	Maximize currently focused window.
+
+Alt + KP_* or Alt + Shift + = (equal)
+	Make currently focused window a "fullscreened" window. It looses the
+	titlebar and border and is maximized to the entire screen.
+	Fullscreened window cannot be lowered or iconified. Pressing Alt+KP_*
+	on the fullscreened window brings back the titlebar and border and
+	resizes a window to it's previous size and position.
+
+Alt + KP_- or Alt + Backspace
+	Iconifies currently focused window (or makes a thumbnail).
+
+Alt + Shift + KP_- or Alt + Shift + Backspace
+	Closes currently focused window.
+	
+KP_+
+	Moves window to the default layer, where are "normal" windows.
+
+Alt + KP_+
+	Moves window to the upper layer, where are "always on top" windows.
+
+Alt + Shift + KP_+
+	Moves window to the lower layer, where are "always at botton"
+	windows.
+
+
+Other functions
+-----------------------------------------------------------------------------
+Print Screen
+	Makes a screenshot of the entire desktop in .jpg format and puts it in
+	'~/.fvwm/screenshots/' directory (by default).
+
+Alt + Home
+	Move mouse cursor to "home position" - top left corner of the screen.
+

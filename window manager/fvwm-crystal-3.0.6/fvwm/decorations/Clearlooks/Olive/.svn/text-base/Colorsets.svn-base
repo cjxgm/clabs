@@ -1,0 +1,24 @@
+# Colorset setup
+
+# What colorset numbers do we use?
+SetEnv cs-window-inactive "9"
+SetEnv cs-window-active "10"
+SetEnv cs-window-inactiveborder "11"
+SetEnv cs-window-activeborder "12"
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# Colorsets
+
+Colorset $[cs-window-inactive] \
+Foreground "black", Background "black", \
+Hilight "white", Shadow "#e0d9d2", \
+Fgsh "#e0d9d2"
+
+Colorset $[cs-window-active] \
+Foreground "white", Background "black", \
+Hilight "white", Shadow "gray", \
+fgsh "black"
+
+Colorset $[cs-window-inactiveborder] Background "#3d3c33"
+Colorset $[cs-window-activeborder] Background "#2c2f28"
+

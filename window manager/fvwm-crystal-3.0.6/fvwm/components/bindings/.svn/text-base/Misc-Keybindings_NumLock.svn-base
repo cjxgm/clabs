@@ -1,0 +1,24 @@
+# Some default keybindings, not fitting anywhere else
+
+# Open QuakeConsole using Alt+`
+Key grave A $[Mod1]2 QuakeConsole
+
+# Open new terminal using Alt+Shift+`
+Key grave A $[Mod2]2 AA
+
+# Open FvwmConsole using Alt+;
+Key semicolon A $[Mod1]2 FvwmMiniConsole
+
+# Screenshot
+Key Print A $[Mod]2 Screenshot
+
+# Application menu
+# Windows Left
+#Key Super_L A $[Mod1]2 Menu /Applications root c c
+# Windows Right
+Key Super_R A $[Mod1]2 Menu /Applications root c c
+
+# Main menu
+Key Menu A $[Mod1]2 Menu /FVWM-Crystal root c c
+
+# vim:ft=fvwm

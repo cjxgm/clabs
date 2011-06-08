@@ -1,0 +1,23 @@
+# Menu for different ways to run away ;)
+# Created by: Pawel "NEMO" Drygas <nemo@braxis.org>
+# Modified by Dominique Michel <dominique_libre@sourceforge.net> for use with
+# session managers as gnome-session
+
+DestroyMenu /Exit
+AddToMenu /Exit 
+Test (x xscreensaver) + '%22x22/fvwm-crystal/system-lock-screen.png%$[gt.Lock screen]' X xscreensaver-command -lock
++ '%22x22/fvwm-crystal/view-refresh.png%$[gt.Restart]' Restart
+Test (EnvIsSet SESSION_MANAGER) + '%22x22/fvwm-crystal/system-log-out.png%$[gt.Logout]' QuitSession
+Test (!EnvIsSet SESSION_MANAGER) + '%22x22/fvwm-crystal/system-log-out.png%$[gt.Logout]' Quit
++ '' Nop
+Test (EnvIsSet SESSION_MANAGER) + '%22x22/fvwm-crystal/gdm.png%$[gt.Save session]' Exec exec gnome-session-save --gui
+Test (EnvIsSet SESSION_MANAGER) + '%22x22/fvwm-crystal/gdm.png%$[gt.Manage session]' Exec exec gnome-session-properties
+
+DestroyFunc Exit-SelectLoginManager
+AddToFunc Exit-SelectLoginManager
++ I Test (x gdmflexiserver) PipeRead 'pidof gdm > /dev/null && echo "Include components/functions/Exit-gdm" || echo "Test (x sudo) Include components/functions/Exit-sudo"'
++ I TestRc (NoMatch) Include components/functions/Exit-sudo
+
+Exit-SelectLoginManager
+
+# vim:ft=fvwm

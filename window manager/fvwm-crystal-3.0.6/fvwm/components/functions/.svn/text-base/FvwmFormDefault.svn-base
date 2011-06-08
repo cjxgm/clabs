@@ -1,0 +1,14 @@
+# Default settings for FvwmForm
+*FvwmFormDefault: Colorset $[cs-panel-inactive]
+*FvwmFormDefault: ItemColorset $[cs-panel-active]
+*FvwmFormDefault: Font "xft:Verdana:pixelsize=13"
+Test (EnvIsSet FVWM_FLAG_UTF-8) *FvwmFormDefault: Font "xft:Verdana:pixelsize=13:encoding=iso10646-1"
+*FvwmFormDefault: InputFont "xft:Monospace:pixelsize=13"
+Test (EnvIsSet FVWM_FLAG_UTF-8) *FvwmFormDefault: InputFont "xft:Monospace:pixelsize=13:encoding=iso10646-1"
+*FvwmFormDefault: ButtonFont "xft:Verdana:pixelsize=13:Bold"
+Test (EnvIsSet FVWM_FLAG_UTF-8) *FvwmFormDefault: ButtonFont "xft:Verdana:pixelsize=13:bold:encoding=iso10646-1"
+*FvwmFormDefault: TimeoutFont "xft:Verdana:pixelsize=13:Bold"
+Test (EnvIsSet FVWM_FLAG_UTF-8) *FvwmFormDefault: ButtonFont "xft:Verdana:pixelsize=13:Bold:encoding=iso10646-1"
+
+# ViM modeline {{{1
+# vim:foldmethod=marker:foldenable:foldlevel=0:filetype=fvwm

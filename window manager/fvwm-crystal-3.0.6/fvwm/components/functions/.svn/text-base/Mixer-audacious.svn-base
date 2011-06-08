@@ -1,0 +1,29 @@
+# Support for Audacious music player - mixer control
+# Written by: Rafael Antonio Porras Samaniego <spoek@distrobit.net>
+
+DestroyFunc Mixer-Volume
+AddToFunc Mixer-Volume
++ I Exec exec audtool set-volume $0
+
+DestroyFunc Mixer-Volume-Up
+AddToFunc Mixer-Volume-Up
++ I Exec exec audtool set-volume +$0
+
+DestroyFunc Mixer-Volume-Down
+AddToFunc Mixer-Volume-Down
++ I Exec exec audtool set-volume -$0
+
+DestroyFunc Mixer-GUI
+AddToFunc Mixer-GUI
++ I Nop
+
+DestroyMenu /Mixer
+AddToMenu /Mixer
++ "100%%" Mixer-Volume 100
++ "90%%" Mixer-Volume 90
++ "80%%" Mixer-Volume 80
++ "50%%" Mixer-Volume 50
++ "30%%" Mixer-Volume 30
++ "0%%" Mixer-Volume 0
+
+# vim:ft=fvwm

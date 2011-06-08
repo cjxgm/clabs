@@ -1,0 +1,367 @@
+.TH MouseBindings 1  "mai 05, 2007" "version 3.0.5" "FVWM-Crystal"
+.SH NAME
+\fBFVWM-Crystal Mouse Bindings Reference
+\fB
+.SH AUTHOR
+Maciej Delmanowski <harnir@gna.org>
+.SH DESCRIPTION
+In this file you can find all mouse bindings used in FVWM-Crystal desktop.
+.SS LEGEND
+.TP
+.B
+Alt
+Meta (Alt)
+.TP
+.B
+Win_L
+Windows Left
+.TP
+.B
+Win_R
+Windows Right
+.TP
+.B
+Menu
+a "menu" key
+.TP
+.B
+KP_
+means that following key is on the numeric keyboard
+.TP
+.B
+LMB
+Left Mouse Button
+.TP
+.B
+RMB
+Right Mouse Button
+.TP
+.B
+MMB
+Middle Mouse Button
+.SH THE DESKTOP
+.TP
+.B
+LMB (+ hold)
+In selected recipes open applications or system menu.
+.TP
+.B
+RMB
+Open a terminal window.
+.TP
+.B
+MMB
+Toggle the ability to switch desktop pages using screen edge (off/on, defult off).
+.TP
+.B
+Alt + MMB
+Hide or show desktop panels.
+.SH WINDOW THUMNAILS
+.TP
+.B
+Doubleclick LMB
+Bring back minimized window.
+.TP
+.B
+RMB
+Open a terminal window.
+.TP
+.B
+Alt + MMB
+Close selected window.
+.SH WINDOW
+.TP
+.B
+Alt + LMB
+Raise selected window.
+.TP
+.B
+Alt + LMB + drag
+Raise window and move it on the screen.
+.TP
+.B
+Alt + RMB
+Lower selected window.
+.TP
+.B
+Alt + RMB + drag
+Move window on the screen without raising.
+.TP
+.B
+Alt + MMB
+Resize selected window (move bottom-right corner).
+.SH WINDOWS TITLEBAR
+.TP
+.B
+LMB
+Raise selected window.
+.TP
+.B
+LMB + drag
+Raise window and move it on the screen.
+.TP
+.B
+RMB
+Lower selected window.
+.TP
+.B
+RMB + drag
+Move window on the screen without raising.
+.TP
+.B
+MMB
+Shade or unshade window.
+.TP
+.B
+MMB + drag
+Resize selected window (choose window \fBedge\fP(s) to move).
+.SH TITLEBAR BUTTONS
+.TP
+.B
+LMB, RMB, MMB + hold
+Show button \fBmenu\fP(s).
+.SH FVWM CRYSTAL BUTTONS MODEL
+.SS CLOSE BUTTONS
+.TP
+.B
+LMB
+Close selected window.
+.TP
+.B
+RMB
+Iconify selected window.
+.TP
+.B
+MMB
+Identify selected window.
+.TP
+.B
+Alt + MMB
+Destroy (kill) selected window.
+.SS MAXIMISE BUTTON
+.TP
+.B
+LMB
+Maximize window.
+.TP
+.B
+Alt + LMB
+Take the free space (to the next windows).
+.TP
+.B
+RMB
+Maximize window horizontally.
+.TP
+.B
+Alt + RMB
+Take the free space horizontally.
+.TP
+.B
+MMB
+Maximize window vertically.
+.TP
+.B
+Alt + MMB
+Take the free space horizontally.
+.SS WINDOW OPTIONS BUTTON
+.TP
+.B
+LMB
+Set window to stay on top.
+.TP
+.B
+Alt + LMB
+Set window to stay on bottom.
+.TP
+.B
+RMB
+Toggle sticky window mode.
+.TP
+.B
+MMB
+Set window in "normal" mode (clears stay on top/bottom).
+.SS ARROWS BUTTON
+.TP
+.B
+LMB
+Move selected window to the left (upper) desktop page.
+.TP
+.B
+Alt + LMB
+Go to the left (upper) page with selected window.
+.TP
+.B
+RMB
+Move selected window to the right (lower) desktop page.
+.TP
+.B
+Alt + RMB
+Go to the right (lower) page with selected window.
+.TP
+.B
+MMB
+Move selected window to the previously active desktop page.
+.TP
+.B
+Alt + MMB
+Go to the previously active desktop page with selected window.
+.SH OTHER BUTTON MODELS
+.SS CLOSE BUTTON
+.TP
+.B
+LMB
+Close window.
+.TP
+.B
+RMB (in OS/2 and NeXTStep button model)
+Iconify window.
+.SS MAXIMISE BUTTON
+.TP
+.B
+LMB
+Maximize window.
+.TP
+.B
+Alt + LMB
+Take the free space (to the next windows).
+.TP
+.B
+RMB
+Maximize window horizontally.
+.TP
+.B
+Alt + RMB
+Take the free space horizontally.
+.TP
+.B
+MMB
+Maximize window vertically.
+.TP
+.B
+Alt + MMB
+Take the free space horizontally.
+.SS ICONIFY BUTTON
+.TP
+.B
+LMB
+Iconify window.
+.SH APPLICATIONS PANEL
+.TP
+.B
+LMB
+Open the menu of selected application group.
+.TP
+.B
+RMB
+Launch application which is shown on the app panel.
+.SH DESKTOP PAGER
+.TP
+.B
+LMB
+Switch to selected desktop/page.
+.TP
+.B
+RMB
+Switch to selected region.
+.TP
+.B
+MMB
+Move selected miniature window to a different desktop page, or move outside the pager window to the current desktop.
+.SH WINDOW PANEL
+(shows currently opened windows)
+.TP
+.B
+LMB
+Go to the window's desktop page, raise and focus it.
+.TP
+.B
+RMB
+Bring selected window to the current page, raise and focus it.
+.TP
+.B
+MMB
+Iconify/deiconify selected window.
+.SH ICON PANEL
+(shows currently iconified windows)
+.TP
+.B
+LMB
+Bring back iconified window on the current page, raise and focus it.
+.TP
+.B
+RMB
+Go to the window's desktop page, bring window back, raise and focus it.
+.SH CLOCK
+.TP
+.B
+LMB, MMB
+Toggle between date and time display.
+.TP
+.B
+RMB
+Toggle between 12h and 24h time format.
+.SH FVWM CRYSTAL BUTTON
+.TP
+.B
+LMB
+Open the system menu.
+.TP
+.B
+RMB
+Change wallpaper randomly.
+.SH PLAY BUTTON
+.TP
+.B
+LMB
+Open the music player menu.
+.TP
+.B
+RMB
+Toggle playback/pause.
+.TP
+.B
+MMB
+Show/hide music player's \fBwindow\fP(s).
+.TP
+.B
+Mouse wheel
+Raise or lower volume.
+.SH FORWARD BUTTON
+.TP
+.B
+LMB
+Select next song on the playlist or select next random song (depends on the shuffle mode).
+.TP
+.B
+RMB
+Select previous song on the playlist or select previous random song (depends on the shuffle mode).
+.TP
+.B
+Mouse wheel
+Select next/previous random song or select next/previous song on the playlist (depends on the shuffle mode, opposite function of the mouse buttons).
+.SH WINDOWS BUTTON
+.TP
+.B
+LMB
+Show list of currently opened windows.
+.TP
+.B
+RMB
+Show list of currently iconified windows.
+.TP
+.B
+MMB
+Place again all windows on the current desktop page.
+.SH DESKTOP BUTTON
+.TP
+.B
+LMB or RMB
+Show/hide desktop pager window.
+.TP
+.B
+MMB
+Go to previously active desktop page.
+.TP
+.B
+Mouse wheel
+Go to next/previous desktop page.

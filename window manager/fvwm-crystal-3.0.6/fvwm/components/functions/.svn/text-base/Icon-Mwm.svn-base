@@ -1,0 +1,18 @@
+# Icons - Mwm style
+
+Style * IconTitle
+Style * IconTitleColorset $[cs-panel-wininactive]
+Style * HilightIconTitleColorset $[cs-panel-winactive]
+Style * IconBackgroundColorset $[cs-panel-wininactive]
+Style * IconTitleRelief 0
+Style * IconBackgroundRelief 0
+Style * IconBackgroundPadding 10
+Style * IconFont "xft:Verdana:pixelsize=14:Bold"
+Test (EnvIsSet FVWM_FLAG_UTF-8) Style * IconFont "xft:Verdana:pixelsize=14:Bold:encoding=iso10646-1"
+Style * IndexedIconName
+Style * IconSize 48 48
+
+# Icons can be moved around
+AddToFunc Icon-Restore-CurrentDesk M Move
+
+# vim:ft=fvwm

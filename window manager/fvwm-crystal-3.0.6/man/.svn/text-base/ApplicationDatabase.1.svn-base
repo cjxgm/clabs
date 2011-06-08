@@ -1,0 +1,161 @@
+.TH ApplicationDatabase 1  "mai 06, 2007" "version 3.0.5" "FVWM-Crystal"
+.SH NAME
+\fBFVWM-Crystal: application database
+\fB
+.SH AUTHOR
+Maciej Delmanowski <harnir@berlios.de>
+.SH DESCRIPTION
+Application database (and fvwm-crystal.apps script) is one of the most interesting elements of FVWM-Crystal desktop. Thanks to these elements you can have a panel or the menu with applications currently installed on a given system.
+.PP
+Database structure is very flexible, allowing you to combine several databases into one (system-wide and user-wide, for example), mask selected applications or even whole directories, so they won't be visible, and so on.
+.PP
+Application panel/menu generator also has many interesting features - you can create different panels and menu systems and easily blend them with your FVWM configuration.
+.SH DATABASE STRUCTURE
+A database is a set of directories and scripts with special naming structure. Each directory and subdirectory creates a "category" in which you can put selected applications, for example "Games" or "Office". Categories can be nested, in turn creating subcategories, like "FPP Games" or "OpenOffice.org". In generation process each subdirectory is transformed into a submenu containg menu items specified in this subdirectory.
+.PP
+Each directory and script have a special naming pattern. Here's the list of possible names:
+.PP
+.nf
+.fam C
+        entry_name
+        ~entry_name
+        ~~entry_name
+        ~executable_name~entry_name
+        priority~entry_name
+        priority~~entry_name
+        priority~executable_name~entry_name
+
+.fam T
+.fi
+.TP
+.B
+entry_name
+is the name of the menu item or button on a panel. This is a required field. If it's the only one present, generator assumes that this entry should be put in the menu or panel without checking if associated application is present.
+.TP
+.B
+executable_name
+is used to specify a name of the executable file. It's used to determine if selected application is installed on the system, and in turn decide if this entry should be put in the menu/panel or not. Applications are searched in the directories specified using $PATH environment variable. This field is optional, and is only tested, if '\fB--check-exec\fP' option is present.
+.TP
+.B
+priority
+is a numeric only field (also optional). It is used in the sorting mechanism to determine, what "importance" has particular menu item. Entries with higher priorities will be put higher in the menu system (therefore closer to the mouse pointer), lower priorities will be pushed at the end of the menu. By default an entry without priority field has priority set to 0.
+.PP
+As you can see, each directory and script name is used to sort and create menus and panels. Also attributes of the files and directories are used in this process. Each directory and script has an executable (x) bit set, for allowing execution (see below) or reading inside directories. This can be used to exclude certain files or directories from the generated menus or panels. By removing the executable bit (chmod \fB-x\fP) from a file or directory you can prevent it to be "seen" by the generator and ommited in the generated menu. By combining this ability with "database merging" (each database masks previous one) you can use, for example, user-side application database to remove certain programs from this users' menu.
+.PP
+Generator doesn't put in the menu entry complete path to the binary it found - instead it puts the path to the script itself. In the end, what users do is not launching applications directly, but instead launching scripts located in the application database, which in turn launch the applications themselves. That means, what's inside of the script, is completely meaningless to the generator; you can write complex scripts which are shown in the menu system and easily launch them.
+.PP
+Instead of using the scripts, you can also make symlinks to selected binaries (using the specified naming rules), they also will be checked and included in the menu system. Script automatically tests, if symlink is correct (ie. target is present), and if the target has an executable bit set.
+.SH DATABASE MASKING
+
+You can give 'fvwm-crystal.apps' script several databases in one command, for example:
+.PP
+.nf
+.fam C
+     fvwm-crystal.apps --database=/some/directory --database=/other/dir
+
+.fam T
+.fi
+When that happens, generator first reads first given database (/some/directory), and after that adds next databases (/other/dir) to the first one. You can use this feature to make changes in separate database that affect generated menus and panels, but not modify the original database itself. This mechanism is used in FVWM-Crystal by combining user-side database located in '~/.fvwm/Applications' with system-wide, located in '/usr/share/fvwm-crystal/fvwm/Applications' (by default).
+.PP
+For successfull "database masking" you need to use the same directory structure as the original database. That means, if you want to modify an entry located in, for example, '/Applications/Games/FPP', you need to create the same directories in your "local" database. You can omit the "priority" field in directory/file names, or change it, thus moving selected menu entry in the menu hierarhy. For example:
+.PP
+.nf
+.fam C
+        system-wide:    /Applications/20~Games/FPP/10~quake~Quake
+        user-wide:      /Applications/Games/FPP/30~quake~Quake
+
+.fam T
+.fi
+File attributes also can be masked. If you want to remove a menu entry (or even entire submenu), you need to create all directories and a script which lead to selected entry, and then remove the executable bit (chmod \fB-x\fP) from the directory or script in your "local" database.
+.PP
+Consequently, if you want to move a menu entry or submenu itself from one place to another in the menu structure, you can create neccesary files in desired location (or make symlinks to files/directories in original database), then create the "old" files and directories, and remove their executable bit. Menu entries will disappear from their original locations and appear in those selected by your database.
+.SH APPLICATION ICONS
+
+Each application has it's own icon. Icon files are found using the entry or exectuable file name, like this:
+.PP
+.nf
+.fam C
+        entry_name.png
+        executable_name.png
+
+.fam T
+.fi
+First 'entry_name' is tested, if icon doesn't exist, script looks for one with 'executable_name'.
+.PP
+Icon directories can be specified using '\fB--search-icons-in\fP' option. You can specify more than one directory by separating them using : (colon) sign.
+.PP
+There are two special file names:
+.TP
+.B
+- directory.png
+is used for the "categories" which doesn't have their own icon (it was not found by the generator in specified directory). You can specify your own name using '\fB--default-dir-icon\fP' option. For example:
+.PP
+.nf
+.fam C
+     ImagePath $[FVWM_USERDIR]/icons/
+     fvwm-crystal.apps --search-icons-in=$[FVWM_USERDIR]/icons/ \
+
+.nf
+.fam C
+               --default-dir-icon=22x22/dir.png
+
+.fam T
+.fi
+.RS
+Result: <ImagePath>22x22/dir.png
+.RE
+.TP
+.B
+- default.png
+is used for applications which doesn't have their own icon. You can use '\fB--default-file-icon\fP' to change the name, in the same way '\fB--default-dir-icon\fP' can be used.
+.SH PANEL MENU GENARATOR
+
+Here I will describe some example uses of the generator, if you want to see complete list of commandline options, you can use command:
+.PP
+.nf
+.fam C
+        fvwm-crystal.apps --help | less
+
+
+.fam T
+.fi
+.SS CREATING PANELS
+
+Generator doesn't create all panel options specified in 'man FvwmButtons', just the button themselves. Therefore you can use FVWM configuration to decide how the resulting panel will look and where it will be placed. For example, you can create panels with swallowed windows and application buttons, by putting PipeRead command with 'fvwm-crystal.apps' in between the panel configuration, like this:
+.PP
+.nf
+.fam C
+        *SomePanel: (1x1, Swallow FvwmPager)
+        PipeRead 'fvwm-crystal.apps --database=/some/base \
+
+.nf
+.fam C
+                --panel-name="SomePanel"'
+.fam T
+.fi
+*SomePanel: (1x1, Swallow xclock)
+.PP
+You can make application panels which will open app menus, with different icon size on the panel and in the menu (big on the panel, small in the menu), by using generator several times with different options. For example:
+.PP
+.nf
+.fam C
+        PipeRead 'fvwm-crystal.apps --database=/some/base \
+
+.nf
+.fam C
+                --panel-action1=menu --search-icons-in=/icons/32x32/apps \
+
+                --no-menus'
+.fam T
+.fi
+PipeRead 'fvwm-crystal.apps \fB--database\fP=/some/base \
+.PP
+.nf
+.fam C
+                --search-icons-in=/icons/22x22/apps --no-panel'
+
+
+.fam T
+.fi
+.SH TODO
+add more examples here\.\.\.
