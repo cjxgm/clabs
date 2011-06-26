@@ -7,6 +7,7 @@ debug: all
 clean:
 	rm -f calc.c
 	rm -f calc.lex.c
+	rm -f *.o
 	rm -f calc
 rebuild: clean all
 

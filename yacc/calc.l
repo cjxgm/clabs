@@ -1,7 +1,7 @@
 %option noyywrap
 
 VAR			[a-zA-Z]
-NUM			[0-9]+
+NUM			[0-9]+(\.[0-9]+)?
 SYMBOL		[+\-*/\n=()]
 BLANK		[ \t]
 IDENT		"reset"|"mem"|"is"|"and"|"or"|"not"|"quit"
