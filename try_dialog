@@ -1,0 +1,20 @@
+#!/bin/bash
+
+if [ -z "$1" ]; then
+	for t in `seq 2 -1 0`; do
+		dialog --backtitle "Welcome" --title "time" \
+			--infobox "Time elapse: ${t}s" 3 22
+		sleep 1
+	done
+	"$0" 1 | dialog \
+		--backtitle "Progress" --title test \
+			--gauge "Progressing..." 10 50 10 \
+		--and-widget --backtitle "Finish" --title "done" \
+			--msgbox "We are done!" 6 20
+else
+	for t in `seq 0 100`; do
+		echo $t
+		sleep 0.01
+	done
+fi
+

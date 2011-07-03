@@ -1,0 +1,30 @@
+# ============================================================================
+#  Makefile for GCC Win32 version of MiniFMOD test player
+# ============================================================================
+
+# = LIBRARY DEFINITIONS ======================================================
+
+LIBPATH  = ./lib/win32
+LIB      = $(LIBPATH)/libminifmod.a
+INCPATH  = ./include
+
+# = CORE DEFINITIONS =========================================================
+
+CFLAGS   = -s -Os -c -I$(INCPATH) -D__WIN32__ -Wall 
+LFLAGS   = -s -L$(LIBPATH) -lminifmod -lwinmm 
+
+# = MAKEFILE =================================================================
+
+all : test.exe
+
+test.exe : $(LIB) main.o
+	gcc main.o $(LFLAGS) -o test.exe
+
+main.o : main.cpp
+	gcc $(CFLAGS) $<
+
+$(LIB) : 
+	cd src
+	make -f makefile.win32
+	cd ..
+

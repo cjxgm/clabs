@@ -1,0 +1,27 @@
+# ============================================================================
+#  Makefile for Linux version of MiniFMOD test player
+# ============================================================================
+
+# = LIBRARY DEFINITIONS ======================================================
+
+LIBPATH  = ./lib/linux
+LIB      = $(LIBPATH)/libminifmod.a
+SRCPATH  = ./src
+INCPATH  = ./include
+
+# = CORE DEFINITIONS =========================================================
+
+CFLAGS   = -s -Os -c -I$(INCPATH) -D__LINUX__ -Wall 
+LFLAGS   = -s  -L$(LIBPATH) -lminifmod -lpthread -lm 
+
+# = MAKEFILE =================================================================
+
+test : $(LIB) main.o
+	gcc main.o $(LFLAGS) -o test
+
+main.o : main.cpp
+	gcc $(CFLAGS) $<
+
+$(LIB) : 
+	(cd $(SRCPATH); make -f makefile.linux)
+

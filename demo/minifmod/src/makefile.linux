@@ -1,0 +1,56 @@
+# ============================================================================
+#  Makefile for Linux version of MiniFMOD
+# ============================================================================
+
+# = LIBRARY DEFINITIONS ======================================================
+
+LIBPATH  = ../lib/linux
+LIBNAME  = libminifmod.a
+LIB      = $(LIBPATH)/$(LIBNAME)
+OBJS     = fmusic.o \
+           fsound.o \
+           system_file.o \
+           mixer_fpu_ramp.o \
+           mixer_fpu_ramp_asm.o \
+           mixer_clipcopy.o \
+           music_formatxm.o 
+
+# = TEST DEFINITIONS =========================================================
+
+TESTPATH = ..
+TESTNAME = test
+TEST     = $(TESTPATH)/$(TESTNAME)
+
+# = CORE DEFINITIONS =========================================================
+
+CFLAGS   = -s -Os -c -D__LINUX__ -D__COMPILE_MINIFMOD__ -Wall 
+NFLAGS   = -f elf -D__LINUX__ 
+LFLAGS   = -s -L$(LIBPATH) -lminifmod -lpthread -lm 
+AFLAGS   = -rcvs
+
+# = MAKEFILE =================================================================
+
+$(LIB) : $(OBJS)
+	ar $(AFLAGS) $(LIB) $(OBJS)
+
+$(TESTNAME) : $(LIB) main.o
+	gcc main.o $(LFLAGS) -o $(TEST)
+
+%.o : %.cpp
+	gcc $(CFLAGS) $<
+
+%.o : %.c
+	gcc $(CFLAGS) $<
+
+%.o : %.asm
+	nasm $(NFLAGS) $<
+
+mixer_fpu_ramp_asm.o : mixer_fpu_ramp_asm.asm mixer_fpu_ramp_asm.inc
+	nasm $(NFLAGS) $<
+
+mixer_fpu_ramp_asm.inc : genasminc
+	./genasminc >mixer_fpu_ramp_asm.inc
+        
+genasminc : genasminc.c
+	gcc $(CFLAGS) -s -O3 genasminc.c -o genasminc.o
+	gcc -s genasminc.o -o genasminc
