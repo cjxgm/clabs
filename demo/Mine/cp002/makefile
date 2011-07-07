@@ -7,7 +7,8 @@ LDFLAGS = -L../demolino -ldemolino -lglut
 
 all: demo
 clean:
-	rm *.o
+	rm -f *.o
+	rm -f demo
 
 demo: demo.o
 demo.o: demo.c
