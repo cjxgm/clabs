@@ -41,11 +41,11 @@ int main(void)
 	fflush(stdout);
 
 	demo_main(DEMO_TITLE,		// title
-			DEMO_WIN_SIZE,	// w, h
-			100,			// view_w
-			100,			// view_h
-			100,			// view_z
-			30);			// fps
+			  DEMO_WIN_SIZE,	// w, h
+			  100,				// view_w
+			  100,				// view_h
+			  100,				// view_z
+			  30);				// fps
 
 	return 0;
 }
@@ -119,7 +119,7 @@ void render(void)
 
 				glTranslatef(-120, -90, 0);
 				glScalef(5, 5, 1);
-				sprintf(buf, "row %d\tfps %d", row, fps);
+				sprintf(buf, "row %2.2X\tfps %d", row, fps);
 				draw_string(buf);
 
 			} POP;
@@ -177,13 +177,13 @@ void draw(void)
 
 	// Sound FX
 	row = sound_get_row();
-	switch (row) {
-		case 4:
-		case 12:
-		case 20:
-		case 24:
-		case 26:
-		case 28:
+	switch (row % 0x20) {
+		case 0x04:
+		case 0x0C:
+		case 0x14:
+		case 0x18:
+		case 0x1A:
+		case 0x1C:
 			glScalef(1.2, 1.2, 1.2);
 	}
 
