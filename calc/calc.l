@@ -4,7 +4,7 @@ VAR			[a-zA-Z]
 NUM			[0-9]+(\.[0-9]+)?
 SYMBOL		[+\-*/\n=()]
 BLANK		[ \t]
-IDENT		"reset"|"mem"|"is"|"and"|"or"|"not"|"quit"
+IDENT		"reset"|"mem"|"is"|"and"|"or"|"not"|"quit"|"exit"
 
 %{
 typedef struct _key_entry
@@ -22,6 +22,7 @@ KEY_ENTRY keytab[] = {
 	{ "or",			KOR			},
 	{ "not",		KNOT		},
 	{ "quit",		KQUIT		},
+	{ "exit",		KQUIT		},
 };
 
 int key_to_id(const char * name)

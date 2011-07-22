@@ -56,13 +56,13 @@ stmt		: st_assign {}
 						   COLOR_NORMAL "\n",
 						   ($1 ? "true" : "false"));	}
 			| expr
-				{	printf(COLOR_OUTPUT "%f"
+				{	printf(COLOR_OUTPUT "%g"
 						   COLOR_NORMAL "\n", $1);	}
 			| st_system {}
 ;
 st_assign	: VAR '=' expr
 				{	mem[$1] = $3;
-					printf(COLOR_OUTPUT "%c = %f"
+					printf(COLOR_OUTPUT "%c = %g"
 						   COLOR_NORMAL "\n", $1 + 'a', $3);	}
 ;
 st_mem		: KMEM KRESET
@@ -72,13 +72,13 @@ st_mem		: KMEM KRESET
 			| KMEM
 				{	int i;
 					for (i=0; i<26; i++)
-						printf(COLOR_OUTPUT "%c = %f"
+						printf(COLOR_OUTPUT "%c = %g"
 							   COLOR_NORMAL "\n",
 							   i + 'a', mem[i]);	}
 			| KMEM VAR VAR
 				{	int i;
 					for (i=$2; i<=$3; i++)
-						printf(COLOR_OUTPUT "%c = %f"
+						printf(COLOR_OUTPUT "%c = %g"
 							   COLOR_NORMAL "\n",
 							   i + 'a', mem[i]);	}
 ;
