@@ -17,6 +17,9 @@ GLuint textures[TEX_CNT];
 BUTTON btns[4];
 ADJUST adjs[4];
 
+char show_menu = 0;
+char show_adjs = 0;
+
 /******* main *******/
 int main(void)
 {
@@ -56,10 +59,14 @@ void init(void)
 
 	int i;
 	for (i=0; i<4; i++) {
-		button_init(&btns[i], -50, 50 - i*10, 40, 10, "Test");
+		button_init(&btns[i], -50, 50 - i*10, 40, 10, NULL);
 		adjust_init(&adjs[i], +50, 50 - i*10, 40, 10);
 	}
-	btns[1].obj.stat = STAT_DISABLED;
+	btns[0].label = "Show Adjs";
+	btns[1].label = "Hide Adjs";
+	btns[2].obj.stat = STAT_DISABLED;
+	btns[2].label = "---------";
+	btns[3].label = "Exit";
 
 	glutPassiveMotionFunc(motion);
 	glutMouseFunc(mouse);
@@ -70,7 +77,7 @@ void init(void)
 	glDisable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
 	glBlendEquation(GL_FUNC_ADD);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_LINE_SMOOTH);
 	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 	check_error();
@@ -152,33 +159,29 @@ void proc_event(void)
 {
 	int i;
 	for (i=0; i<4; i++) {
-		if (object_mouse(&btns[i].obj, ms_x, ms_y, is_down) == 1)
-			exit(0);
-		adjust_mouse(&adjs[i], ms_x, ms_y, is_down);
+		if (show_menu)
+			if (object_mouse(&btns[i].obj, ms_x, ms_y, is_down) == 1) {
+				switch (i) {
+					case 0:
+						show_adjs = 1;
+						break;
+					case 1:
+						show_adjs = 0;
+						break;
+					case 3:
+						exit(0);
+				}
+
+				show_menu = 0;
+			}
+
+		if (show_adjs)
+			adjust_mouse(&adjs[i], ms_x, ms_y, is_down);
 	}
 }
 
 void motion(int nx, int ny)
 {
-	/*
-	if (mouse_x == -1) {
-		mouse_x = nx;
-		mouse_y = ny;
-		return;
-	}
-
-	if (stat==1) {
-		w += (nx - mouse_x) * 200.0 / 480.0;
-		h += (ny - mouse_y) * 200.0 / 480.0;
-	}
-	if (stat==2) {
-		x += (nx - mouse_x) * 200.0 / 480.0;
-		y += (ny - mouse_y) * 200.0 / 480.0;
-	}
-
-	mouse_x = nx;
-	mouse_y = ny;
-	*/
 	ms_x = nx * 200.0 / 480.0 - 100.0 * 4.0 / 3.0;
 	ms_y = 100 - ny * 200.0 / 480.0;
 
@@ -192,15 +195,18 @@ void motion(int nx, int ny)
 
 void mouse(int a, int b, int x, int y)
 {
-	/*
-	if (a==0 && b==1)
-		stat=0;
-	*/
 	if (a == 0)
-		is_down = !b;
+		is_down = 1;
+	if (a == 3 || a == 4) // Scroll up/down
+		is_down = a - 1;
+
+	if (b == 1)
+		is_down = 0;
+
+	ms_x = x * 200.0 / 480.0 - 100.0 * 4.0 / 3.0;
+	ms_y = 100 - y * 200.0 / 480.0;
 	
 	proc_event();
-
 	/*
 	fprintf(stderr, "%d, %d, %d, %d\n", a, b, x, y);
 	fflush(stderr);
@@ -219,8 +225,11 @@ void draw_demo_0(void)
 
 	int i;
 	for (i=0; i<4; i++) {
-		button_draw(&btns[i]);
-		adjust_draw(&adjs[i]);
+		if (show_menu)
+			button_draw(&btns[i]);
+
+		if (show_adjs)
+			adjust_draw(&adjs[i]);
 	}
 	
 	/* GRID
@@ -240,12 +249,9 @@ void key_press(byte key, int x, int y)
 	switch (key){
 		case 27: // Esc
 			exit(0);
-		/*
-		case 's':
-			if (stat==0) stat=1;
-		case 'g':
-			if (stat==0) stat=2;
-		*/
+		case ' ':
+			show_menu = !show_menu;
+			break;
 		default:
 			fprintf(stderr, "key: %d\n", key);
 	}

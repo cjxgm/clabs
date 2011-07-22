@@ -5,14 +5,14 @@
 #include "demostr.h"
 #include "demoutil.h"
 
-void draw_string3(const char *str, float spacing, float line_height)
+void draw_string3(const char * str, float spacing, float line_height)
 {
 	PUSH;
 	PUSH;
-	for (;*str; str++){
+	for (; *str; str++){
 		switch (*str){
 			case '\t': /* TODO: Do the real job as tab does */
-				glTranslatef(4*spacing, 0, 0);
+				glTranslatef(4 * spacing, 0, 0);
 				break;
 			case '\n':
 				POP;
@@ -401,6 +401,18 @@ void draw_char(char ch)
 			glVertex2f(+0.2, -1.0);
 			glVertex2f(+0.2, -0.8);
 			glVertex2f(-0.2, -0.8);
+			glEnd();
+			break;
+		case '+':
+			glBegin(GL_LINES);
+			glVertex2f(+0.0, +0.5);
+			glVertex2f(+0.0, -0.5);
+			glEnd();
+			/* NO BREAK HERE! */
+		case '-':
+			glBegin(GL_LINES);
+			glVertex2f(-0.5, +0.0);
+			glVertex2f(+0.5, +0.0);
 			glEnd();
 			break;
 
