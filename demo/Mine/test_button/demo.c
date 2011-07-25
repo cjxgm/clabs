@@ -1,6 +1,6 @@
 #include "demolino.h"
 #include <math.h>
-#include "button.c"
+#include "ui/ui.h"
 
 #define DEMO_TITLE		"Buttons Demo"
 #define DEMO_WIN_SIZE	640, 480

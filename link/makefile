@@ -1,6 +1,6 @@
 
 CC = gcc
-CFLAGS = -Ofast -s
+CFLAGS = -g#-Ofast -s
 
 all: link
 clean:
