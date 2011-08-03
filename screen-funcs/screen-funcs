@@ -1,0 +1,70 @@
+#!/bin/bash
+
+# proto:	e(...)
+#	Print a Command Sequence Introducer
+e() { echo -ne "\e[$*"; }
+
+# proto:	pos(y, x)
+#	Position the cursor
+pos() { e "$1;$2H"; }
+
+# proto:	topleft()
+#	Move cursor to the top-left corner
+topleft() { e "H"; }
+
+# proto:	clear_screen()
+#	Clear screen but do NOT move the cursor
+clear_screen() { e "J"; }
+
+# proto:	cls()
+#	Clear screen and move the cursor
+cls() { topleft; clear_screen; }
+
+# proto:	cl_XoY()
+#	Clear XoY, where X = E(nd) / B(egining)
+#	and Y = L(ine) / S(creen).
+cl_eol() { e "K"; }
+cl_bol() { e "1K"; }
+cl_eos() { e "0J"; }
+cl_bos() { e "1J"; }
+
+# proto:	cu_hide(), cu_show()
+#	Hide/show cursor
+cu_hide() { e "?25l"; }
+cu_show() { e "?12l"; e "?25h"; }
+
+# proto:	cu_save(), cu_restore()
+#	Save/restore cursor position
+cu_save()    { e "s"; }
+cu_restore() { e "u"; }
+
+# FIXME: This don't work.
+## proto:	cu_D()
+##	Move cursor D, where D = up / down / left / right
+#cu_up()    { e "1A"; }
+#cu_down()  { e "1B"; }
+#cu_left()  { e "1C"; }
+#cu_right() { e "1D"; }
+
+# proto:	attr(attr), sfg(color), sbg(color), rac()
+#	Set attribute / screen fg color
+#	/ screen bg color, and restore attrs & colors.
+# attr:
+BOLD=1
+UL=4	# UnderLine
+REV=7	# REVerse
+# color:
+BLACK=0
+RED=1
+GREEN=2
+YELLOW=3
+BLUE=4
+MAGENTA=5
+CYAN=6
+WHITE=7
+# function:
+attr() { e "$1m";  }
+sfg()  { e "3$1m"; }
+sbg()  { e "4$1m"; }
+rac()  { e "m";    }
+

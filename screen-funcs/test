@@ -1,0 +1,84 @@
+#!/bin/bash
+
+. screen-funcs
+rac
+
+cls
+cu_save
+cu_hide
+sleep 1
+pos 5 3
+attr $BOLD
+echo fuck
+cu_show
+sleep 1
+cu_restore
+sleep 1
+
+cu_hide
+attr $UL
+sfg $BLUE
+for i in `seq 0 70`; do
+	echo -n "F"
+	sleep 0.01
+done
+
+sbg $YELLOW
+for i in `seq 0 70`; do
+	echo -ne "\bF\b"
+	sleep 0.01
+done
+
+attr $REV
+for i in `seq 0 70`; do
+	echo -n "F"
+	sleep 0.01
+done
+
+rac
+attr "$UL"
+sfg $GREEN
+for i in `seq 0 70`; do
+	echo -ne "\bF\b"
+	sleep 0.01
+done
+
+rac
+attr "$BOLD"
+sfg $RED
+for i in `seq 0 70`; do
+	echo -n "F"
+	sleep 0.01
+done
+echo
+
+sfg $YELLOW
+for i in `seq 0 70`; do
+	echo -n "u"
+	sleep 0.01
+done
+echo
+
+sfg $CYAN
+for i in `seq 0 70`; do
+	echo -n "c"
+	sleep 0.01
+done
+echo
+
+sfg $MAGENTA
+for i in `seq 0 70`; do
+	echo -n "k"
+	sleep 0.01
+done
+echo
+
+rac
+cu_save
+attr $BOLD
+pos 5 10
+echo -n "^_^"
+cu_restore
+cu_show
+sleep 2
+
