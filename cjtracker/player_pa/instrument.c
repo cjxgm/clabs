@@ -3,6 +3,7 @@
  */
 
 #include <math.h>
+#include <stdlib.h>
 #include "instrument.h"
 #include "player.h"
 

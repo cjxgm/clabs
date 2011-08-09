@@ -3,6 +3,7 @@
  */
 
 #include <stdio.h>
+#include <unistd.h>
 #include <pulse/simple.h>
 #include "driver_pa.h"
 
