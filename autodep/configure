@@ -19,10 +19,8 @@ main()
 	# parse arguments
 	while ! [ -z "$1" ]; do
 		case $1 in
-			"--help")	show_help
-						;;
-			"-h")		show_help
-						;;
+			"--help" | "-h")	show_help
+								;;
 			"--enable-debug")	CXXFLAGS="-g -DDEBUG"
 								CXXOPTIMIZE=""		# No optimization
 								shift ;;
@@ -111,8 +109,8 @@ generate_dep()
 	local d
 	for d in $dep; do
 		if need_recursive_dep "$d"; then
-			d="`echo $d|sed 's/\\.h$/.cc/g'`"
-			generate_dep "$d"
+			[[ "$d" =~ (.*)\.h$ ]] && d="${BASH_REMATCH[1]}.cc"
+			[ -f "$d" ] && generate_dep "$d"
 		fi
 	done
 }
