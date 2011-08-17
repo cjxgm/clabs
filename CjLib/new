@@ -1,0 +1,42 @@
+#!/bin/bash
+
+D="`echo $1 | gawk '{
+	$0 = gensub(/([A-Z])/, "_\\\\1", "g")
+	gsub(/^_/, "")
+	print toupper($0) "_H"
+}'`"
+
+cat > $1.h << EOF
+
+#ifndef $D
+#define $D
+
+namespace CjLib
+{
+	class $1
+	{
+	public:
+		inline $1();
+		inline ~$1();
+	};
+};
+
+#endif
+
+EOF
+
+cat > $1.cc << EOF
+
+#include "$1.h"
+using namespace CjLib;
+
+$1::$1()
+{
+}
+
+$1::~$1()
+{
+}
+
+EOF
+
