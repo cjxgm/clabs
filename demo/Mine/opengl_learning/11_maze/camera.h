@@ -2,6 +2,8 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
+extern float camera[16];
+
 void camInit(void);
 void camApply(void);
 void camBegin(void);

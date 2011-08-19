@@ -2,7 +2,7 @@
 #include "camera.h"
 #include <GL/gl.h>
 
-static float camera[16];
+float camera[16];
 
 void camInit(void)
 {

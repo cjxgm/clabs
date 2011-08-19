@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include "camera.h"
 
-float spin = 0;
 float pos_x = 0, pos_y = 0, pos_z = 0;
 static const float no[] = { 0, 0, 0, 1 };
 static char key[256] = {0};
@@ -30,9 +29,9 @@ void draw_maze(void)
 		"# # *  ### #  #"
 		"#             #"
 		"###############";
-	
-	float ground_diffuse[] = { 0.6, 0.6, 0.6, 1 };
-	float wall_diffuse[] = { 0.8, 0.8, 0.4, 1 };
+
+	float ground_diffuse[]  = { 0.6, 0.6, 0.6, 1 };
+	float wall_diffuse[]    = { 0.8, 0.8, 0.4, 1 };
 	float danger_emission[] = { 1.0, 0.6, 0.2, 1 };
 
 	int x, y;
@@ -53,7 +52,7 @@ void draw_maze(void)
 					case '*': // danger
 						glMaterialfv(GL_FRONT, GL_DIFFUSE, no);
 						glMaterialfv(GL_FRONT, GL_EMISSION,
-										danger_emission);
+								danger_emission);
 						break;
 				}
 				glTranslatef(0, 0, 0.5);
@@ -102,14 +101,33 @@ void render(void)
 		glCallList(LIST_MAZE);
 	} glPopMatrix();
 
+	// draw fps
 	char buf[128];
 	sprintf(buf, "fps: %.2f", fps);
 	glColor3f(0.8, 0, 0);
 	renderString(10, 10, buf, NULL);
+	// camera matrix
+	{
+		int y, x;
+		for (y=0; y<4; y++)
+			for (x=0; x<4; x++) {
+				sprintf(buf, "%+.3f", camera[y*4+x]);
+				renderString(10 + x * 80, 180 - y*20, buf, NULL);
+			}
+	}
+
+	//glLoadIdentity();
+	//glTranslatef(camera[12], camera[13], camera[14]);
+	camApply();
+	glutSolidSphere(2.0, 30, 30);
+
+	sprintf(buf, "%+.3f %+.3f",
+			camera[0]*camera[12]+camera[2]*camera[14],
+			camera[8]*camera[12]+camera[10]*camera[14]
+			);
+	renderString(10, 40, buf, NULL);
 
 	glutSwapBuffers();
-
-	spin += 0.1;
 
 	if (key[27]) exit(0);
 
@@ -118,7 +136,7 @@ void render(void)
 	if (key['s']) camForward(-4 / fps);
 	if (key['d']) camTurn(+90 / fps);
 	if (key['a']) camTurn(-90 / fps);
-	if (key['q']) camPan(+4/ fps);
+	if (key['q']) camPan(+4 / fps);
 	if (key['e']) camPan(-4 / fps);
 	camEnd();
 
