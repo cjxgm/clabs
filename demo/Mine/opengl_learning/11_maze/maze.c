@@ -121,10 +121,9 @@ void render(void)
 	camApply();
 	glutSolidSphere(2.0, 30, 30);
 
-	sprintf(buf, "%+.3f %+.3f",
-			camera[0]*camera[12]+camera[2]*camera[14],
-			camera[8]*camera[12]+camera[10]*camera[14]
-			);
+	float pos[3];
+	camGetPosition(pos);
+	sprintf(buf, "%+.3f %+.3f %+.3f", pos[0], pos[1], pos[2]);
 	renderString(10, 40, buf, NULL);
 
 	glutSwapBuffers();

@@ -51,3 +51,16 @@ void camTurn(float howmuch)
 	glGetFloatv(GL_MODELVIEW_MATRIX, camera);
 }
 
+void camGetPosition(float pos[])
+{
+	pos[0] = camera[0]*camera[12]
+			+ camera[1]*camera[13]
+			+ camera[2]*camera[14];
+	pos[1] = camera[4]*camera[12]
+			+ camera[5]*camera[13]
+			+ camera[6]*camera[14];
+	pos[2] = camera[8]*camera[12]
+			+ camera[9]*camera[13]
+			+ camera[10]*camera[14];
+}
+

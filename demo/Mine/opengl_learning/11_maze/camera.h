@@ -11,5 +11,6 @@ void camEnd(void);
 void camForward(float howmuch);
 void camPan(float howmuch);
 void camTurn(float howmuch);
+void camGetPosition(float pos[]);
 
 #endif
