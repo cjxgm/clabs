@@ -1,5 +1,8 @@
 require 'cairo'
 
+cs = nil
+cr = nil
+
 function conky_draw()
 	-- Can only be ran in conky
 	if conky_window == nil then
@@ -7,20 +10,23 @@ function conky_draw()
 	end
 
 	-- initialize
-	local cs = cairo_xlib_surface_create(
+	if cs == nil then
+		cs = cairo_xlib_surface_create(
 			conky_window.display,
 			conky_window.drawable,
 			conky_window.visual,
 			conky_window.width,
 			conky_window.height)
-	local cr = cairo_create(cs)
+		cr = cairo_create(cs)
+	end
 
-	draw_clock(cr)
-	draw_mem(cr)
-	draw_net(cr)
+	draw_clock()
+	draw_mem()
+	draw_net()
+	draw_cpu()
 end
 
-function draw_clock(cr)
+function draw_clock()
 	-- get time
 	local sec  = os.date("%S")    
 	local min  = os.date("%M") + sec / 60
@@ -87,7 +93,7 @@ function draw_clock(cr)
 	cairo_stroke(cr)
 end
 
-function draw_mem(cr)
+function draw_mem()
 	-- get usage
 	local mempct  = tonumber(conky_parse("$memperc")) / 100
 	local swappct = tonumber(conky_parse("$swapperc")) / 100
@@ -192,17 +198,17 @@ function draw_mem(cr)
 	cairo_restore(cr)
 end
 
-function draw_net(cr)
+function draw_net()
 	-- get speed
 	local sdown = conky_parse("${downspeed eth0}")    
 	local sup   = conky_parse("${upspeed   eth0}")    
 	-- calculate something
 	-- some settings
-	local cx = 20
-	local cy = 30
+	local cx = 70
+	local cy = 280
 
 	cairo_set_source_rgba(cr, 1, 1, 1, 0.3)
-	cairo_rectangle(cr, 10, 13, 240, 25)
+	cairo_rectangle(cr, cx - 30, cy - 17, 230, 25)
 	cairo_fill(cr)
 
 	-- text speed
@@ -211,6 +217,30 @@ function draw_net(cr)
 	cairo_set_font_size(cr, 16)
 	cairo_show_text(cr, "down: " .. sdown .. "/s"
 					.. "     up: " .. sup .. "/s")
+	cairo_stroke(cr)
+end
+
+function draw_cpu()
+	-- get usage
+	local pct = tonumber(conky_parse("${cpu cpu1}")) / 100
+	--local pct = 0.25
+	-- calculate something
+	local angle = pct * math.pi * 4 / 3 + math.pi * 5 / 6
+	-- some settings
+	local r  = 100
+	local cx = 150
+	local cy = 150
+
+	-- body
+	cairo_arc(cr, cx, cy, r, math.pi * 5 / 6, math.pi / 6)
+	cairo_set_source_rgba(cr, 1, 1, 1, 0.4)
+	cairo_set_line_width(cr, 4)
+	cairo_stroke(cr)
+
+	-- cpu
+	cairo_arc(cr, cx, cy, r, math.pi * 5 / 6, angle)
+	cairo_set_source_rgba(cr, 1, 1 - pct, 1 - pct, pct * 0.6 + 0.4)
+	cairo_set_line_width(cr, 6)
 	cairo_stroke(cr)
 end
 
