@@ -39,57 +39,67 @@ function draw_clock()
 	local dmin  = math.pi / 14
 	local dhour = math.pi / 10
 	-- some settings
-	local r  = 50
-	local cx = conky_window.width  - r * 2 - 10
-	local cy = conky_window.height - r * 2 - 10
+	local r  = 80
+	local cx = 150
+	local cy = 450
 
 	-- text time
-	cairo_move_to(cr, cx - r - 150, cy + 50)
+	cairo_move_to(cr, cx - 65, cy + r + 60)
 	cairo_set_source_rgba(cr, 1, 1, 1, 0.8)
 	cairo_set_font_size(cr, 32)
 	cairo_show_text(cr, os.date("%H:%M:%S"))
 	cairo_stroke(cr)
 
 	-- clock body
-	cairo_arc(cr, cx, cy, r, 0, math.pi * 2)
-	cairo_set_source_rgba(cr, 0.4, 0.4, 0.8, 0.4)
-	cairo_set_line_width(cr, 6)
+	cairo_set_line_width(cr, 1)
+
+	cairo_arc(cr, cx, cy, r - 15, 0, math.pi * 2)
+	cairo_set_source_rgba(cr, 1, 1, 1, 0.2)
 	cairo_stroke(cr)
+
+	cairo_arc(cr, cx, cy, r, 0, math.pi * 2)
+	cairo_set_source_rgba(cr, 1, 1, 1, 0.3)
+	cairo_stroke(cr)
+
+	cairo_arc(cr, cx, cy, r + 15, 0, math.pi * 2)
+	cairo_set_source_rgba(cr, 1, 1, 1, 0.4)
+	cairo_stroke(cr)
+
 
 	-- sec
 	cairo_set_source_rgba(cr, 0.3, 0.8, 0.2, 0.8)
 	cairo_set_line_width(cr, 2)
 	cairo_move_to(cr, cx, cy)
 	cairo_line_to(cr,
-		cx + math.cos(angle_sec) * (r - 10),
-		cy + math.sin(angle_sec) * (r - 10))
+		cx + math.cos(angle_sec) * (r + 5),
+		cy + math.sin(angle_sec) * (r + 5))
 	cairo_stroke(cr)
-	cairo_arc(cr, cx, cy, r, angle_sec - dsec, angle_sec + dsec)
-	cairo_set_line_width(cr, 10)
+	cairo_arc(cr, cx, cy, r + 15, angle_sec - dsec, angle_sec + dsec)
+	cairo_set_line_width(cr, 6)
 	cairo_stroke(cr)
 
 	-- min
 	cairo_set_source_rgba(cr, 1.0, 1.0, 0.8, 0.6)
-	cairo_set_line_width(cr, 3)
+	cairo_set_line_width(cr, 2)
 	cairo_move_to(cr, cx, cy)
 	cairo_line_to(cr,
-		cx + math.cos(angle_min) * (r - 14),
-		cy + math.sin(angle_min) * (r - 14))
+		cx + math.cos(angle_min) * (r - 10),
+		cy + math.sin(angle_min) * (r - 10))
 	cairo_stroke(cr)
 	cairo_arc(cr, cx, cy, r, angle_min - dmin, angle_min + dmin)
-	cairo_set_line_width(cr, 12)
+	cairo_set_line_width(cr, 6)
 	cairo_stroke(cr)
 
 	-- hour
 	cairo_set_source_rgba(cr, 0.6, 0.8, 0.3, 0.4)
-	cairo_set_line_width(cr, 4)
+	cairo_set_line_width(cr, 2)
 	cairo_move_to(cr, cx, cy)
 	cairo_line_to(cr,
-		cx + math.cos(angle_hour) * (r - 20),
-		cy + math.sin(angle_hour) * (r - 20))
+		cx + math.cos(angle_hour) * (r - 25),
+		cy + math.sin(angle_hour) * (r - 25))
 	cairo_stroke(cr)
-	cairo_arc(cr, cx, cy, r, angle_hour - dhour, angle_hour + dhour)
-	cairo_set_line_width(cr, 15)
+	cairo_arc(cr, cx, cy, r - 15, angle_hour - dhour, angle_hour + dhour)
+	cairo_set_line_width(cr, 6)
 	cairo_stroke(cr)
 end
 
