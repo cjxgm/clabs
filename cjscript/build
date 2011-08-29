@@ -1,0 +1,70 @@
+#!/bin/bash
+
+CC="gcc"
+CFLAGS="-g -Wall"
+
+cc()
+{
+	ARGS="$1"
+	shift
+	echo -e "\e[1;33m$CC \e[1;32m$CFLAGS $ARGS \e[m$*"
+	echo -ne "\e[1;31m"
+	$CC $CFLAGS $ARGS $* 2> error.log
+	[ -z "`cat error.log`" ] || cat error.log |
+		awk '/warning: /{ printf "\033[1;35m" }
+			 /error: /  { printf "\033[1;31m" }
+						{ print  $0			  }'
+	echo -ne "\e[m"
+	rm -f error.log
+}
+
+rm2()
+{
+	ARGS="$1"
+	shift
+	echo -e "\e[1;33mrm \e[1;32m$ARGS \e[m$*"
+	rm $ARGS $*
+}
+
+build()
+{
+	echo -e "\e[1;33mbison \e[1;32m-yd \e[mcjscript.y"
+	echo -ne "\e[1;31m"
+	bison -yd cjscript.y
+
+	echo -e "\e[1;33mflex \e[mcjscript.l"
+	echo -ne "\e[1;31m"
+	flex cjscript.l
+
+	cc -c y.tab.c
+	cc -c lex.yy.c
+	cc -c cjscript.c
+	cc -c tree.c
+	cc -c vm.c
+	cc -c sym.c
+	cc -o cjscript cjscript.o lex.yy.o y.tab.o tree.o vm.o sym.o
+}
+
+main()
+{
+	case $1 in
+		"" | "all" )
+			build
+			;;
+		"clean" )
+			rm2 -f cjscript
+			rm2 -f *.o
+			rm2 -f lex.yy.c
+			rm2 -f y.tab.[hc]
+			;;
+		"rebuild" )
+			main clean
+			main all
+			;;
+		* )
+			echo -e "\e[1;31minvalid argument: $*\e[m"
+			;;
+	esac
+}
+
+main $*
