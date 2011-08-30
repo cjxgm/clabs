@@ -1,0 +1,42 @@
+<meta charset="utf-8">
+<title>Demo</title>
+
+<style>
+a.test {
+	font-weight: bold;
+}
+
+div.test {
+	background-color: blue;
+	border-style: solid;
+	border-width: 1px;
+	width:  200px;
+	height: 40px;
+}
+</style>
+
+<script src="/jquery.js"></script>
+<script>
+$(function(){
+	alert('Ready!');
+	$("div#test").click(function(event){
+		$(this).animate({
+			width: '50px',
+			height: '10px',
+			borderWidth: '100px'
+		}, 1000, function(){
+			$(this).animate({width: '100px'});
+		});
+	});
+});
+</script>
+
+<b>Controller: </b>
+<a href="javascript:$('a#test').addClass('test');">addClass</a>
+<a href="javascript:$('a#test').removeClass('test');">removeClass</a>
+<a href="javascript:$('a#test').hide('slow');">hide</a>
+<a href="javascript:$('a#test').show('slow');">show</a>
+<hr>
+<a id='test' href="http://jquery.com/">jQuery</a>
+<div id='test' class='test'></div>
+

@@ -1,0 +1,56 @@
+<meta charset="utf-8">
+<title>UI Demo</title>
+<link type="text/css" href="/jquery-ui.css" rel="stylesheet"/>
+<script src="/jquery.js"></script>
+<script src="/jquery-ui.js"></script>
+<script>
+var anim = true;
+
+$(function(){
+	$('#slider').slider({
+		animate: 500,
+		range: "min",
+		value: 17,
+		slide: slideChange,
+		change: slideChange
+	});
+	$('div#test').text("Test!");
+	alert('Ready!');
+	$('#slider')
+		.slider("value", 100)
+	;
+});
+
+function slideChange()
+{
+	$('div#test').text($('#slider').slider("value"));
+	if (anim)
+		$('div#test').animate({
+			width: $('#slider').slider("value")+20
+		}, 500, function(){
+			if (anim)
+				$('#slider').slider('value', Math.random()*100);
+		});
+}
+
+</script>
+
+<b>Controller: </b>
+<br>
+<a href="javascript:$('a#test').hide('slow');">hide</a>
+<a href="javascript:$('a#test').show('slow');">show</a>
+<br>
+<a id='anim' href="javascript:
+	anim = !anim;
+	$('#anim')
+		.text('auto animate '+(anim?'on':'off'));
+	if (anim)
+		$('#slider').slider('value', Math.random()*100);
+	">auto animate on</a>
+<hr>
+<a id='test' href="http://jquery.com/">jQuery</a>
+<!--
+<input type="text" name="date" id="date"/>
+-->
+<div id="slider" style='margin: 10px; width: 200px;'></div>
+<div id="test" style="width: 100; background-color: #e0e0e0;"></div>
