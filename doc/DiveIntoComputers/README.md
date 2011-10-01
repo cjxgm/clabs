@@ -4,4 +4,8 @@
 
 测试
 ------------------------------------------------------------
-![adder.png](res/image/adder.png?raw=true "Bit Adder")
+![adder][bit_adder]
+
+图像
+------------------------------------------------------------
+[bit_adder]: res/image/adder.png?raw=true "Bit Adder"
