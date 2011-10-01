@@ -40,4 +40,4 @@
 
 好了，有了这些基础，我们就可以来制作电路了。
 
-![][bit_adder][下载(KTechLab Circuit)][bit_adder_circuit]
+![][bit_adder]<br>[下载(KTechLab Circuit)][bit_adder_circuit]
