@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include "camera.h"
 
-float pos_x = 0, pos_y = 0, pos_z = 0;
 static const float no[] = { 0, 0, 0, 1 };
 static char key[256] = {0};
 static float fps = 1;
@@ -13,12 +12,10 @@ static GLuint lists;
 #define LIST_SIZE		1
 #define LIST_MAZE		lists
 
-void draw_maze(void)
-{
 #define W 15
 #define H 10
 #define MAZE(X,Y)	maze[(((Y) * W) + X)]
-	const char maze[H*W+1] = 
+const char maze[H*W+1] = 
 		"###############"
 		"        #     #"
 		"####  ### #####"
@@ -30,6 +27,8 @@ void draw_maze(void)
 		"#             #"
 		"###############";
 
+void draw_maze(void)
+{
 	float ground_diffuse[]  = { 0.6, 0.6, 0.6, 1 };
 	float wall_diffuse[]    = { 0.8, 0.8, 0.4, 1 };
 	float danger_emission[] = { 1.0, 0.6, 0.2, 1 };
@@ -59,9 +58,6 @@ void draw_maze(void)
 				glutSolidCube(1.0);
 			} glPopMatrix();
 		}
-#undef W
-#undef H
-#undef MAZE
 }
 
 void key_down(unsigned char k, int x, int y)
@@ -85,6 +81,39 @@ void renderString(int x, int y,
 		glutBitmapCharacter(font, *string++);
 }
 
+float vec_dot(float v1[], float v2[])
+{
+	return v1[0]*v2[0] + v1[1]*v2[1] + v1[2]*v2[2];
+}
+
+int face_side(float v[], float n[], float p[])
+{
+	float d = vec_dot(n, v) - vec_dot(n, p);
+	if (d >= +0.0001) return +1;
+	if (d <= -0.0001) return -1;
+	return 0;
+}
+
+int col_face(float v1[], float v2[], float n[], float p[])
+{
+	if (face_side(v1, n, p) * face_side(v2, n, p) == -1) return 1;
+	return 0;
+}
+
+int collide(float v1[], float v2[])
+{
+	int x, y;
+	for (y=0; y<H; y++)
+		for (x=0; x<W; x++) {
+			if (MAZE(x, y) == '#') {
+				float n[3] = {1, 0, 0};
+				float p[3] = {x, 0, y};
+				if (col_face(v1, v2, n, p)) return 1;
+			}
+		}
+	return 0;
+}
+
 void render(void)
 {
 	unsigned int time = glutGet(GLUT_ELAPSED_TIME);
@@ -92,12 +121,7 @@ void render(void)
 
 	glPushMatrix(); {
 		camApply();
-
-		glTranslatef(7.5, -2, -30);
-		glScalef(4, 4, 4);
-		glRotatef(-90, 0, 1, 0);
 		glRotatef(-90, 1, 0, 0);
-		glTranslatef(-7.5, -5, 0);
 		glCallList(LIST_MAZE);
 	} glPopMatrix();
 
@@ -116,11 +140,6 @@ void render(void)
 			}
 	}
 
-	//glLoadIdentity();
-	//glTranslatef(camera[12], camera[13], camera[14]);
-	camApply();
-	glutSolidSphere(2.0, 30, 30);
-
 	float pos[3];
 	camGetPosition(pos);
 	sprintf(buf, "%+.3f %+.3f %+.3f", pos[0], pos[1], pos[2]);
@@ -131,12 +150,32 @@ void render(void)
 	if (key[27]) exit(0);
 
 	camBegin();
-	if (key['w']) camForward(+4 / fps);
-	if (key['s']) camForward(-4 / fps);
+	if (key['w']) {
+		camForward(+4 / fps);
+		float pos2[3];
+		camGetPosition(pos2);
+		if (collide(pos, pos2)) camForward(-4 / fps);
+	}
+	if (key['s']) {
+		camForward(-4 / fps);
+		float pos2[3];
+		camGetPosition(pos2);
+		if (collide(pos, pos2)) camForward(+4 / fps);
+	}
+	if (key['q']) {
+		camPan(+4 / fps);
+		float pos2[3];
+		camGetPosition(pos2);
+		if (collide(pos, pos2)) camPan(-4 / fps);
+	}
+	if (key['e']) {
+		camPan(-4 / fps);
+		float pos2[3];
+		camGetPosition(pos2);
+		if (collide(pos, pos2)) camPan(+4 / fps);
+	}
 	if (key['d']) camTurn(+90 / fps);
 	if (key['a']) camTurn(-90 / fps);
-	if (key['q']) camPan(+4 / fps);
-	if (key['e']) camPan(-4 / fps);
 	camEnd();
 
 	fps = 1000.0 / (glutGet(GLUT_ELAPSED_TIME) - time);

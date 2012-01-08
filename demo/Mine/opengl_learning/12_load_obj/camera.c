@@ -14,8 +14,7 @@ void camInit(void)
 
 void camApply(void)
 {
-	//glLoadMatrixf(camera);
-	glMultMatrixf(camera);
+	glLoadMatrixf(camera);
 }
 
 void camBegin(void)
