@@ -57,5 +57,8 @@ function timer()
 	//sc.last_time += sc.dur;
 	//sc.time(timer, 30);
 }
-sc.time(timer, 30);
+
+document.onload = function() {
+	sc.time(timer, 30);
+}
 
