@@ -37,7 +37,7 @@ void draw_maze(void)
 	for (y=0; y<H; y++)
 		for (x=0; x<W; x++) {
 			glPushMatrix(); {
-				glTranslatef(x, y, 0);
+				glTranslatef(x, 0, y);
 				switch (MAZE(x, y)) {
 					case '#': // wall
 						glMaterialfv(GL_FRONT, GL_DIFFUSE, wall_diffuse);
@@ -46,7 +46,8 @@ void draw_maze(void)
 					case ' ': // ground
 						glMaterialfv(GL_FRONT, GL_DIFFUSE, ground_diffuse);
 						glMaterialfv(GL_FRONT, GL_EMISSION, no);
-						glScalef(1, 1, 0.1);
+						glTranslatef(0, -0.5, 0);
+						glScalef(1, 0.1, 1);
 						break;
 					case '*': // danger
 						glMaterialfv(GL_FRONT, GL_DIFFUSE, no);
@@ -54,7 +55,6 @@ void draw_maze(void)
 								danger_emission);
 						break;
 				}
-				glTranslatef(0, 0, 0.5);
 				glutSolidCube(1.0);
 			} glPopMatrix();
 		}
@@ -121,7 +121,6 @@ void render(void)
 
 	glPushMatrix(); {
 		camApply();
-		glRotatef(-90, 1, 0, 0);
 		glCallList(LIST_MAZE);
 	} glPopMatrix();
 
