@@ -17,38 +17,28 @@ function bez_eqt3_plot(eqt3, tbegin, tend, tstep)
 	c.closePath();
 }
 
-function calc()
+function line(x1, y1, x2, y2)
 {
+	c.beginPath();
+	c.moveTo(x1, y1);
+	c.lineTo(x2, y2);
+	c.stroke();
+	c.closePath();
+}
+
+function bez(x1, y1, x2, y2, x3, y3, x4, y4)
+{
+	bez_eqt3_plot(
+		bez_eqt3_get([[x1, y1, 0],
+					  [x2, y2, 0],
+					  [x3, y3, 0],
+					  [x4, y4, 0]]),
+				0, 1, 0.01);
 }
 
 function draw()
 {
-	//sc.fillCircle(ball.phys.pos, ball.r, "#8ED6FF");
-	//sc.line(ground.p, ground.p2);
-	var i;
-	for (i=0; i<coo.length-1; i++) {
-		c.strokeStyle = "#f00";
-		bez_eqt3_plot(bez_eqt3_get(coo[i]), 0, 1, 0.01);
-
-		c.strokeStyle = "#00f";
-		c.beginPath();
-		c.moveTo(coo[i][0][0], coo[i][0][1]);
-		c.lineTo(coo[i][1][0], coo[i][1][1]);
-		c.lineTo(coo[i][2][0], coo[i][2][1]);
-		c.lineTo(coo[i][3][0], coo[i][3][1]);
-		c.stroke();
-		c.closePath();
-	}
+	c.strokeStyle = "#f00";
+	draw_svg();
 }
-
-function timer()
-{
-	//sc.dur = sc.getTime() - sc.last_time;
-	sc.clear();
-	draw();
-	calc();
-	//sc.last_time += sc.dur;
-	//sc.time(timer, 30);
-}
-sc.time(timer, 30);
 

@@ -7,10 +7,7 @@
 #include <regex.h>
 
 static void proc(const char * s);
-static int  read_coo(const char * s, float * x, float * y);
 
-regex_t		coo;
-regmatch_t	coog[3];
 float		tr_x, tr_y;
 
 int main()
@@ -29,9 +26,7 @@ int main()
 	fclose(fp);
 
 	err = regcomp(&rex, "\\<d\\>=\"([^\"]+)\"", REG_EXTENDED) +
-		  regcomp(&trs, "\\<translate\\>\\(([^,]+),([^)]+)\\)",
-		  												REG_EXTENDED) +
-		  regcomp(&coo, "([^ ,]+),([^ ]+)", REG_EXTENDED);
+		  regcomp(&trs, "\\<translate\\>\\(([^,]+),([^)]+)\\)", REG_EXTENDED);
 	if (err) {
 		printf("Regex compilation failed. %d\n", err);
 		return 1;
@@ -42,7 +37,7 @@ int main()
 		//printf("translate: %g, %g\n", tr_x, tr_y);
 	}
 
-	printf("coo = [\n");
+	printf("function draw_svg()\n{\n");
 	while (!regexec(&rex, s, 2, g, 0)) {
 		s[g[1].rm_eo] = 0;
 		s += g[1].rm_so;
@@ -53,61 +48,83 @@ int main()
 		// prepare for next match
 		s += g[1].rm_eo - g[1].rm_so + 1;
 	}
-	printf("[]];\n");
+	printf("}\n");
 
 	regfree(&rex);
 	regfree(&trs);
-	regfree(&coo);
 
 	return 0;
 }
 
 static void proc(const char * s)
 {
+	printf("\n// %s\n", s);
+
 	float pos[4][2];
-	int   offset;
-
-	printf("// %s\n", s);
-
-	offset = read_coo(s, &pos[0][0], &pos[0][1]);
-	pos[0][0] += tr_x;
-	pos[0][1] += tr_y;
-	if (offset == -1) {
-		printf("FAILED!\n");
-		return;
+	int i = 0;
+	int state = 0;	// 0: start, 1: m, 2: c
+	for (; *s; s++) {
+		switch (*s) {
+			case 'm':
+				state = 1;
+				break;
+			case 'c':
+				state = 2;
+				break;
+			case 'l':
+				state = 1;
+				break;
+			case ' ':
+				if (*(s+1) == 'c') {
+					state = 2;
+					s+=2;
+					//printf("\n\n>>> %s\n\n", s);
+				}
+				else if (*(s+1) == 'l' || *(s+1) == 'm' ) {
+					state = 1;
+					s+=2;
+					//printf("\n\n>>> %s\n\n", s);
+				}
+				sscanf(s, "%g,%g", &pos[i][0], &pos[i][1]);
+				if (state == 1) {
+					if (i) {
+						pos[1][0] += pos[0][0];
+						pos[1][1] += pos[0][1];
+						printf("\tline(%g, %g, %g, %g);\n",
+								pos[0][0], pos[0][1],
+								pos[1][0], pos[1][1]);
+						pos[0][0] = pos[1][0];
+						pos[0][1] = pos[1][1];
+					} else {
+						pos[0][0] += tr_x;
+						pos[0][1] += tr_y;
+						i = 1;
+					}
+				}
+				else if (state == 2) {
+					if (!i) {
+						pos[0][0] += tr_x;
+						pos[0][1] += tr_y;
+					}
+					if (++i == 4) {
+						i = 1;
+						pos[1][0] += pos[0][0];
+						pos[1][1] += pos[0][1];
+						pos[2][0] += pos[0][0];
+						pos[2][1] += pos[0][1];
+						pos[3][0] += pos[0][0];
+						pos[3][1] += pos[0][1];
+						printf("\tbez(%g, %g, %g, %g, %g, %g, %g, %g);\n",
+								pos[0][0], pos[0][1],
+								pos[1][0], pos[1][1],
+								pos[2][0], pos[2][1],
+								pos[3][0], pos[3][1]);
+						pos[0][0] = pos[3][0];
+						pos[0][1] = pos[3][1];
+					}
+				}
+				break;
+		}
 	}
-
-	while (1) {
-		offset = read_coo(s += offset, &pos[1][0], &pos[1][1]);
-		if (offset == -1) break;
-		pos[1][0] += pos[0][0];
-		pos[1][1] += pos[0][1];
-
-		offset = read_coo(s += offset, &pos[2][0], &pos[2][1]);
-		if (offset == -1) break;
-		pos[2][0] += pos[1][0];
-		pos[2][1] += pos[1][1];
-
-		offset = read_coo(s += offset, &pos[3][0], &pos[3][1]);
-		if (offset == -1) break;
-		pos[3][0] += pos[2][0];
-		pos[3][1] += pos[2][1];
-
-		printf("[ [%g, %g, 0], [%g, %g, 0], [%g, %g, 0], [%g, %g, 0] ],\n",
-				pos[0][0], pos[0][1], pos[1][0], pos[1][1],
-				pos[2][0], pos[2][1], pos[3][0], pos[3][1]);
-
-		pos[0][0] = pos[3][0];
-		pos[0][1] = pos[3][1];
-	}
-}
-
-static int read_coo(const char * s, float * x, float * y)
-{
-	if (!regexec(&coo, s, 3, coog, 0)) {
-		sscanf(&s[coog[1].rm_so], "%g,%g", x, y);
-		return coog[2].rm_eo;
-	}
-	else return -1;
 }
 
