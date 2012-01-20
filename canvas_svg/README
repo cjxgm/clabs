@@ -1,0 +1,10 @@
+
+Usage:
+Export your svg file as a standard svg named b.svg
+
+	$ gcc -o rex rex.c
+	$ ./rex > coo.js
+
+Then, open index.html with your browser.
+Enjoy!
+
