@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Pixel Move</title>
+		<link rel="stylesheet" href="style.css">
+	</head>
+	<body>
+		<video autoplay id="video" width=400 height=400 style="display: none;">
+			<source src="pipa.webm" type="video/webm"/>
+		</video>
+		<canvas id="canvas" width="400" height="400">
+			<h1>Fuck your browser!</h1>
+		</canvas>
+		<script src="utils.js"></script>
+		<script src="app.js"></script>
+		<script>
+			window.onload = function () {
+				app();
+			};
+		</script>
+	</body>
+</html>
