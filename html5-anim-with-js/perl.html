@@ -1,0 +1,170 @@
+<!doctype html>
+<meta charset="utf-8">
+
+<title>Foundation HTML5 Animation with PERL!</title>
+
+<link type="text/css" rel="stylesheet" href="../sh/sh_acid.min.css">
+<script type="text/javascript" src="../sh/sh_main.min.js"></script>
+<script type="text/javascript" src="../sh/lang/sh_perl.min.js"></script>
+
+效果：<img src="img/sprint5.png"></img>
+<pre class="sh_perl">
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+use SDL;
+use SDL::Event;
+use SDLx::App;
+
+my $app = SDLx::App-&gt;new(
+		width  =&gt; 800,
+		height =&gt; 600,
+		title  =&gt; 'Spring - Chained &amp;&amp; Bounced!');
+
+my $spring = 0.1;
+my $friction = 0.4;
+my $gravity = {
+	x =&gt; 0,
+	y =&gt; 8,
+};
+my $target = {
+	x =&gt; $app-&gt;w/2,
+	y =&gt; 0,
+};
+my @balls = ();
+my $balls = 6;
+
+for (1..$balls) {
+	push @balls, {
+		x =&gt; rand $app-&gt;w,
+		y =&gt; rand $app-&gt;h,
+		r =&gt; rand(10) + 10,
+
+		vx =&gt; 0,
+		vy =&gt; 0,
+		ax =&gt; 0,
+		ay =&gt; 0,
+	};
+}
+
+$app-&gt;add_event_handler(\&amp;event);
+$app-&gt;add_move_handler (\&amp;calc);
+$app-&gt;add_show_handler (\&amp;render);
+
+$app-&gt;run();
+
+sub event {
+	my $event      = shift;
+	my $controller = shift;
+	$controller-&gt;stop if $event-&gt;type == SDL_QUIT;
+	if ($event-&gt;type == SDL_MOUSEMOTION) {
+		$target-&gt;{x} = $event-&gt;button_x;
+		$target-&gt;{y} = $event-&gt;button_y;
+	}
+}
+
+sub collide {
+	my $ball1 = shift;
+	my $ball2 = shift;
+
+	# not collide...
+	if (($ball1-&gt;{x}-$ball2-&gt;{x})**2 + ($ball1-&gt;{y}-$ball2-&gt;{y})**2
+		&gt;= ($ball1-&gt;{r}+$ball2-&gt;{r})**2) {
+		return;
+	}
+
+	# neg velocity
+	$ball1-&gt;{vx} = -$ball1-&gt;{vx};
+	$ball1-&gt;{vy} = -$ball1-&gt;{vy};
+	$ball2-&gt;{vx} = -$ball2-&gt;{vx};
+	$ball2-&gt;{vy} = -$ball2-&gt;{vy};
+
+	# place to correct place
+	my $cx = ($ball1-&gt;{x} + $ball2-&gt;{x}) / 2;
+	my $cy = ($ball1-&gt;{y} + $ball2-&gt;{y}) / 2;
+	my $dx = $ball1-&gt;{x} - $ball2-&gt;{x};
+	my $dy = $ball1-&gt;{y} - $ball2-&gt;{y};
+	my $dlen = ($dx**2 + $dy**2) ** 0.5;
+	$dx /= $dlen;
+	$dy /= $dlen;
+	$ball1-&gt;{x} = $cx + $dx*$ball1-&gt;{r};
+	$ball1-&gt;{y} = $cy + $dy*$ball1-&gt;{r};
+	$ball2-&gt;{x} = $cx - $dx*$ball2-&gt;{r};
+	$ball2-&gt;{y} = $cy - $dy*$ball2-&gt;{r};
+}
+
+sub move_springly {
+	my $ball = shift;
+	my $target = shift;
+	my $step = shift;
+
+	# apply physics
+	$ball-&gt;{ax} = ($target-&gt;{x} - $ball-&gt;{x}) * $spring + $gravity-&gt;{x};
+	$ball-&gt;{ay} = ($target-&gt;{y} - $ball-&gt;{y}) * $spring + $gravity-&gt;{y};
+	$ball-&gt;{vx} += $ball-&gt;{ax} * $step;
+	$ball-&gt;{vy} += $ball-&gt;{ay} * $step;
+	$ball-&gt;{vx} *= 1 - $friction * $step;
+	$ball-&gt;{vy} *= 1 - $friction * $step;
+	$ball-&gt;{x} += $ball-&gt;{vx} * $step;
+	$ball-&gt;{y} += $ball-&gt;{vy} * $step;
+
+	# bouncing
+	if ($ball-&gt;{x}-$ball-&gt;{r} &lt; 0) {
+		$ball-&gt;{x} = $ball-&gt;{r};
+		if ($ball-&gt;{vx} &lt; 0) {
+			$ball-&gt;{vx} = -$ball-&gt;{vx};
+		}
+	} elsif ($ball-&gt;{x}+$ball-&gt;{r} &gt; $app-&gt;w) {
+		$ball-&gt;{x} = $app-&gt;w - $ball-&gt;{r};
+		if ($ball-&gt;{vx} &gt; 0) {
+			$ball-&gt;{vx} = -$ball-&gt;{vx};
+		}
+	}
+	if ($ball-&gt;{y}-$ball-&gt;{r} &lt; 0) {
+		$ball-&gt;{y} = $ball-&gt;{r};
+		if ($ball-&gt;{vy} &lt; 0) {
+			$ball-&gt;{vy} = -$ball-&gt;{vy};
+		}
+	} elsif ($ball-&gt;{y}+$ball-&gt;{r} &gt; $app-&gt;h) {
+		$ball-&gt;{y} = $app-&gt;h - $ball-&gt;{r};
+		if ($ball-&gt;{vy} &gt; 0) {
+			$ball-&gt;{vy} = -$ball-&gt;{vy};
+		}
+	}
+}
+
+sub calc {
+	my ($step, $app) = @_;
+	move_springly $balls[0], $target, $step;
+	foreach my $i (1..$#balls) {
+		move_springly $balls[$i],
+				{x=&gt;$balls[$i-1]-&gt;{x}, y=&gt;$balls[$i-1]-&gt;{y}}, $step;
+	}
+	foreach my $i (0..$#balls) {
+		foreach my $j (($i+1)..$#balls) {
+			collide $balls[$i], $balls[$j];
+		}
+	}
+}
+
+sub draw_ball {
+	my $ball = shift;
+	my $target = shift;
+	$app-&gt;draw_line([$target-&gt;{x}, $target-&gt;{y}], [$ball-&gt;{x}, $ball-&gt;{y}],
+												[0, 0, 255, 255]);
+	$app-&gt;draw_circle_filled([$ball-&gt;{x}, $ball-&gt;{y}], $ball-&gt;{r},
+												[255, 0, 0, 255]);
+}
+
+sub render {
+	my ($delta, $app) = @_;
+	$app-&gt;draw_rect([0, 0, $app-&gt;w, $app-&gt;h], 0); # clear screen
+	draw_ball $balls[0], $target;
+	foreach my $i (1..$#balls) {
+		draw_ball $balls[$i], $balls[$i-1];
+	}
+	$app-&gt;update();
+}
+</pre><hr>
