@@ -1,0 +1,98 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+use SDL;
+use SDL::Event;
+use SDLx::App;
+
+my $app = SDLx::App->new(
+		width  => 400,
+		height => 400,
+		title  => 'Spring - Chained!');
+
+my $spring = 0.2;
+my $friction = 0.4;
+my $gravity = {
+	x => 0,
+	y => 8,
+};
+my $target = {
+	x => $app->w/2,
+	y => 0,
+};
+my @balls = ();
+my $balls = 8;
+
+for (1..$balls) {
+	push @balls, {
+		x => $target->{x},
+		y => $app->h/5,
+		r => 10,
+
+		vx => 0,
+		vy => 0,
+		ax => 0,
+		ay => 0,
+	};
+}
+
+$app->add_event_handler(\&event);
+$app->add_move_handler (\&calc);
+$app->add_show_handler (\&render);
+
+$app->run();
+
+sub event {
+	my $event      = shift;
+	my $controller = shift;
+	$controller->stop if $event->type == SDL_QUIT;
+	if ($event->type == SDL_MOUSEMOTION) {
+		$target->{x} = $event->button_x;
+		$target->{y} = $event->button_y;
+	}
+}
+
+sub move_springly {
+	my $ball = shift;
+	my $target = shift;
+	my $step = shift;
+	$ball->{ax} = ($target->{x} - $ball->{x}) * $spring + $gravity->{x};
+	$ball->{ay} = ($target->{y} - $ball->{y}) * $spring + $gravity->{y};
+	$ball->{vx} += $ball->{ax} * $step;
+	$ball->{vy} += $ball->{ay} * $step;
+	$ball->{vx} *= 1 - $friction * $step;
+	$ball->{vy} *= 1 - $friction * $step;
+	$ball->{x} += $ball->{vx} * $step;
+	$ball->{y} += $ball->{vy} * $step;
+}
+
+sub calc {
+	my ($step, $app) = @_;
+	move_springly $balls[0], $target, $step;
+	foreach my $i (1..$#balls) {
+		move_springly $balls[$i],
+				{x=>$balls[$i-1]->{x}, y=>$balls[$i-1]->{y}}, $step;
+	}
+}
+
+sub draw_ball {
+	my $ball = shift;
+	my $target = shift;
+	$app->draw_line([$target->{x}, $target->{y}], [$ball->{x}, $ball->{y}],
+												[0, 0, 255, 255]);
+	$app->draw_circle_filled([$ball->{x}, $ball->{y}], $ball->{r},
+												[255, 0, 0, 255]);
+}
+
+sub render {
+	my ($delta, $app) = @_;
+	$app->draw_rect([0, 0, $app->w, $app->h], 0); # clear screen
+	draw_ball $balls[0], $target;
+	foreach my $i (1..$#balls) {
+		draw_ball $balls[$i], $balls[$i-1];
+	}
+	$app->update();
+}
+

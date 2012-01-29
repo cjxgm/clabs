@@ -1,0 +1,62 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+use SDL;
+use SDL::Event;
+use SDLx::App;
+
+my $app = SDLx::App->new(
+		width => 400,
+		height => 400,
+		title => 'Easing - Draggable');
+
+my $dragging = 0;
+my $easing = 0.5;
+my $target = {
+	x => 200,
+	y => 200,
+};
+my $ball = {
+	x => 0,
+	y => 0,
+	r => 10,
+};
+
+$app->add_event_handler(\&event);
+$app->add_move_handler (\&calc);
+$app->add_show_handler (\&render);
+
+$app->run();
+
+sub event {
+	my $event      = shift;
+	my $controller = shift;
+	$controller->stop if $event->type == SDL_QUIT;
+	$dragging = 1 if $event->type == SDL_MOUSEBUTTONDOWN && 
+			($event->button_x-$ball->{x})**2 +
+			($event->button_y-$ball->{y})**2 < $ball->{r}**2;
+	$dragging = 0 if $event->type == SDL_MOUSEBUTTONUP;
+	if ($dragging && $event->type == SDL_MOUSEMOTION) {
+		$ball->{x} = $event->button_x;
+		$ball->{y} = $event->button_y;
+	}
+}
+
+sub calc {
+	my ($step, $app) = @_;
+	if (!$dragging) {
+		$ball->{x} += ($target->{x} - $ball->{x}) * $easing * $step;
+		$ball->{y} += ($target->{y} - $ball->{y}) * $easing * $step;
+	}
+}
+
+sub render {
+	my ($delta, $app) = @_;
+	$app->draw_rect([0, 0, $app->w, $app->h], 0); # clear screen
+	$app->draw_circle_filled([$ball->{x}, $ball->{y}], $ball->{r},
+												[255, 0, 0, 255]);
+	$app->update();
+}
+

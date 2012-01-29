@@ -1,0 +1,62 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+use SDL;
+use SDL::Event;
+use SDLx::App;
+
+my $app = SDLx::App->new(
+		width => 400,
+		height => 400,
+		title => 'Easing - Mouse Follower');
+
+my $easing = 0.5;
+my $target = {
+	x => 200,
+	y => 200,
+};
+my $ball = {
+	x => 0,
+	y => 0,
+	r => 10,
+	clr_r => 255,
+	clr_g => 0,
+	clr_b => 0,
+};
+
+$app->add_event_handler(\&event);
+$app->add_move_handler (\&calc);
+$app->add_show_handler (\&render);
+
+$app->run();
+
+sub event {
+	my $event      = shift;
+	my $controller = shift;
+	$controller->stop if $event->type == SDL_QUIT;
+	if ($event->type == SDL_MOUSEMOTION) {
+		$target->{x} = $event->button_x;
+		$target->{y} = $event->button_y;
+	}
+}
+
+sub calc {
+	my ($step, $app) = @_;
+	$ball->{x} += ($target->{x} - $ball->{x}) * $easing * $step;
+	$ball->{y} += ($target->{y} - $ball->{y}) * $easing * $step;
+	$ball->{clr_g} += ($target->{x}*255/$app->w - $ball->{clr_g})
+													* $easing * $step;
+	$ball->{clr_b} += ($target->{y}*255/$app->h - $ball->{clr_b})
+													* $easing * $step;
+}
+
+sub render {
+	my ($delta, $app) = @_;
+	$app->draw_rect([0, 0, $app->w, $app->h], 0); # clear screen
+	$app->draw_circle_filled([$ball->{x}, $ball->{y}], $ball->{r},
+			[$ball->{clr_r}, $ball->{clr_g}, $ball->{clr_b}, 255]);
+	$app->update();
+}
+

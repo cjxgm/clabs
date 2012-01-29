@@ -1,0 +1,63 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+use SDL;
+use SDL::Event;
+use SDLx::App;
+
+my $app = SDLx::App->new(
+		width  => 400,
+		height => 400,
+		title  => 'Spring');
+
+my $spring = 0.05;
+my $friction = 0.05;
+my $target = {
+	x => $app->w/2,
+	y => $app->h/2,
+};
+my $ball = {
+	x => 0,
+	y => 0,
+	r => 10,
+
+	vx => 0,
+	vy => 0,
+	ax => 0,
+	ay => 0,
+};
+
+$app->add_event_handler(\&event);
+$app->add_move_handler (\&calc);
+$app->add_show_handler (\&render);
+
+$app->run();
+
+sub event {
+	my $event      = shift;
+	my $controller = shift;
+	$controller->stop if $event->type == SDL_QUIT;
+}
+
+sub calc {
+	my ($step, $app) = @_;
+	$ball->{ax} = ($target->{x} - $ball->{x}) * $spring;
+	$ball->{ay} = ($target->{y} - $ball->{y}) * $spring;
+	$ball->{vx} += $ball->{ax} * $step;
+	$ball->{vy} += $ball->{ay} * $step;
+	$ball->{vx} *= 1 - $friction * $step;
+	$ball->{vy} *= 1 - $friction * $step;
+	$ball->{x} += $ball->{vx} * $step;
+	$ball->{y} += $ball->{vy} * $step;
+}
+
+sub render {
+	my ($delta, $app) = @_;
+	$app->draw_rect([0, 0, $app->w, $app->h], 0); # clear screen
+	$app->draw_circle_filled([$ball->{x}, $ball->{y}], $ball->{r},
+												[255, 0, 0, 255]);
+	$app->update();
+}
+

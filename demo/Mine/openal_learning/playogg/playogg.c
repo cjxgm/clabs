@@ -1,7 +1,7 @@
 
 
 #include <AL/al.h>
-#include <AL/alut.h>
+#include <AL/alc.h>
 #include <vorbis/vorbisfile.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -91,7 +91,13 @@ int main(int argc, char *argv[])
 	if (argc < 2)
 		return -1;
 
-	alutInit(&argc, argv);
+	//alutInit(&argc, argv);
+	ALCdevice  * dev;
+	ALCcontext * ctx;
+
+	dev = alcOpenDevice(NULL);
+	ctx = alcCreateContext(dev, NULL);
+	alcMakeContextCurrent(ctx);
 
 	alGenBuffers(BUFFER_CNT, buffer);
 	alGenSources(1, &source);
@@ -104,7 +110,7 @@ int main(int argc, char *argv[])
 	alDeleteBuffers(BUFFER_CNT, buffer);
 	alDeleteSources(1, &source);
 
-	alutExit();
+	//alutExit();
 	return 0;
 }
 

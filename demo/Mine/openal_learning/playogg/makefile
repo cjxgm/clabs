@@ -1,6 +1,6 @@
 
 CC = gcc
-CFLAGS = -Wall -Werror -s -O3 -lalut -lopenal -lvorbisfile
+CFLAGS = -Wall -Werror -s -O3 -lopenal -lvorbisfile
 
 all: playogg
 debug: all
