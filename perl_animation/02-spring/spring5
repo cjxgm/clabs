@@ -12,7 +12,7 @@ my $app = SDLx::App->new(
 		height => 600,
 		title  => 'Spring - Chained && Bounced!');
 
-my $spring = 0.2;
+my $spring = 0.1;
 my $friction = 0.4;
 my $gravity = {
 	x => 0,
@@ -23,13 +23,13 @@ my $target = {
 	y => 0,
 };
 my @balls = ();
-my $balls = 16;
+my $balls = 6;
 
 for (1..$balls) {
 	push @balls, {
-		x => $target->{x},
-		y => $app->h/5,
-		r => 10,
+		x => rand $app->w,
+		y => rand $app->h,
+		r => rand(10) + 10,
 
 		vx => 0,
 		vy => 0,
@@ -52,6 +52,36 @@ sub event {
 		$target->{x} = $event->button_x;
 		$target->{y} = $event->button_y;
 	}
+}
+
+sub collide {
+	my $ball1 = shift;
+	my $ball2 = shift;
+
+	# not collide...
+	if (($ball1->{x}-$ball2->{x})**2 + ($ball1->{y}-$ball2->{y})**2
+		>= ($ball1->{r}+$ball2->{r})**2) {
+		return;
+	}
+
+	# neg velocity
+	$ball1->{vx} = -$ball1->{vx};
+	$ball1->{vy} = -$ball1->{vy};
+	$ball2->{vx} = -$ball2->{vx};
+	$ball2->{vy} = -$ball2->{vy};
+
+	# place to correct place
+	my $cx = ($ball1->{x} + $ball2->{x}) / 2;
+	my $cy = ($ball1->{y} + $ball2->{y}) / 2;
+	my $dx = $ball1->{x} - $ball2->{x};
+	my $dy = $ball1->{y} - $ball2->{y};
+	my $dlen = ($dx**2 + $dy**2) ** 0.5;
+	$dx /= $dlen;
+	$dy /= $dlen;
+	$ball1->{x} = $cx + $dx*$ball1->{r};
+	$ball1->{y} = $cy + $dy*$ball1->{r};
+	$ball2->{x} = $cx - $dx*$ball2->{r};
+	$ball2->{y} = $cy - $dy*$ball2->{r};
 }
 
 sub move_springly {
@@ -100,6 +130,11 @@ sub calc {
 	foreach my $i (1..$#balls) {
 		move_springly $balls[$i],
 				{x=>$balls[$i-1]->{x}, y=>$balls[$i-1]->{y}}, $step;
+	}
+	foreach my $i (0..$#balls) {
+		foreach my $j (($i+1)..$#balls) {
+			collide $balls[$i], $balls[$j];
+		}
 	}
 }
 
