@@ -1,0 +1,137 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+use SDL;
+use SDL::Event;
+use SDLx::App;
+
+my $app = SDLx::App->new(
+		width  => 800,
+		height => 600,
+		title  => 'Multi-Spring - Handles!');
+
+my $spring = 0.02;
+my $friction = 0.04;
+my $gravity = {
+	x => 0,
+	y => 0,
+};
+my $ball = {
+	x => $app->w/2,
+	y => $app->h/2,
+	r => 10,
+
+	vx => 0,
+	vy => 0,
+	ax => 0,
+	ay => 0,
+};
+
+my @hands = ();
+my $hands = 4;
+my $hand_current = undef;
+
+for (1..$hands) {
+	push @hands, {
+		x => rand $app->w,
+		y => rand $app->h,
+	};
+}
+
+$app->add_event_handler(\&event);
+$app->add_move_handler (\&calc);
+$app->add_show_handler (\&render);
+
+$app->run();
+
+sub event {
+	my $event      = shift;
+	my $controller = shift;
+	$controller->stop if $event->type == SDL_QUIT;
+	if ($event->type == SDL_MOUSEBUTTONDOWN) {
+		foreach my $i (0..$#hands) {
+			if (($event->button_x-$hands[$i]->{x})**2
+				+ ($event->button_y-$hands[$i]->{y})**2 < 100) {
+				$hand_current = $hands[$i];
+				return;
+			}
+		}
+	}
+	if ($event->type == SDL_MOUSEBUTTONUP) {
+		$hand_current = undef;
+	}
+	if ($event->type == SDL_MOUSEMOTION && $hand_current) {
+		$hand_current->{x} = $event->button_x;
+		$hand_current->{y} = $event->button_y;
+	}
+}
+
+sub move_springly {
+	my $ball = shift;
+	my $target = shift;
+	my $step = shift;
+
+	# apply physics
+	$ball->{ax} = ($target->{x} - $ball->{x}) * $spring + $gravity->{x};
+	$ball->{ay} = ($target->{y} - $ball->{y}) * $spring + $gravity->{y};
+	$ball->{vx} += $ball->{ax} * $step;
+	$ball->{vy} += $ball->{ay} * $step;
+	$ball->{vx} *= 1 - $friction * $step;
+	$ball->{vy} *= 1 - $friction * $step;
+	$ball->{x} += $ball->{vx} * $step;
+	$ball->{y} += $ball->{vy} * $step;
+
+	# bouncing
+	if ($ball->{x}-$ball->{r} < 0) {
+		$ball->{x} = $ball->{r};
+		if ($ball->{vx} < 0) {
+			$ball->{vx} = -$ball->{vx};
+		}
+	} elsif ($ball->{x}+$ball->{r} > $app->w) {
+		$ball->{x} = $app->w - $ball->{r};
+		if ($ball->{vx} > 0) {
+			$ball->{vx} = -$ball->{vx};
+		}
+	}
+	if ($ball->{y}-$ball->{r} < 0) {
+		$ball->{y} = $ball->{r};
+		if ($ball->{vy} < 0) {
+			$ball->{vy} = -$ball->{vy};
+		}
+	} elsif ($ball->{y}+$ball->{r} > $app->h) {
+		$ball->{y} = $app->h - $ball->{r};
+		if ($ball->{vy} > 0) {
+			$ball->{vy} = -$ball->{vy};
+		}
+	}
+}
+
+sub calc {
+	my ($step, $app) = @_;
+	foreach my $i (0..$#hands) {
+		move_springly $ball, $hands[$i], $step;
+	}
+}
+
+sub draw_ball {
+	my $ball = shift;
+	my $target = shift;
+	$app->draw_line([$target->{x}, $target->{y}], [$ball->{x}, $ball->{y}],
+												[0, 0, 255, 255]);
+	$app->draw_circle_filled([$ball->{x}, $ball->{y}], $ball->{r},
+												[255, 0, 0, 255]);
+	$app->draw_circle_filled([$target->{x}, $target->{y}], 10,
+												[0, 128, 255, 255]);
+}
+
+sub render {
+	my ($delta, $app) = @_;
+	$app->draw_rect([0, 0, $app->w, $app->h], 0); # clear screen
+	foreach my $i (0..$#hands) {
+		draw_ball $ball, $hands[$i];
+	}
+	$app->update;
+}
+
