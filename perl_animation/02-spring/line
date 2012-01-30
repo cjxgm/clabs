@@ -12,8 +12,8 @@ my $app = SDLx::App->new(
 		height => 600,
 		title  => 'Spring - Chained && Bounced!');
 
-my $spring = 0.15;
-my $friction = 0.4;
+my $spring = 0.8;
+my $friction = 1.0;
 my $gravity = {
 	x => 0,
 	y => 8,
@@ -23,13 +23,13 @@ my $target = {
 	y => 0,
 };
 my @balls = ();
-my $balls = 6;
+my $balls = 60;
 
 for (1..$balls) {
 	push @balls, {
-		x => rand $app->w,
-		y => rand $app->h,
-		r => rand(10) + 10,
+		x => $app->w/2,
+		y => $app->h/2,
+		r => 2,
 
 		vx => 0,
 		vy => 0,
@@ -142,7 +142,7 @@ sub draw_ball {
 	$app->draw_line([$target->{x}, $target->{y}], [$ball->{x}, $ball->{y}],
 												[0, 0, 255, 255]);
 	$app->draw_circle_filled([$ball->{x}, $ball->{y}], $ball->{r},
-												[255, 0, 0, 255]);
+												[0, 128, 255, 255]);
 }
 
 sub render {
