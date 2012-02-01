@@ -1,0 +1,163 @@
+#!/usr/bin/env perl
+# see http://www.gamasutra.com/resource_guide/20030121/jacobson_03.shtml
+
+use strict;
+use warnings;
+
+use SDL;
+use SDL::Event;
+use SDLx::App;
+
+my $app = SDLx::App->new(
+		width => 400,
+		height => 400,
+		title => 'Adv. Character Phys. 03 - Cloth');
+
+my $target = {
+	x => 200,
+	y => 200,
+};
+my @ps;
+my $ps = 10;
+my @cons;
+my $ts = 1;		# time step;
+my $wind = -0.5;
+
+# init particles
+my $sss = $app->w/4 / $ps;
+for my $y (0..$ps-1) {
+	for my $x (0..$ps-1) {
+		push @ps, {
+			x => $x*$sss,
+			y => $y*$sss,
+			ox => $x*$sss,
+			oy => $y*$sss,
+			fx => 0,
+			fy => 0,
+		};
+		if ($x < $ps-1) {
+			push @cons, {
+				id1 => $y*$ps + $x,
+				id2 => $y*$ps + $x+1,
+				len => $sss,
+			}
+		}
+		if ($y < $ps-1) {
+			push @cons, {
+				id1 => $y*$ps + $x,
+				id2 => ($y+1)*$ps + $x,
+				len => $sss,
+			}
+		}
+	};
+};
+
+$app->add_event_handler(\&event);
+$app->add_move_handler (\&calc);
+$app->add_show_handler (\&render);
+
+$app->run();
+
+sub event {
+	my $event      = shift;
+	my $controller = shift;
+	$controller->stop if $event->type == SDL_QUIT;
+	if ($event->type == SDL_MOUSEMOTION) {
+		$target->{x} = $event->button_x;
+		$target->{y} = $event->button_y;
+	}
+}
+
+sub apply_force {
+	my $p = shift;
+	$p->{fx} = $wind;
+	$p->{fy} = 10;
+}
+
+sub limrng {
+	my $v = shift;
+	my $l = shift;
+	my $h = shift;
+	return ($v<$l ? $l : ($v>$h ? $h : $v));
+}
+
+sub verlet {
+	my $p = shift;
+	my $tx = $p->{x};
+	my $ty = $p->{y};
+	$p->{x} += $p->{x}-$p->{ox} + $p->{fx}*$ts*$ts;
+	$p->{y} += $p->{y}-$p->{oy} + $p->{fy}*$ts*$ts;
+	$p->{ox} = $tx;
+	$p->{oy} = $ty;
+}
+
+sub con_cube {
+	my $p = shift;
+	my $xl = shift;	# [xy][lh]; l->low, h->high
+	my $xh = shift;
+	my $yl = shift;
+	my $yh = shift;
+	$p->{x} = limrng $p->{x}, $xl, $xh;
+	$p->{y} = limrng $p->{y}, $yl, $yh;
+}
+
+sub con_stick {
+	my $p1 = shift;
+	my $p2 = shift;
+	my $restlen = shift;
+
+	my $dx = $p2->{x} - $p1->{x};
+	my $dy = $p2->{y} - $p1->{y};
+	my $dsqr = $dx**2 + $dy**2;
+	my $diff = $restlen**2 / ($dsqr + $restlen**2) - 0.5;
+	$dx *= $diff;
+	$dy *= $diff;
+
+	$p1->{x} -= $dx;
+	$p1->{y} -= $dy;
+	$p2->{x} += $dx;
+	$p2->{y} += $dy;
+}
+
+sub calc {
+	my ($step, $app) = @_;
+	$ts = $step;
+	foreach my $i (0..$#ps) {
+		apply_force $ps[$i];
+		if ($i == $#ps) {
+		}
+		verlet $ps[$i];
+	}
+
+	# satisfy constraints
+	foreach (1..10) {
+		foreach my $i (0..$#ps) {
+			con_cube $ps[$i], 0, 400, 0, 400;
+		}
+		foreach my $i (0 .. $#cons) {
+			con_stick $ps[$cons[$i]->{id1}],
+					  $ps[$cons[$i]->{id2}],
+					  $cons[$i]->{len};
+		}
+		if ($ps[$#ps/2]->{y} > $app->h*3/4) {
+			$ps[$#ps/2]->{y} = $app->h*3/4;
+		}
+		$ps[0]->{x} = $target->{x};
+		$ps[0]->{y} = $target->{y};
+	}
+}
+
+sub drawp {
+	my $p = shift;
+	$app->draw_circle_filled([$p->{x}, $p->{y}], 2, [255, 0, 0, 255]);
+}
+
+sub render {
+	my ($delta, $app) = @_;
+	$app->draw_rect([0, 0, $app->w, $app->h], 0); # clear screen
+	foreach my $i (0..$#ps) {
+		drawp $ps[$i];
+	}
+	$app->update();
+}
+

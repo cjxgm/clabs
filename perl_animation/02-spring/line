@@ -74,6 +74,7 @@ sub collide {
 	my $dx = $ball1->{x} - $ball2->{x};
 	my $dy = $ball1->{y} - $ball2->{y};
 	my $dlen = ($dx**2 + $dy**2) ** 0.5;
+	if ($dlen == 0) { return; }
 	$dx /= $dlen;
 	$dy /= $dlen;
 	$ball1->{x} = $cx + $dx*$ball1->{r};

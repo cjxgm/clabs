@@ -1,0 +1,111 @@
+#!/usr/bin/env perl
+# see http://www.gamasutra.com/resource_guide/20030121/jacobson_01.shtml
+
+use strict;
+use warnings;
+
+use SDL;
+use SDL::Event;
+use SDLx::App;
+
+my $app = SDLx::App->new(
+		width => 400,
+		height => 400,
+		title => 'Adv. Character Phys. 01');
+
+my $target = {
+	x => 200,
+	y => 200,
+};
+my @ps;
+my $ps = 20;
+my $ts = 1;		# time step;
+
+# init particles
+foreach my $i (1 .. $ps) {
+	my $tx = rand 100;
+	my $ty = rand 100;
+	push @ps, {
+		x => $tx,
+		y => $ty,
+		ox => $tx,
+		oy => $ty,
+		fx => 0,
+		fy => 0,
+	};
+};
+
+$app->add_event_handler(\&event);
+$app->add_move_handler (\&calc);
+$app->add_show_handler (\&render);
+
+$app->run();
+
+sub event {
+	my $event      = shift;
+	my $controller = shift;
+	$controller->stop if $event->type == SDL_QUIT;
+	if ($event->type == SDL_MOUSEMOTION) {
+		$target->{x} = $event->button_x;
+		$target->{y} = $event->button_y;
+	}
+}
+
+sub apply_force {
+	my $p = shift;
+	$p->{fx} = 2;
+	$p->{fy} = 1;
+}
+
+sub limrng {
+	my $v = shift;
+	my $l = shift;
+	my $h = shift;
+	return ($v<$l ? $l : ($v>$h ? $h : $v));
+}
+
+sub verlet {
+	my $p = shift;
+	my $tx = $p->{x};
+	my $ty = $p->{y};
+	$p->{x} += $p->{x}-$p->{ox} + $p->{fx}*$ts*$ts;
+	$p->{y} += $p->{y}-$p->{oy} + $p->{fy}*$ts*$ts;
+	$p->{ox} = $tx;
+	$p->{oy} = $ty;
+}
+
+sub satisfy_constraint {
+	my $p = shift;
+	$p->{x} = limrng $p->{x}, 0, 200;
+	$p->{y} = limrng $p->{y}, 0, 200;
+}
+
+sub calc_each {
+	my $p = shift;
+	apply_force $p;
+	verlet $p;
+	satisfy_constraint $p;
+}
+
+sub calc {
+	my ($step, $app) = @_;
+	$ts = $step;
+	foreach my $i (0..$#ps) {
+		calc_each $ps[$i];
+	}
+}
+
+sub drawp {
+	my $p = shift;
+	$app->draw_circle_filled([$p->{x}, $p->{y}], 5, [255, 0, 0, 255]);
+}
+
+sub render {
+	my ($delta, $app) = @_;
+	$app->draw_rect([0, 0, $app->w, $app->h], 0); # clear screen
+	foreach my $i (0..$#ps) {
+		drawp $ps[$i];
+	}
+	$app->update();
+}
+
