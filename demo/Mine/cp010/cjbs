@@ -1,0 +1,128 @@
+#!/bin/bash
+
+################################
+# cjbs - Clanjor Build System  #
+#                              #
+# Written by eXerigumo Clanjor #
+# Licensed under GPLv2.        #
+# ABSOLUTELY NO WARRANTY!      #
+################################
+
+
+########################################
+#
+# User Configuration
+#
+
+SRCDIR="src/core src/audio src/audiotest"
+SRCSUFFIX='.c'
+DESTNAME="cp010"
+CCFLAGS="-Wall -O3 -s"
+LDFLAGS="-lm -lglut -lGL -lpthread"
+
+########################################
+#
+# The Build System
+#
+
+function main()
+{
+	case $1 in
+		"-")
+			echo -e "\e[1;32m> running $DESTNAME\e[m"
+			aoss ./$DESTNAME
+			echo -e "\e[1;36m: done\e[m"
+			;;
+		"-d")
+			echo -e "\e[1;32m> running $DESTNAME\e[m"
+			gdb ./$DESTNAME
+			echo -e "\e[1;36m: done\e[m"
+			;;
+		"-s")
+			main
+			main shrink
+			main -
+			main clean
+			;;
+		"-l")
+			local SRCFILE='*.[hc]'
+			[ -z "$2" ] || SRCFILE="$2"
+			echo -ne "\e[1;36mtotal lines: \e[1;32m"
+			for f in $(find src -name $SRCFILE); do
+				cat "$f" | 	wc -l
+			done | awk 'BEGIN{t=0} {t+=$0} END{print t}'
+			echo -ne "\e[m"
+			;;
+		"debug")
+			CCFLAGS="-Wall -g"
+			main
+			;;
+		"shrink")
+			echo -e "\e[1;32m> shrinking $DESTNAME\e[m"
+			ls -lh $DESTNAME
+			strip -s $DESTNAME
+			upx --best --ultra-brute $DESTNAME > /dev/zero
+			ls -lh $DESTNAME
+			echo -e "\e[1;36m: done\e[m"
+			;;
+		"clean")
+			for d in $SRCDIR; do
+				echo -e "\e[1;32m> cleaning objects in $d\e[m"
+				rm -f $(find $d -name '*.o')
+			done
+			echo -e "\e[1;32m> cleaning $DESTNAME\e[m"
+			rm -f $DESTNAME
+			echo -e "\e[1;36m: done\e[m"
+			;;
+		"--")
+			main
+			main -
+			main clean
+			;;
+		*)
+			cjbuild $DESTNAME $SRCDIR
+			echo -e "\e[1;36m: done\e[m"
+			;;
+	esac
+}
+
+function cjbuild()
+{
+	local objs=""
+	local dest="$1"
+
+	while ! [ -z $2 ]; do
+		echo -e "\e[1;32m> building objects in $2\e[m"
+		cjbuild_objs $2
+		objs="$objs $(find $2 -name '*.o')"
+		shift
+	done
+
+	echo -e "\e[1;32m> linking $dest\e[m"
+	echo "    gcc -o $dest $objs $LDFLAGS"
+	echo -ne "\e[1;31m"
+	if ! gcc -o $dest $objs $LDFLAGS; then
+		echo -e "\e[1;35m: compilation failed\e[m"
+		exit 1
+	fi
+	echo -ne "\e[m"
+}
+
+function cjbuild_objs()
+{
+	for f in $(find $1 -name *$SRCSUFFIX); do
+		local base=$(basename $f $SRCSUFFIX)
+		local dir=$(dirname $f)
+		echo -e "\e[1;34m>>> building $base\e[m"
+		echo "    gcc -c -o $dir/$base.o $f $CCFLAGS"
+		echo -ne "\e[1;31m"
+		if ! gcc -c -o $dir/$base.o $f $CCFLAGS; then
+			echo -e "\e[1;35m::: compilation failed\e[m"
+			exit 1
+		fi
+		echo -ne "\e[m"
+	done
+}
+
+main $*
+

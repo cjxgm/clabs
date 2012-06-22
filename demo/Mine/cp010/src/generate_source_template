@@ -1,0 +1,19 @@
+#!/bin/bash
+
+base="$(basename $1 .c)"
+cat > $1 << EOF
+
+/************************************************************
+ * cp: $(basename $1)
+ *
+ * Licensed under GPLv2.
+ * ABSOLUTELY NO WARRANTY!
+ *
+ * Copyright (C) eXerigumo Clanjor (哆啦比猫/兰威举).
+ ************************************************************/
+
+#include "$base.h"
+
+
+EOF
+
