@@ -14,21 +14,9 @@
 #include <stdlib.h>
 #include <math.h>
 
-typedef struct Sequence
-{
-	u16 * score;
-	u32   instpos;
-	float last_time;
-	float w;
-	u16   notepos;
-	u8    inst;
-}
-Sequence;
-
 static Sequence * seqs;
 
 static void reset_note(Sequence * seq);
-static float seq_pull(Sequence * seq, float time);
 
 
 
@@ -54,6 +42,30 @@ float seq_mix_all(float time)
 	return x * music_amplify / music_nscore;
 }
 
+float seq_pull(Sequence * seq, float time)
+{
+	// When the sequence ends...
+	if (seq->score[seq->notepos] == 0xFFFF)
+		return 0.0f;
+
+	// When it's time to jump to the next row...
+	if (time - seq->last_time >= music_mspr) {
+		seq->last_time += music_mspr;
+
+		// Not a blank row...
+		if (seq->score[++seq->notepos])
+			reset_note(seq);
+	}
+
+	// Play the instrument!
+	return music_insts[seq->inst](seq->w * seq->instpos++);
+}
+
+const Sequence * seq_get_all()
+{
+	return (const Sequence *)seqs;
+}
+
 
 
 
@@ -71,24 +83,5 @@ static void reset_note(Sequence * seq)
 		seq->w = 2.0f * PI * freq / audio_bitrate;
 	}
 	else seq->w = 0.0f;	// stop note
-}
-
-static float seq_pull(Sequence * seq, float time)
-{
-	// When the sequence ends...
-	if (seq->score[seq->notepos] == 0xFFFF)
-		return 0.0f;
-
-	// When it's time to jump to the next row...
-	if (time - seq->last_time >= music_mspr) {
-		seq->last_time += music_mspr;
-
-		// Not a blank row...
-		if (seq->score[++seq->notepos])
-			reset_note(seq);
-	}
-
-	// Play the instrument!
-	return music_insts[seq->inst](seq->w * seq->instpos++);
 }
 

@@ -12,14 +12,14 @@
 #include <time.h>
 
 static float time_begin;
-static float ellapsed();
+static float elapsed();
 
 
 
 
 float ticks()
 {
-	return ellapsed() - time_begin;
+	return elapsed() - time_begin;
 }
 
 void time_adjust(float time_should_be)
@@ -30,7 +30,7 @@ void time_adjust(float time_should_be)
 
 
 
-static float ellapsed()
+static float elapsed()
 {
 	return clock() * 1000.0f / CLOCKS_PER_SEC;
 }

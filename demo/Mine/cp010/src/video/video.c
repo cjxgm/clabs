@@ -9,7 +9,9 @@
  ************************************************************/
 
 #include "video.h"
+#include "renders.h"
 #include "../demo/demo.h"
+#include "../core/core.h"
 #include <GL/glut.h>
 
 int video_w = 640;
@@ -22,6 +24,7 @@ static void idle();
 static void display();
 static void resize(int w, int h);
 static void keypress(unsigned char key, int x, int y);
+static u8 draw;
 
 void video_init()
 {
@@ -39,9 +42,9 @@ void video_init()
 	glutSetCursor(GLUT_CURSOR_NONE);
 
 	// bind events
-	glutDisplayFunc(&display);
 	glutReshapeFunc(&resize);
 	glutKeyboardFunc(&keypress);
+	glutDisplayFunc(&display);
 	glutIdleFunc(&init);
 
 	// setup blank color
@@ -65,10 +68,28 @@ void video_close()
 	glutDestroyWindow(win);
 }
 
+void video_view2d(float x, float y, float w, float h)
+{
+	glViewport(x, y, w, h);
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glOrtho(0, w, 0, h, -1, 1);
+	glMatrixMode(GL_MODELVIEW);
+	//glLoadIdentity();
+}
+
 static void init()
 {
-	demo_init();
 	glutIdleFunc(&idle);
+
+	time_adjust(0.0f);
+	while (ticks() < 2000) {}	// wait for mode switching
+
+	demo_init();
+
+	draw = 1;
+	glutPostRedisplay();
 }
 
 static void idle()
@@ -79,7 +100,9 @@ static void idle()
 static void display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	if (draw) render_score();
 	glutSwapBuffers();
+	glutPostRedisplay();
 }
 
 static void resize(int w, int h)

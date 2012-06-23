@@ -15,13 +15,11 @@
 #include <pthread.h>
 #include <assert.h>
 
-#define BUF_SIZE	512
-
 u32 audio_bitrate = 8000;
 u8  audio_playing = 0;
 
 static FILE * dsp;
-static u8 buf[BUF_SIZE];
+static u8 buf[AUDIO_BUF_SIZE];
 
 static pthread_t thread_play;
 static void play_thread();
@@ -63,6 +61,11 @@ void audio_stop()
 	}
 }
 
+const u8 * audio_get_buf()
+{
+	return (const u8 *)buf;
+}
+
 
 
 
@@ -76,7 +79,7 @@ static void play_thread()
 		fwrite(buf, sizeof(buf), 1, dsp);
 		fflush(dsp);
 		time_adjust(time_start + 1000.0f*(++played) *
-				BUF_SIZE / audio_bitrate);
+				AUDIO_BUF_SIZE / audio_bitrate);
 	}
 }
 
@@ -85,7 +88,7 @@ inline static void fillbuf()
 	float s = 1000.0f / audio_bitrate;
 	float t = ticks();
 	int i;
-	for (i=0; i<BUF_SIZE; i++)
+	for (i=0; i<AUDIO_BUF_SIZE; i++)
 		buf[i] = (u8)lerp(seq_mix_all(t + s*i), -1, 1, 0, 0xFF);
 }
 
