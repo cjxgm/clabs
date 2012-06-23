@@ -1,6 +1,6 @@
 
 /************************************************************
- * cp: main.c
+ * cp: demo.h
  *
  * Licensed under GPLv2.
  * ABSOLUTELY NO WARRANTY!
@@ -8,20 +8,11 @@
  * Copyright (C) eXerigumo Clanjor (哆啦比猫/兰威举).
  ************************************************************/
 
-#include <stdio.h>
-#include "../core/core.h"
-#include "../audio/audio.h"
+#ifndef __DEMO_H
+#define __DEMO_H
 
-int main()
-{
-	audio_open();
-	time_adjust(0.0f);
-	audio_play();
+void demo_init();
+void demo_close();
 
-	while (audio_playing) {}
-
-	audio_close();
-
-	return 0;
-}
+#endif
 

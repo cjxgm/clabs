@@ -14,7 +14,7 @@
 # User Configuration
 #
 
-SRCDIR="src/core src/audio src/audiotest"
+SRCDIR="src/core src/audio src/video src/demo"
 SRCSUFFIX='.c'
 DESTNAME="cp010"
 CCFLAGS="-Wall -O3 -s"
