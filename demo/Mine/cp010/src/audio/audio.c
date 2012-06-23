@@ -10,6 +10,7 @@
 
 #include "audio.h"
 #include "seq.h"
+#include "music.h"
 #include <stdio.h>
 #include <pthread.h>
 #include <assert.h>
@@ -47,6 +48,7 @@ void audio_play()
 
 	audio_playing = 1;
 	seq_init();
+	music_init();
 	pthread_create(&thread_play, PTHREAD_CREATE_JOINABLE,
 			(void *)&play_thread, NULL);
 }

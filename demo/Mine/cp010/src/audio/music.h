@@ -23,5 +23,7 @@ extern MusicOsc music_insts[];
 extern float music_mspr;	// MilliSeconds Per Row
 extern float music_amplify;
 
+void music_init();
+
 #endif
 
