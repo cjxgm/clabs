@@ -12,6 +12,7 @@
 #include "seq.h"
 #include <stdio.h>
 #include <pthread.h>
+#include <assert.h>
 
 #define BUF_SIZE	512
 
@@ -31,6 +32,7 @@ inline static void fillbuf();
 void audio_open()
 {
 	dsp = fopen("/dev/dsp", "w");
+	assert(dsp && "Can not open /dev/dsp");
 }
 
 void audio_close()

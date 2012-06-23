@@ -40,7 +40,7 @@ void seq_init()
 	int i;
 	for (i=0; i<music_nscore; i++) {
 		seqs[i].score = music_scores[i];
-		seqs[i].last_time = -music_mspr-1;
+		seqs[i].last_time = ticks();
 		reset_note(&seqs[i]);
 	}
 }
@@ -68,7 +68,7 @@ static void reset_note(Sequence * seq)
 
 	if (octave) {
 		float freq = 300 * pow(2, octave + note/12.0f - 42.0f/12.0f);
-		seq->w = 1000.0f * 2*PI * freq / audio_bitrate;
+		seq->w = 2.0f * PI * freq / audio_bitrate;
 	}
 	else seq->w = 0.0f;	// stop note
 }
