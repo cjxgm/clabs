@@ -14,7 +14,7 @@
 
 // info
 #define BPM_TO_MSPR(BPM,RPB)	60000.0f / (BPM) / (RPB)
-float music_mspr = BPM_TO_MSPR(120, 4);		// MilliSeconds Per Row
+float music_mspr = BPM_TO_MSPR(120, 3);		// MilliSeconds Per Row
 float music_amplify = 1.0f;
 
 // scores
