@@ -1,0 +1,19 @@
+#!/bin/bash
+dialog --menu "你想听什么？" 0 0 0 \
+	$(curl flac.repair-of.com |
+		sed -n 's/.*<a href=\([^ ]\+\)[^>]\+>\([^<]\+\).*/\1 \2/g;
+				s/ /_/g;
+				s/html_/html /gp') 2> /tmp/selected
+curl $(cat /tmp/selected) > /tmp/detail
+if ! [ -z "$(cat /tmp/detail|grep '\.flac<')" ]; then
+	curl $(cat /tmp/selected | sed 's/\.html/.pls/g') > /tmp/flacplaylist
+	mplayer -playlist /tmp/flacplaylist
+else
+	echo "居然是分开的……"
+	echo > /tmp/flacplaylist
+	count=$(curl $(cat /tmp/selected) | grep '[0-9]\+\/index.html' | wc -l)
+	for i in $(seq $count); do
+		curl $(cat /tmp/selected | sed "s/index.html/$i\/index.pls/g") >> /tmp/flacplaylist
+	done
+	mplayer -playlist /tmp/flacplaylist
+fi

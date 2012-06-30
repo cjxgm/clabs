@@ -1,0 +1,52 @@
+#!/bin/bash
+# Jack Manager
+
+function jm_select_op()
+{
+	echo "0
+启动 Jack
+1
+关闭 Jack
+2
+重启 Jack" | 
+		zenity --list --text="Jack 管理器" \
+			--column="" \
+			--column="操作" > /tmp/jm_selected || return 255
+	return $(cat /tmp/jm_selected)
+}
+
+function jm_is_jack_running()
+{
+	ps -A | grep jackd > /dev/zero
+}
+
+function jm_start_jack()
+{
+	if jm_is_jack_running; then
+		return 0
+	fi
+
+	jackd -mZ -d alsa
+}
+
+function jm_stop_jack()
+{
+	if ! jm_is_jack_running; then
+		return 0
+	fi
+
+	pkill -9 jackd
+}
+
+while true; do
+	jm_select_op
+	case $? in
+		0)	jm_start_jack& ;;
+		1)	jm_stop_jack ;;
+		2)	jm_stop_jack
+			jm_start_jack& ;;
+		*)	break ;;
+	esac
+done
+jm_stop_jack
+
