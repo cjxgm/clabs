@@ -1,0 +1,163 @@
+#!/bin/bash
+# sire - Simplify Your Sourceforge!
+
+#---void sire_main()
+sire_main()
+{
+	# check whether sire is initialized
+	[ -f ".sire" ] || sire_error 1 \
+		"sire is not initialized in this directory." \
+		"run \`sire init <user> [<project_name>]' to initialize."
+	
+	# import sire config file
+	. .sire
+
+	case $1 in
+	'')
+		sire_stat
+		;;
+	'help')
+		sire_help
+		;;
+	'init')
+		shift
+		sire_init $*
+		;;
+	'push')
+		shift
+		sire_push $*
+		;;
+	'pull')
+		shift
+		sire_pull $*
+		;;
+	*)
+		sire_error 2 "unknown command \`$1'." \
+			"run \`sire help' to get help."
+		;;
+	esac
+}
+
+#---void sire_error(u8 errno, string errmsg, [string hint])
+sire_error()
+{
+	echo -e "\e[1;31merror: \e[m$2"
+	[ -z "$3" ] || echo -e "\e[1m$3"
+	echo -ne "\e[m"
+	exit $1
+}
+
+#---void sire_done([string msg])
+sire_done()
+{
+	[ -z "$1" ] || echo -e "$1"
+	echo -e "\e[1mdone.\e[m"
+}
+
+#---void sire_stat()
+sire_stat()
+{
+	sire_error -1 "TODO"
+}
+
+#---void sire_help()
+sire_help()
+{
+	sire_error -1 "TODO"
+}
+
+#---void sire_init(string user, [string project_name])
+sire_init()
+{
+	# check parameters
+	[ -z "$1" ] && sire_error 3 "you must specify your user name!" \
+		"usage: sire init <user> [<project_name>]"
+	local projname="$(basename $(pwd))"
+	[ -z "$2" ] || projname="$2"
+	
+	# create config file
+	echo "# sire config file" > .sire
+	echo "SIRE_USERNAME=\"$1\"" >> .sire
+	echo "SIRE_PROJNAME=\"$projname\"" >> .sire
+
+	# create initial directory
+	[ -d "web" ] || mkdir web
+	[ -d "rel" ] || mkdir rel
+
+	sire_done "config file written.\ninitial directory created."
+}
+
+#---void sire_push([enum what <- {"web", "rel", *"all"}])
+sire_push()
+{
+	case $1 in
+	'')
+		sire_push all
+		;;
+	'all')
+		sire_push_web
+		sire_push_rel
+		;;
+	'web')
+		sire_push_web
+		;;
+	'rel')
+		sire_push_rel
+		;;
+	*)
+		sire_error 4 "out of enumerate." \
+			"usage: sire push [web|rel|all]"
+		;;
+	esac
+	sire_done
+}
+
+#---void sire_pull([enum what <- {"web", "rel", *"all"}])
+sire_pull()
+{
+	case $1 in
+	'')
+		sire_pull_web
+		sire_pull_rel
+		;;
+	'all')
+		sire_pull_web
+		sire_pull_rel
+		;;
+	'web')
+		sire_pull_web
+		;;
+	'rel')
+		sire_pull_rel
+		;;
+	*)
+		sire_error 4 "out of enumerate." \
+			"usage: sire pull [web|rel|all]"
+		;;
+	esac
+	sire_done
+}
+
+#---void sire_push_web()
+sire_push_web()
+{
+	rsync -avhP --stats --delete --compress -e ssh web/ $SIRE_USERNAME@web.sourceforge.net:/home/project-web/$SIRE_PROJNAME/htdocs
+}
+#---void sire_pull_web()
+sire_pull_web()
+{
+	rsync -avhP --stats --delete --compress -e ssh $SIRE_USERNAME@web.sourceforge.net:/home/project-web/$SIRE_PROJNAME/htdocs/ web
+}
+
+#---void sire_push_rel()
+sire_push_rel()
+{
+	rsync -avhP --stats --delete --compress -e ssh rel/ $SIRE_USERNAME@frs.sourceforge.net:/home/frs/project/$SIRE_PROJNAME
+}
+#---void sire_pull_rel()
+sire_pull_rel()
+{
+	rsync -avhP --stats --delete --compress -e ssh $SIRE_USERNAME@frs.sourceforge.net:/home/frs/project/$SIRE_PROJNAME/ rel
+}
+
+sire_main $*
