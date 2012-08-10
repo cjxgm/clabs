@@ -27,63 +27,73 @@ LDFLAGS="-lm -lglut -lGL -lpthread"
 
 function main()
 {
-	case $1 in
-		"-")
-			echo -e "\e[1;32m> running $DESTNAME\e[m"
-			aoss ./$DESTNAME
-			echo -e "\e[1;36m: done\e[m"
-			;;
-		"-d")
-			echo -e "\e[1;32m> running $DESTNAME\e[m"
-			gdb ./$DESTNAME
-			echo -e "\e[1;36m: done\e[m"
-			;;
-		"-s")
-			main
-			main shrink
-			main -
-			main clean
-			;;
-		"-l")
-			local SRCFILE='*.[hc]'
-			[ -z "$2" ] || SRCFILE="$2"
-			echo -ne "\e[1;36mtotal lines: \e[1;32m"
-			for f in $(find src -name $SRCFILE); do
-				cat "$f" | 	wc -l
-			done | awk 'BEGIN{t=0} {t+=$0} END{print t}'
-			echo -ne "\e[m"
-			;;
-		"debug")
-			CCFLAGS="-Wall -g"
-			main
-			;;
-		"shrink")
-			echo -e "\e[1;32m> shrinking $DESTNAME\e[m"
-			ls -lh $DESTNAME
-			strip -s $DESTNAME
-			upx --best --ultra-brute $DESTNAME > /dev/zero
-			ls -lh $DESTNAME
-			echo -e "\e[1;36m: done\e[m"
-			;;
-		"clean")
-			for d in $SRCDIR; do
-				echo -e "\e[1;32m> cleaning objects in $d\e[m"
-				rm -f $(find $d -name '*.o')
-			done
-			echo -e "\e[1;32m> cleaning $DESTNAME\e[m"
-			rm -f $DESTNAME
-			echo -e "\e[1;36m: done\e[m"
-			;;
-		"--")
-			main
-			main -
-			main clean
-			;;
-		*)
-			cjbuild $DESTNAME $SRCDIR
-			echo -e "\e[1;36m: done\e[m"
-			;;
-	esac
+	if [ -z "$1" ]; then
+		cjbuild $DESTNAME $SRCDIR
+		echo -e "\e[1;36m: done\e[m"
+		return;
+	fi
+
+	while ! [ -z "$1" ]; do
+		case $1 in
+			"-")
+				echo -e "\e[1;32m> running $DESTNAME\e[m"
+				aoss ./$DESTNAME
+				echo -e "\e[1;36m: done\e[m"
+				shift ;;
+			"-d")
+				echo -e "\e[1;32m> running $DESTNAME\e[m"
+				gdb ./$DESTNAME
+				echo -e "\e[1;36m: done\e[m"
+				shift ;;
+			"-s")
+				main
+				main shrink
+				main -
+				main clean
+				shift ;;
+			"-l")
+				local SRCFILE='*.[hc]'
+				[ -z "$2" ] || SRCFILE="$2"
+				echo -ne "\e[1;36mtotal lines: \e[1;32m"
+				for f in $(find src -name $SRCFILE); do
+					cat "$f" | 	wc -l
+				done | awk 'BEGIN{t=0} {t+=$0} END{print t}'
+				echo -ne "\e[m"
+				shift ;;
+			"-f")
+				CCFLAGS="$CCFLAGS -D__FULL_SCREEN"
+				shift ;;
+			"debug")
+				CCFLAGS="-Wall -g"
+				main
+				shift ;;
+			"shrink")
+				echo -e "\e[1;32m> shrinking $DESTNAME\e[m"
+				ls -lh $DESTNAME
+				strip -s $DESTNAME
+				upx --best --ultra-brute $DESTNAME > /dev/zero
+				ls -lh $DESTNAME
+				echo -e "\e[1;36m: done\e[m"
+				shift ;;
+			"clean")
+				for d in $SRCDIR; do
+					echo -e "\e[1;32m> cleaning objects in $d\e[m"
+					rm -f $(find $d -name '*.o')
+				done
+				echo -e "\e[1;32m> cleaning $DESTNAME\e[m"
+				rm -f $DESTNAME
+				echo -e "\e[1;36m: done\e[m"
+				shift ;;
+			"--")
+				main
+				main -
+				main clean
+				shift ;;
+			*)
+				echo -e "\e[1;31m: unknown option: $1\e[m"
+				exit 1
+		esac
+	done
 }
 
 function cjbuild()

@@ -37,9 +37,11 @@ void video_init()
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 	glutInitWindowSize(video_w, video_h);
 	win = glutCreateWindow("cp");
+#ifdef __FULL_SCREEN
 	glutGameModeString("640x480x24@75");
 	glutEnterGameMode();
 	glutSetCursor(GLUT_CURSOR_NONE);
+#endif
 
 	// bind events
 	glutReshapeFunc(&resize);
@@ -64,7 +66,9 @@ void video_init()
 void video_close()
 {
 	demo_close();
+#ifdef __FULL_SCREEN
 	glutLeaveGameMode();
+#endif
 	glutDestroyWindow(win);
 }
 

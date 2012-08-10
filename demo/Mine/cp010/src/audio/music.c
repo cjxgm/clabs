@@ -13,11 +13,21 @@
 #include <stdlib.h>
 
 // info
+// BPM = Beats Per Minute, RPB = Rows Per Beat
 #define BPM_TO_MSPR(BPM,RPB)	60000.0f / (BPM) / (RPB)
 float music_mspr = BPM_TO_MSPR(120, 3);		// MilliSeconds Per Row
 float music_amplify = 1.0f;
 
 // scores
+
+// explanation:
+// Take 0x4102 for instance:
+// 		 4 --> Octave 4
+// 		 1 --> Note   1
+// 		02 --> Instrument ID (0x02)
+// Special:
+// 		0x0100 --> rest
+// 		0x0000 --> sustain
 static u16 s_lead[] = {
 	0x4100, 0x0000, 0x3800, 0x0000, 0x4300, 0x0000, 0x3800, 0x0000,
 	0x4100, 0x0000, 0x3800, 0x0000, 0x4300, 0x0000, 0x3800, 0x0000,
@@ -100,7 +110,7 @@ MusicOsc music_insts[] = {
 
 void music_init()
 {
-	// init instrument drum
+	// init instrument: drum
 	int i;
 	for (i=0; i<2048; i++)
 		drum[i] = lerp(rand() % 256, 0.0f, 255.0f, -1.0f, 1.0f);
