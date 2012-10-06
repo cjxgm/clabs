@@ -1,0 +1,7 @@
+
+-- vim: ft=lua noet ts=4 sw=4 sts=0
+
+luac = rule('.lua', '.lb', 'luac -o $(TARGET) $(INPUT)')
+libwm = c.shared{ 'libwm', src='src/libwm', needs='lua' }
+default{libwm, luac 'src/*.lua'}
+
