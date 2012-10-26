@@ -1,0 +1,65 @@
+#!/bin/bash
+# vim: ft=sh noet ts=4 sw=4 sts=0
+
+main()
+{
+	local OBJS=""
+	local CFLAGS=""
+	local LDFLAGS="-lasound"
+
+	echo "# vim: ft=make noet ts=4 sw=4 sts=0" > makefile
+	gen
+	gen "CC = gcc"
+	gen "CFLAGS = -Ofast -Wall -Werror $CFLAGS"
+	gen "LDFLAGS = $LDFLAGS"
+	gen
+	gen ".PHONY: cidi clean cleanall rebuild reconf test commit"
+	gen
+	gen "cidi: build build/cidi"
+	gen "clean:"
+	gen -e "\trm -rf build"
+	gen "cleanall: clean"
+	gen -e "\trm -f makefile"
+	gen "rebuild: clean cidi"
+	gen "reconf:"
+	gen -e "\t./configure"
+	gen "test: cidi"
+	gen -e "\t./build/cidi"
+	gen "commit: cleanall"
+	gen -e "\tgit add ."
+	gen -e "\tgit commit -a || true"
+	gen -e "\t./configure"
+	gen
+	gen "build:"
+	gen -e "\tmkdir build"
+	for f in src/*.c; do
+		echo -e "\e[0;32mprocessing \e[1;35m$f\e[m"
+		echo -ne "\e[1;31m"
+		gcc $CFLAGS -MM "$f" > .dep || error
+		local target=build/$(cut -d: -f1 .dep | head -n 1)
+		OBJS="$OBJS $target";
+		gen -n build/
+		cat .dep >> makefile
+		gen -e "\t\$(CC) -c -o \$@ \$< \$(CFLAGS)"
+	done
+	echo -ne "\e[m"
+	rm -f .dep
+	gen "build/cidi:$OBJS"
+	gen -e "\t\$(CC) -o \$@ \$< \$(CFLAGS) \$(LDFLAGS)"
+	gen
+}
+
+gen()
+{
+	echo $* >> makefile
+}
+
+error()
+{
+	echo -ne "\e[m"
+	rm -f .dep
+	exit 1
+}
+
+
+main $*
