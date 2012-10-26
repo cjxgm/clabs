@@ -1,0 +1,567 @@
+\documentclass[a4paper]{article}
+\usepackage[utf8]{inputenc}
+
+\title{\textsc{Advanced Character Physics}}
+\author{Written by Thomas Jakobsen, \\
+		Converted into \LaTeXe\ by \texttt{eXerigumo Clanjor}}
+
+\usepackage{natbib}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{color}
+% the following is loaded by tikz
+%\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\usepackage{nameref}
+\usepackage[margin=1in]{geometry}
+
+% Will this produce better-looking document?
+%\setlength{\parskip}{\baselineskip}
+
+
+%%% Commands 
+\newcommand{\SEC}[1]{\textsl{\color{black!40!red!80!yellow}
+		Section \ref{#1}: ``\nameref{#1}''}}
+
+\newcommand{\FIG}[1]{\textsl{\color{black!40!red!80!yellow}
+		Figure \ref{#1}}}
+
+\newcommand{\EQN}[1]{\textbf{\color{black!40!red!80!yellow}(\ref{#1})}}
+
+\newcommand{\FIGDRAW}[3]{	% label, caption, drawing commands
+	\begin{figure}[h!]
+		\centering
+		\begin{tikzpicture}
+			%\draw[step=0.25cm,color=gray] (-4,-4) grid (4,4);
+			#3
+		\end{tikzpicture}
+		\caption{#2}
+		\label{#1}
+	\end{figure}
+}
+
+\newcommand{\DRAWX}[3]{		% x, y, size
+	\draw (#1-#3,#2-#3) -- (#1+#3, #2+#3);
+	\draw (#1-#3,#2+#3) -- (#1+#3, #2-#3);
+}
+
+
+%%% Setup for listing
+\lstset{
+	language=C++,
+	basicstyle=\ttfamily,
+	keywordstyle=\color{blue}\bfseries,
+	commentstyle=\color{olive}\ttfamily,
+	numbers=left,
+	numberstyle=\color{purple}\ttfamily,
+	breakatwhitespace=false,
+	frame=tb,
+	stringstyle=\color{black!60!green},
+	tabsize=4,
+	belowskip=1em,
+	aboveskip=1em,
+	breaklines=true,
+	showstringspaces=true
+}
+
+\begin{document}
+
+\maketitle
+
+%%%%%%%%%%%%%%%%%%% abstract %%%%%%%%%%%%%%%%%%
+\begin{abstract}
+This paper explains the basic elements of an approach to physically-based
+modeling which is well suited for interactive use. It is simple, fast,
+and quite stable, and in its basic version the method does not require
+knowledge of advanced mathematical subjects (although it is based on
+a solid mathematical foundation). It allows for simulation of both cloth;
+soft and rigid bodies; and even articulated or constrained bodies using
+both forward and inverse kinematics.
+
+The algorithms were developed for IO Interactive's game
+\texttt{Hitman: Codename 47}. There, among other things, the physics
+system was responsible for the movement of cloth, plants, rigid bodies,
+and for making dead human bodies fall in unique ways depending on where
+they were hit, fully interacting with the environment (resulting in
+the press oxymoron ``lifelike death animations'').
+
+The article also deals with subtleties like penetration test optimization
+and friction handling.
+\end{abstract}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+
+
+\section{Introduction}
+\label{sec:intro}
+
+The use of physically-based modeling to produce nice-looking animation
+has been considered for some time and many of the existing techniques
+are fairly sophisticated. Different approaches have been proposed in the
+literature\cite{Baraff}\cite{Mirtich}\cite{Witkin} and much effort has
+been put into the construction of algorithms that are accurate and
+reliable. Actually, precise simulation methods for physics and dynamics
+have been known for quite some time from engineering. However, for games
+and interactive use, accuracy is really not the primary concern (although
+it's certainly nice to have) --- rather, here the important goals are
+believability (the programmer can cheat as much as he wants if the player
+still feels immersed) and speed of execution (only a certain time per
+frame will be allocated to the physics engine). In the case of physics
+simulation, the word believability also covers stability; a method is
+no good if objects seem to drift through obstacles or vibrate when they
+should be lying still, or if cloth particles tend to ``blow up''.
+
+The methods demonstrated in this paper were created in an attempt to
+reach these goals. The algorithms were developed and implemented by the
+author for use in IO Interactive's computer game
+\texttt{Hitman: Codename 47}, and have all been integrated in IO's
+in-house game engine Glacier. The methods proved to be quite simple to
+implement (compared to other schemes at least) and have high performance.
+
+The algorithm is iterative such that, from a certain point, it can be
+stopped at any time. This gives us a very useful time/accuracy trade-off:
+If a small source of inaccuracy is accepted, the code can be allowed to
+run faster; this error margin can even be adjusted adaptively at run-time.
+In some cases, the method is as much as an order of magnitude faster
+than other existing methods. It also handles both collision and resting
+contact in the same framework and nicely copes with stacked boxes and
+other situations that stress a physics engine.
+
+In overview, the success of the method comes from the right combination
+of several techniques that all benefit from each other:
+
+\begin{itemize}
+    \item A so-called Verlet integration scheme.
+    \item Handling collisions and penetrations by projection.
+    \item A simple constraint solver using relaxation.
+    \item A nice square root approximation that gives a solid speed-up.
+    \item Modeling rigid bodies as particles with constraints.
+    \item An optimized collision engine with the ability to calculate
+			penetration depths.
+\end{itemize}
+
+Each of the above subjects will be explained shortly. In writing this
+document, the authorn has tried to make it accessible to the widest
+possible audience without losing vital information necessary for
+implementation. This means that technical mathematical explanations
+and notions are kept to a minimum if not crucial to understanding the
+subject. The goal is demonstrating the possibility of implementing quite
+advanced and stable physics simulations without dealing with loads of
+mathematical intricacies.
+
+The content is organized as follows. First, in \SEC{sec:verlet}, a
+``velocity-less'' representation of a particle system will be described.
+It has several advantages, stability most notably and the fact that
+constraints are simple to implement. \SEC{sec:projection} describes how
+collision handling takes place. Then, in \SEC{sec:relaxation}, the
+particle system is extended with constraints allowing us to model cloth.
+\SEC{sec:rigid} explains how to set up a suitably constrained particle
+system in order to emulate a rigid body. Next, in \SEC{sec:arti}, it is
+demonstrated how to further extend the system to allow articulated
+bodies (that is, systems of interconnected rigid bodies with angular and
+other constraints). \SEC{sec:comm} contains various notes and shares some
+experience on implementing friction etc. Finally, in \SEC{sec:conclusion}
+a brief conclusion.
+
+In the following, $\vec{v}$ indicates vectors. Vector components are
+indexed by using subscript, i.e., $\vec{x}=(x_{1}, x_{2}, x_{3})$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Verlet Integration}
+\label{sec:verlet}
+
+The heart of the simulation is a particle system. Typically, in
+implementations of particle systems, each particle has two main
+variables: Its position $\vec{x}$ and its velocity $\vec{v}$. Then in
+the time-stepping loop, the new position $\vec{x}'$ and velocity
+$\vec{v}'$ are often computed by applying the rules
+
+$$\vec{x}' = \vec{x} + \vec{v}\cdot\Delta{t}$$
+$$\vec{v}' = \vec{v} + \vec{a}\cdot\Delta{t}$$
+
+where $\Delta{t}$ is the time step, and a is the acceleration computed
+using Newton's law $\vec{f}=m\cdot\vec{a}$ (where $\vec{f}$ is the
+accumulated force acting on the particle). This is simple Euler
+integration.
+
+Here, however, we choose a velocity-less representation and another
+integration scheme: Instead of storing each particle's position and
+velocity, we store its current position $\vec{x}$ and its previous
+position $\vec{x}''$. Keeping the time step fixed, the update rule
+(or integration step) is then
+
+$$\vec{x}' = 2\cdot\vec{x} - \vec{x}'' + \vec{a}\cdot\Delta{t}^{2}$$
+$$\vec{x}'' = \vec{x}$$
+
+This is called Verlet integration\cite{Verlet} and is used intensely when
+simulating molecular dynamics. It is quite stable since the velocity is
+implicitly given and consequently it is harder for velocity and position
+to come out of sync. (As a side note, the well-known demo effect for
+creating ripples in water uses a similar approach.) It works due to the
+fact that $2\cdot\vec{x}-\vec{x}''=\vec{x}+(\vec{x}-\vec{x}'')$ and
+$\vec{x}-\vec{x}''$ is an approximation of the current velocity (actually,
+it's the distance traveled last time step). It is not always very accurate
+(energy might leave the system, i.e., dissipate) but it's fast and stable.
+By changing the update rule to something like
+$\vec{x}'=1.99\cdot\vec{x}-0.99\cdot\vec{x}''+\vec{a}\cdot\Delta{t}^{2}$,
+a small amount of drag can also be introduced to the system.
+
+At the end of each step, for each particle the current position $\vec{x}$
+gets stored in the corresponding variable $\vec{x}''$. Note that when
+manipulating many particles, a useful optimization is possible by simply
+swapping array pointers.
+
+The resulting code would look something like this (the \texttt{Vector3}
+class should contain the appropriate member functions and overloaded
+operators for manipulation of vectors):
+
+\begin{lstlisting}
+// Sample code for physics simulation
+class ParticleSystem {
+	Vector3 m_x[NUM_PARTICLES]; // Current positions
+	Vector3 m_oldx[NUM_PARTICLES]; // Previous positions
+	Vector3 m_a[NUM_PARTICLES]; // Force accumulators
+	Vector3 m_vGravity; // Gravity
+	float m_fTimeStep;
+public:
+	void TimeStep();
+private:
+	void Verlet();
+	void SatisfyConstraints();
+	void AccumulateForces();
+	// (constructors, initialization etc. omitted)
+};
+
+// Verlet integration step
+void ParticleSystem::Verlet() {
+	for(int i=0; i<NUM_PARTICLES; i++) {
+		Vector3& x = m_x[i];
+		Vector3 temp = x;
+		Vector3& oldx = m_oldx[i];
+		Vector3& a = m_a[i];
+		x += x-oldx+a*fTimeStep*fTimeStep;
+		oldx = temp;
+	}
+}
+
+// This function should accumulate forces for each particle
+void ParticleSystem::AccumulateForces()
+{
+	// All particles are influenced by gravity
+	for(int i=0; i<NUM_PARTICLES; i++) m_a[i] = m_vGravity;
+}
+
+// Here constraints should be satisfied
+void ParticleSystem::SatisfyConstraints() {
+	// Ignore this function for now
+}
+
+void ParticleSystem::TimeStep() {
+	AccumulateForces();
+	Verlet();
+	SatisfyConstraints();
+}
+\end{lstlisting}
+
+The above code has been written for clarity, not speed. One optimization
+would be using arrays of \texttt{float} instead of \texttt{Vector3} for
+the state representation. This might also make it easier to implement the
+system on a vector processor.
+
+This probably doesn't sound very groundbreaking yet. However, the
+advantages should become clear soon when we begin to use constraints
+and switch to rigid bodies. It will then be demonstrated how the above
+integration scheme leads to increased stability and a decreased amount
+of computation when compared to other approaches.
+
+Try setting $\vec{a}=(0,0,1)$, for example, and use the start condition
+$\vec{x}=(1,0,0)$, $\vec{x}''=(0,0,0)$, then do a couple of iterations
+by hand and see what happens.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Collision and Contact Handling by Projection}
+\label{sec:projection}
+
+So-called penalty-based schemes handle contact by inserting springs at
+the penetration points. While this is very simple to implement, it has a
+number of serious drawbacks. For instance, it is hard to choose suitable
+spring constants such that, on one hand, objects don't penetrate too much
+and, on the other hand, the resulting system doesn't get unstable. In
+other schemes for simulating physics, collisions are handled by rewinding
+time (by binary search for instance) to the exact point of collision,
+handling the collision analytically from there and then restarting the
+simulation --- this is not very practical from a real-time point of view
+since the code could potentially run very slowly when there are a lot of
+collisions.
+
+Here, we use yet another strategy. Offending points are simply projected
+out of the obstacle. By projection, loosely speaking, we mean moving the
+point as little as possible until it is free of the obstacle. Normally,
+this means moving the point perpendicularly out towards the collision
+surface.
+
+Let's examine an example. Assume that our world is the inside of the cube
+$(0,0,0)$--$(1000,1000,1000)$ and assume also that the particles'
+restitution coefficient is zero (that is, particles do not bounce off
+surfaces when colliding). To keep all positions inside the valid interval,
+the corresponding projection code would be:
+
+\begin{lstlisting}
+// Implements particles in a box
+void ParticleSystem::SatisfyConstraints() {
+	for(int i=0; i<NUM_PARTICLES; i++) { // For all particles
+		Vector3& x = m_x[i];
+		x = vmin(vmax(x, Vector3(0,0,0)),
+		Vector3(1000,1000,1000));
+	}
+}
+\end{lstlisting}
+
+(vmax operates on vectors taking the component-wise maximum whereas vmin
+takes the component-wise minimum.) This keeps all particle positions
+inside the cube and handles both collisions and resting contact. The
+beauty of the Verlet integration scheme is that the corresponding changes
+in velocity will be handled automatically. In the following calls to
+\texttt{TimeStep()}, the velocity is automatically regulated to contain
+no component in the normal direction of the surface (corresponding to a
+restitution coefficient of zero). See \FIG{fig:projdemo}.
+
+\FIGDRAW{fig:projdemo}{Ten timesteps and two particles.}{
+	\DRAWX{-2.0}{0.8}{0.07}
+	\DRAWX{-1.8}{0.7}{0.07}
+	\DRAWX{-1.6}{0.5}{0.07}
+	\DRAWX{-1.4}{0.1}{0.07}
+	\DRAWX{-1.2}{-0.4}{0.07}
+	\DRAWX{-1.0}{-1.2}{0.07}
+	\DRAWX{-0.8}{-1.6}{0.07}
+	\DRAWX{-0.6}{-1.6}{0.07}
+	\DRAWX{-0.4}{-1.6}{0.07}
+	\DRAWX{-0.2}{-1.6}{0.07}
+	\DRAWX{0}{0}{0.07}
+	\DRAWX{0.4}{0.4}{0.07}
+	\DRAWX{0.8}{0.6}{0.07}
+	\DRAWX{1.2}{0.7}{0.07}
+	\DRAWX{1.4}{0.7}{0.07}
+	\DRAWX{1.4}{0.6}{0.07}
+	\DRAWX{1.4}{0.4}{0.07}
+	\DRAWX{1.4}{0.0}{0.07}
+	\DRAWX{1.4}{-0.6}{0.07}
+	\DRAWX{1.4}{-1.4}{0.07}
+	\draw (-2.0-0.07, -1.6-0.07) -- (1.4+0.07, -1.6-0.07)
+			-- (1.4+0.07, 0.8+0.07) -- (-2.0-0.07, 0.8+0.07) -- cycle;
+}
+
+Try it out --- there is no need to directly cancel the velocity in the
+normal direction. While the above might seem somewhat trivial when
+looking at particles, the strength of the Verlet integration scheme is
+now beginning to shine through and should really become apparent when
+introducing constraints and coupled rigid bodies in a moment.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Solving Several Concurrent Constraints by Relaxation}
+\label{sec:relaxation}
+
+A common model for cloth consists of a simple system of interconnected
+springs and particles. However, it is not always trivial to solve the
+corresponding system of differential equations. It suffers from some of
+the same problems as the penalty-based systems: strong springs leads to
+stiff systems of equations that lead to instability if only simple
+integration techniques are used, or at least bad performance --- which
+leads to pain. Conversely, weak springs lead to elastically looking cloth.
+
+However, an interesting thing happens if we let the stiffness of the
+springs go to infinity: The system suddenly becomes solvable in a stable
+way with a very simple and fast approach. But before we continue talking
+about cloth, let's revisit the previous example. The cube considered
+above can be thought of as a collection of unilateral (inequality)
+constraints (one for each side of the cube) on the particle positions
+that should be satisfied at all times:
+
+\begin{equation} 
+\label{eqn:cubecons}
+0 \le x_{i} \le 1000, \forall i \in \{1,2,3\}
+ \end{equation}
+
+In the example, constraints were satisfied (that is, particles are kept
+inside the cube) by simply modifying offending positions by projecting
+the particles onto the cube surface. To satisfy \EQN{eqn:cubecons}, we
+use the following pseudo-code
+
+\begin{lstlisting}
+for i = 1,2,3:
+	x[i] = min{max{x[i], 0}, 1000}
+\end{lstlisting}
+
+One may think of this process as inserting infinitely stiff springs
+between the particle and the penetration surface --- springs that are
+exactly so strong and suitably damped that instantly they will attain
+their rest length zero.
+
+We now extend the experiment to model a stick of length 100. We do this
+by setting up two individual particles (with positions $\vec{x}_{1}$ and
+$\vec{x}_{2}$) and then require them to be a distance of 100 apart.
+Expressed mathematically, we get the following bilateral (equality)
+constraint:
+
+\begin{equation}
+\label{eqn:bilacons}
+|{\vec{x}_{2} - \vec{x}_{1}}| = 100
+\end{equation}
+
+Although the particles might be correctly placed initially, after one
+integration step the separation distance between them might have become
+invalid. In order to obtain the correct distance once again, we move the
+particles by projecting them onto the set of solutions described by
+\EQN{eqn:bilacons}. This is done by pushing the particles directly away
+from each other or by pulling them closer together (depending on whether
+the erroneous distance is too small or too large). See \FIG{fig:fixdist}.
+
+\FIGDRAW{fig:fixdist}
+		{Fixing an invalid distance by moving the particles.}{
+	%XXX
+	\draw[step=.5cm, gray, very thin] (-1.2,-1.2) grid (1.2,1.2); 
+	\filldraw[fill=green!20,draw=green!50!black] (0,0) -- (3mm,0mm) arc (0:30:3mm) -- cycle; 
+	\draw[->] (-1.25,0) -- (1.25,0) coordinate (x axis);
+	\draw[->] (0,-1.25) -- (0,1.25) coordinate (y axis);
+	\draw (0,0) circle (1cm);
+	\draw[very thick,red] (30:1cm) -- node[left,fill=white] {$\sin \alpha$} (30:1cm |- x axis);
+	\draw[very thick,blue] (30:1cm |- x axis) -- node[below=2pt,fill=white] {$\cos \alpha$} (0,0);
+	\draw (0,0) -- (30:1cm);
+	\foreach \x/\xtext in {-1, -0.5/-\frac{1}{2}, 1} 
+	\draw (\x cm,1pt) -- (\x cm,-1pt) node[anchor=north,fill=white] {$\xtext$};
+	\foreach \y/\ytext in {-1, -0.5/-\frac{1}{2}, 0.5/\frac{1}{2}, 1} 
+	\draw (1pt,\y cm) -- (-1pt,\y cm) node[anchor=east,fill=white] {$\ytext$};
+}
+
+The pseudo-code for satisfying the constraint \EQN{eqn:bilacons} is
+
+\begin{lstlisting}
+delta = x2-x1;
+deltalength = sqrt(delta*delta);
+diff = (deltalength-restlength) / deltalength;
+x1 += delta*0.5*diff;
+x2 -= delta*0.5*diff;
+\end{lstlisting}
+
+%%%%%
+
+
+\subsection{Cloth Simulation}
+\label{subsec:cloth}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Rigid Bodies}
+\label{sec:rigid}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Articulated Bodies}
+\label{sec:arti}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Comments}
+\label{sec:comm}
+
+%%%%%
+
+
+\subsection{Motion Control}
+\label{subsec:motion}
+
+%%%%%
+
+
+\subsection{Handling Friction}
+\label{subsec:friction}
+
+%%%%%
+
+
+\subsection{Collision Detection}
+\label{subsec:collision}
+
+%%%%%
+
+
+\subsection{Miscellaneous}
+\label{subsec:misc}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+This paper has described how a physics system was implemented in
+\texttt{Hitman}. The underlying philosophy of combining iterative methods
+with a stable integrator has proven to be successful and useful for
+implementation in computer games. Most notably, the unified particle-based
+framework, which handles both collisions and contact, and the ability
+to trade off speed versus accuracy without accumulating visually obvious
+errors are powerful features. Naturally, there are still many specifics
+that can be improved upon. In particular, the tetrahedron model for
+rigid bodies needs some work. This is in the works.
+
+At IO Interactive, we have recently done some experiments with
+interactive water and gas simulation using the full Navier-Stokes
+equations. We are currently looking into applying techniques similar
+to the ones demonstrated in this paper in the hope to produce faster and
+more stable water simulation.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Acknowledgements}
+\label{sec:ack}
+
+The author wishes to thank Jeroen Wagenaar for fruitful discussions
+and the entire crew at IO Interactive for cooperation and for producing
+such a great working environment. Feedback and comments are very
+welcome at \texttt{tj@ioi.dk}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\appendix
+\section{About The Author}
+\label{sec:ap:author}
+
+Thomas Jakobsen is head of research and development at IO Interactive,
+where he is developing new technology for the in-house engine, Glacier.
+He created the physics simulation and the 3D pathfinder for IO's
+\texttt{Hitman: Codename 47}. Jakobsen earned his M.Sc. in engineering
+from The Technical University of Denmark, where he also obtained his
+Ph.D. in mathematics. He spent a number of years in academia and has
+published several scientific articles on cryptanalysis. He began
+programming at age nine with a Sinclair ZX80. In 1986, he co-designed
+Vikings for the Commodore 64 and Amstrad CPC. In the late 1980s, he
+developed tools for the Amiga classic Hybris.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{DELETE ME!}
+
+\FIGDRAW{fig:test}{Test}{
+	\draw[thick,rounded corners=8pt] (0,0) -- (0,2) -- (1,3.25) 
+		-- (2,2) -- (2,0) -- (0,2) -- (2,2) -- (0,0) -- (2,0);
+}
+
+``I always thought something was fundamentally wrong with the universe'' \cite{Baraff}\cite{Mirtich}\cite{Press}\cite{Stewart}\cite{Witkin}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\bibliographystyle{plain}
+\bibliography{references}
+\end{document}
+
