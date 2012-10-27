@@ -14,11 +14,14 @@
 %\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
 \usepackage{nameref}
 \usepackage[margin=1in]{geometry}
+\usepackage{subcaption}
+\usepackage{amssymb,amsmath}
 
 \usetikzlibrary[arrows]
 
-% Will this produce better-looking document?
+% Will these produce better-looking document?
 %\setlength{\parskip}{\baselineskip}
+%\setlength{\parindent}{0em}
 
 
 %%% Commands 
@@ -40,6 +43,18 @@
 		\caption{#2}
 		\label{#1}
 	\end{figure}
+}
+
+\newcommand{\SUBFIGDRAW}[3]{	% label, caption, drawing commands
+	\begin{subfigure}[b]{0.3\textwidth}
+		\centering
+		\begin{tikzpicture}
+			%\draw[step=0.25cm,color=gray] (-4,-4) grid (4,4);
+			#3
+		\end{tikzpicture}
+		\caption{#2}
+		\label{#1}
+	\end{subfigure}
 }
 
 \newcommand{\DRAWX}[3]{		% x, y, size
@@ -180,7 +195,7 @@ experience on implementing friction etc. Finally, in \SEC{sec:conclusion}
 a brief conclusion.
 
 In the following, $\vec{v}$ indicates vectors. Vector components are
-indexed by using subscript, i.e., $\vec{x}=(x_{1}, x_{2}, x_{3})$.
+indexed by using subscript, i.e., $\vec{x}=(x_1, x_2, x_3)$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -208,7 +223,7 @@ velocity, we store its current position $\vec{x}$ and its previous
 position $\vec{x}''$. Keeping the time step fixed, the update rule
 (or integration step) is then
 
-$$\vec{x}' = 2\cdot\vec{x} - \vec{x}'' + \vec{a}\cdot\Delta{t}^{2}$$
+$$\vec{x}' = 2\cdot\vec{x} - \vec{x}'' + \vec{a}\cdot\Delta{t}^2$$
 $$\vec{x}'' = \vec{x}$$
 
 This is called Verlet integration\cite{Verlet} and is used intensely when
@@ -221,7 +236,7 @@ $\vec{x}-\vec{x}''$ is an approximation of the current velocity (actually,
 it's the distance traveled last time step). It is not always very accurate
 (energy might leave the system, i.e., dissipate) but it's fast and stable.
 By changing the update rule to something like
-$\vec{x}'=1.99\cdot\vec{x}-0.99\cdot\vec{x}''+\vec{a}\cdot\Delta{t}^{2}$,
+$\vec{x}'=1.99\cdot\vec{x}-0.99\cdot\vec{x}''+\vec{a}\cdot\Delta{t}^2$,
 a small amount of drag can also be introduced to the system.
 
 At the end of each step, for each particle the current position $\vec{x}$
@@ -401,7 +416,7 @@ that should be satisfied at all times:
 
 \begin{equation} 
 \label{eqn:cubecons}
-0 \le x_{i} \le 1000, \forall i \in \{1,2,3\}
+0 \le x_i \le 1000, \forall i \in \{1,2,3\}
  \end{equation}
 
 In the example, constraints were satisfied (that is, particles are kept
@@ -420,14 +435,14 @@ exactly so strong and suitably damped that instantly they will attain
 their rest length zero.
 
 We now extend the experiment to model a stick of length 100. We do this
-by setting up two individual particles (with positions $\vec{x}_{1}$ and
-$\vec{x}_{2}$) and then require them to be a distance of 100 apart.
+by setting up two individual particles (with positions $\vec{x}_1$ and
+$\vec{x}_2$) and then require them to be a distance of 100 apart.
 Expressed mathematically, we get the following bilateral (equality)
 constraint:
 
 \begin{equation}
 \label{eqn:bilacons}
-|{\vec{x}_{2} - \vec{x}_{1}}| = 100
+|{\vec{x}_2 - \vec{x}_1}| = 100
 \end{equation}
 
 Although the particles might be correctly placed initially, after one
@@ -469,7 +484,7 @@ x2 -= delta*0.5*diff;
 
 %%%%%
 
-Note that \texttt{delta} is a vector so \texttt{delta*delta} is actually
+Note that \texttt{delta} is a vector so \texttt{delta * delta} is actually
 a dot product. With \texttt{restlength=100} the above pseudo-code will
 push apart or pull together the particles such that they once more attain
 the correct distance of 100 between them. Again we may think of the
@@ -587,7 +602,7 @@ constraint expression ought to be, namely the rest length $r$ of the
 corresponding stick. We can use this fact to approximate the square root
 function. Mathematically, what we do is approximate the square root
 function by its 1st order Taylor-expansion at a neighborhood of the
-squared rest length $r^{2}$ (this is equivalent to one Newton-Raphson
+squared rest length $r^2$ (this is equivalent to one Newton-Raphson
 iteration with initial guess $r$). After some rewriting, we obtain the
 following pseudo-code:
 
@@ -605,7 +620,7 @@ $|\texttt{delta}|=\texttt{restlength}$), then one gets
 $\texttt{delta}=(0,0,0)$ and no change is going to happen.
 
 Per constraint we now use zero square roots, one division only, and the
-squared value \texttt{restlength*restlength} can even be precalculated!
+squared value \texttt{restlength * restlength} can even be precalculated!
 The usage of time consuming operations is now down to N divisions per
 frame (and the corresponding memory accesses) --- it can't be done much
 faster than that and the result even looks quite nice. Actually, in
@@ -652,6 +667,170 @@ speed-up.
 
 \section{Rigid Bodies}
 \label{sec:rigid}
+
+The equations governing motion of rigid bodies were discovered long
+before the invention of modern computers. To be able to say anything
+useful at that time, mathematicians needed the ability to manipulate
+expressions symbolically. In the theory of rigid bodies, this lead to
+useful notions and tools such as inertia tensors, angular momentum,
+torque, quaternions for representing orientations etc. However, with the
+current ability to process huge amounts of data numerically, it has
+become feasible and in some cases even advantageous to break down
+calculations to simpler elements when running a simulation. In the case
+of 3D rigid bodies, this could mean modeling a rigid body by four
+particles and six constraints (giving the correct amount of degrees of
+freedom, $4\times3-6=6$). This simplifies a lot of aspects and it's
+exactly what we will do in the following.
+
+Consider a tetrahedron and place a particle at each of the four vertices.
+In addition, for each of the six edges on the tetrahedron create a
+distance constraint like the stick constraint discussed in the previous
+section. This is actually enough to simulate a rigid body. The
+tetrahedron can be let loose inside the cube world from earlier and the
+Verlet integrator will let it move correctly. The function
+\texttt{SatisfyConstraints()} should take care of two things: 1) That
+particles are kept inside the cube (like previously), and 2) That the
+six distance constraints are satisfied. Again, this can be done using
+the relaxation approach; 3 or 4 iterations should be enough with
+optional square root approximation.
+
+Now clearly, in general rigid bodies do not behave like tetrahedrons
+collision-wise (although they might do so kinetically). There is also
+another problem: Presently, collision detection between the rigid body
+and the world exterior is on a vertex-only basis, that is, if a vertex
+is found to be outside the world it is projected inside again. This
+works fine as long as the inside of the world is convex. If the world
+were non-convex then the tetrahedron and the world exterior could
+actually penetrate each other without any of the tetrahedron vertices
+being in an illegal region (see \FIG{fig:tetpene} where the triangle
+represents the 2D analogue of the tetrahedron). This problem is handled
+in the following.
+
+\FIGDRAW{fig:tetpene}{A tetrahedron penetrating the world.}{
+	\draw (-1, -1) -- (-0.3, -1) -- (0, -0.5) -- (0.3, -1)
+			-- (1, -1) -- (1, 1) -- (-1, 1) -- cycle;
+	\draw (0, 0) -- (-0.5, -0.8) -- (0.5, -0.8) -- cycle;
+}
+
+We'll first consider a simpler version of the problem. Consider the
+stick example from earlier and assume that the world exterior has a
+small bump on it. The stick can now penetrate the world exterior without
+any of the two stick particles leaving the world (see
+\FIG{fig:colstick}). We won't go into the intricacies of constructing a
+collision detection engine since this is a science in itself. Instead we
+assume that there is a subsystem available which allows us to detect the
+collision. Furthermore we assume that the subsystem can reveal to us the
+penetration depth and identify the penetration points on each of the two
+colliding objects. (One definition of penetration points and penetration
+depth goes like this: The penetration distance $d_p$ is the shortest
+distance that would prevent the two objects from penetrating if one were
+to translate one of the objects by the distance $d_p$ in a suitable
+direction. The penetration points are the points on each object that
+just exactly touch the other object after the aforementioned translation
+has taken place.)
+
+\begin{figure}[h!]
+\centering
+\SUBFIGDRAW{fig:colstick-a}{Colliding stick I.}{
+	\draw (-1, -1) -- (-0.3, -1) -- (0, -0.5) -- (0.3, -1)
+			-- (1, -1) -- (1, 1) -- (-1, 1) -- cycle;
+	\DRAWX{0}{-0.8}{0.05}
+	\node at (0, -1.2) {$\vec{p}(\vec{x}_1)$};
+	\DRAWX{0.15}{-0.75}{0.05}
+	\node at (0.35, -0.75) {$\vec{q}$};
+	\draw (0, -0.8) -- (0.5, 0);
+	\node at (0.7, 0.2) {$\vec{x}_2$};
+}
+\SUBFIGDRAW{fig:colstick-b}{Colliding stick II.}{
+	\draw (-1, -1) -- (-0.3, -1) -- (0, -0.5) -- (0.3, -1)
+			-- (1, -1) -- (1, 1) -- (-1, 1) -- cycle;
+	\DRAWX{0}{-0.8}{0.05}
+	\node at (0, -1.2) {$\vec{p}$};
+	\DRAWX{0}{-0.5}{0.05}
+	\node at (0, -0.25) {$\vec{q}$};
+	\draw (-0.4, -0.8) -- (0.8, -0.8);
+	\node at (-0.4, -0.6) {$\vec{x}_1$};
+	\node at (0.8, -0.6) {$\vec{x}_2$};
+}
+\caption{Colliding stick.}\label{fig:colstick}
+\end{figure}
+
+Take a look again at \FIG{fig:colstick}. Here the stick has moved through
+the bump after the Verlet step. The collision engine has identified the
+two points of penetration, $\vec{p}$ and $\vec{q}$. In
+\FIG{fig:colstick-a}, $\vec{p}$ is actually identical to the position of
+particle 1, i.e., $\vec{p}=\vec{x}_1$. In \FIG{fig:colstick-b},
+$\vec{p}$ lies between $\vec{x}_1$ and $\vec{x}_2$ at a position
+$\frac{1}{4}$ of the stick length from $\vec{x}_1$. In both cases, the
+point $\vec{p}$ lies on the stick and consequently it can be expressed
+as a linear combination of $\vec{x}_1$ and $\vec{x}_2$,
+$\vec{p}=c_1\cdot\vec{x}_1+c_2\cdot\vec{x}_2$ such that $c_1+c_2=1$. In
+the first case, $c_1=1$ and $c_2=0$, in the second case, $c_1=0.75$ and
+$c_2=0.25$. These values tell us how much we should move the
+corresponding particles.
+
+To fix the invalid configuration of the stick, it should be moved upwards
+somehow. Our goal is to avoid penetration by moving $\vec{p}$ to the same
+position as $\vec{q}$. We do this by adjusting the positions of the two
+particles $\vec{x}_1$ and $\vec{x}_2$ in the direction of the vector
+between $\vec{p}$ and $\vec{q}$, $\vec{\Delta}=\vec{q}-\vec{p}$.
+
+In the first case, we simply project $\vec{x}_1$ out of the invalid
+region like earlier (in the direction of $\vec{q}$) and that's it
+($\vec{x}_2$ is not touched). In the second case, $\vec{p}$ is still
+nearest to $\vec{x}_1$ and one might reason that consequently $\vec{x}_1$
+should be moved more than $\vec{x}_2$. Actually, since
+$\vec{p}=0.75\cdot\vec{x}_1+0.25\cdot\vec{x}_2$, we will choose to move
+$\vec{x}_1$ by an amount of 0.75 each time we move $\vec{x}_2$ by an
+amount of 0.25. In other words, the new particle positions $\vec{x}_1'$
+and $\vec{x}_2'$ are given by the expressions
+
+$$\vec{x}_1' = \vec{x}_1 + 0.75\cdot\lambda\cdot\vec{\Delta}$$
+\begin{equation}
+\label{eqn:colnewpos}
+\vec{x}_2' = \vec{x}_2 + 0.25\cdot\lambda\cdot\vec{\Delta}
+\end{equation}
+
+where $\lambda$ is some unknown value. The new position of $\vec{p}$
+after moving both particles is
+$\vec{p}'=c_1\cdot\vec{x}_1'+c_2\cdot\vec{x}_2'$.
+
+Recall that we want $\vec{p}'=\vec{q}$, i.e., we should choose $\lambda$
+exactly such that $\vec{p}'$ ends up coinciding with $\vec{q}$. Since we
+move the particles only in the direction of $\vec{\Delta}$, also
+$\vec{p}$ moves in the direction of $\vec{\Delta}$ and consequently the
+solution to the equation $\vec{p}'=\vec{q}$ can be found by solving
+
+\begin{equation}
+\label{eqn:colsolve}
+\vec{p}'\cdot\vec{\Delta} = \vec{q}\cdot\vec{\Delta}
+\end{equation}
+
+for $\lambda$. Expanding the left-hand side yields:
+
+\[
+\begin{split}
+\vec{p}'\cdot\vec{\Delta} &=
+		(0.75\cdot\vec{x}_1'+0.25\cdot\vec{x}_2')\cdot\vec{\Delta} \\
+&= (0.75\cdot(\vec{x}_1 + 0.75\cdot\lambda\cdot\vec{\Delta}) +
+		0.25\cdot(\vec{x}_2 + 0.25\cdot\lambda\cdot\vec{\Delta}))
+		\cdot\vec{\Delta} \\
+&= (0.75\cdot\vec{x}_1 + 0.25\cdot\vec{x}_2)\cdot\vec{\Delta} +
+		\lambda\cdot(0.75^2 + 0.25^2 )\cdot\vec{\Delta}^2 \\
+&= \vec{p}\cdot\vec{\Delta} +
+		\lambda\cdot(0.75^2 + 0.25^2)\cdot\vec{\Delta}^2
+\end{split}
+\]
+
+which together with the right-hand side of \EQN{eqn:colsolve} gives
+
+$$
+\lambda=\frac{(\vec{q} - \vec{p})\cdot\vec{\Delta}}
+		{(0.75^2 + 0.25^2 )\cdot\vec{\Delta}^2}
+$$
+
+Plugging $\lambda$ into \EQN{eqn:colnewpos} gives us the new positions
+of the particles for which $\vec{p}'$ coincide with $\vec{q}$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

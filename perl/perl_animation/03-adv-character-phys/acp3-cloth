@@ -130,7 +130,7 @@ sub calc {
 	}
 
 	# satisfy constraints
-	foreach (1..10) {
+	foreach (1..1) {
 		foreach my $i (0..$#ps) {
 			con_cube $ps[$i], 0, 400, 0, 400;
 		}
