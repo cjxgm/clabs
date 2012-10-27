@@ -1,3 +1,4 @@
+% compile with pdflatex
 \documentclass[a4paper]{article}
 \usepackage[utf8]{inputenc}
 

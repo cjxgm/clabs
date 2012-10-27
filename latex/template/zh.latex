@@ -1,0 +1,15 @@
+% compile with xelatex
+\documentclass[11pt]{article}
+\usepackage[BoldFont,SlantFont]{xeCJK}
+\setCJKmainfont[BoldFont=WenQuanYi Micro Hei]{WenQuanYi Micro Hei}
+\setCJKmonofont{WenQuanYi Micro Hei Mono}% 设置缺省中文字体
+\parindent 2em   %段首缩进
+ 
+\begin{document}
+\section{举例}
+\begin{verbatim}
+标点。
+\end{verbatim}
+ 
+汉字Chinese数学$x=y$空格
+\end{document}
