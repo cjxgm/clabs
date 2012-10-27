@@ -14,6 +14,8 @@
 \usepackage{nameref}
 \usepackage[margin=1in]{geometry}
 
+\usetikzlibrary[arrows]
+
 % Will this produce better-looking document?
 %\setlength{\parskip}{\baselineskip}
 
@@ -44,10 +46,22 @@
 	\draw (#1-#3,#2+#3) -- (#1+#3, #2-#3);
 }
 
+\newcommand{\DRAWBIGARROW}[1]{
+	\draw[-triangle 90,
+		line width=1,
+		postaction={draw, -, line width=6, shorten >= 4}
+	] #1;
+	\draw[-triangle 90, white,
+		line width=0.5, shorten >= 0.8, shorten <= 1,
+		postaction={draw, -, line width=5, shorten >= 4, shorten <= 0.5}
+	] #1;
+}
 
 %%% Setup for listing
 \lstset{
 	language=C++,
+	% Should I hightlight custom types?
+	%morekeywords={Vector3},
 	basicstyle=\ttfamily,
 	keywordstyle=\color{blue}\bfseries,
 	commentstyle=\color{olive}\ttfamily,
@@ -59,6 +73,9 @@
 	tabsize=4,
 	belowskip=1em,
 	aboveskip=1em,
+	basewidth=0.5em,
+	xleftmargin=3em,
+	xrightmargin=3em,
 	breaklines=true,
 	showstringspaces=true
 }
@@ -313,20 +330,20 @@ the corresponding projection code would be:
 void ParticleSystem::SatisfyConstraints() {
 	for(int i=0; i<NUM_PARTICLES; i++) { // For all particles
 		Vector3& x = m_x[i];
-		x = vmin(vmax(x, Vector3(0,0,0)),
-		Vector3(1000,1000,1000));
+		x = vmin(vmax(x, Vector3(0,0,0)), Vector3(1000,1000,1000));
 	}
 }
 \end{lstlisting}
 
-(vmax operates on vectors taking the component-wise maximum whereas vmin
-takes the component-wise minimum.) This keeps all particle positions
-inside the cube and handles both collisions and resting contact. The
-beauty of the Verlet integration scheme is that the corresponding changes
-in velocity will be handled automatically. In the following calls to
-\texttt{TimeStep()}, the velocity is automatically regulated to contain
-no component in the normal direction of the surface (corresponding to a
-restitution coefficient of zero). See \FIG{fig:projdemo}.
+(\texttt{vmax} operates on vectors taking the component-wise maximum
+whereas \texttt{vmin} takes the component-wise minimum.) This keeps all
+particle positions inside the cube and handles both collisions and resting
+contact. The beauty of the Verlet integration scheme is that the
+corresponding changes in velocity will be handled automatically. In the
+following calls to \texttt{TimeStep()}, the velocity is automatically
+regulated to contain no component in the normal direction of the surface
+(corresponding to a restitution coefficient of zero). See
+\FIG{fig:projdemo}.
 
 \FIGDRAW{fig:projdemo}{Ten timesteps and two particles.}{
 	\DRAWX{-2.0}{0.8}{0.07}
@@ -422,19 +439,21 @@ the erroneous distance is too small or too large). See \FIG{fig:fixdist}.
 
 \FIGDRAW{fig:fixdist}
 		{Fixing an invalid distance by moving the particles.}{
-	%XXX
-	\draw[step=.5cm, gray, very thin] (-1.2,-1.2) grid (1.2,1.2); 
-	\filldraw[fill=green!20,draw=green!50!black] (0,0) -- (3mm,0mm) arc (0:30:3mm) -- cycle; 
-	\draw[->] (-1.25,0) -- (1.25,0) coordinate (x axis);
-	\draw[->] (0,-1.25) -- (0,1.25) coordinate (y axis);
-	\draw (0,0) circle (1cm);
-	\draw[very thick,red] (30:1cm) -- node[left,fill=white] {$\sin \alpha$} (30:1cm |- x axis);
-	\draw[very thick,blue] (30:1cm |- x axis) -- node[below=2pt,fill=white] {$\cos \alpha$} (0,0);
-	\draw (0,0) -- (30:1cm);
-	\foreach \x/\xtext in {-1, -0.5/-\frac{1}{2}, 1} 
-	\draw (\x cm,1pt) -- (\x cm,-1pt) node[anchor=north,fill=white] {$\xtext$};
-	\foreach \y/\ytext in {-1, -0.5/-\frac{1}{2}, 0.5/\frac{1}{2}, 1} 
-	\draw (1pt,\y cm) -- (-1pt,\y cm) node[anchor=east,fill=white] {$\ytext$};
+	\draw[*-*] (-4-0.5-0.3, 1.2+2.4*0.3) -- (-4-0.5+0.07, 1.2-2.4*0.07);
+	\draw[*-*] (-4+0.5-0.07, -1.2+2.4*0.07) -- (-4+0.5+0.3, -1.2-2.4*0.3);
+	\draw[-triangle 90, shorten >= 5, very thin]
+		(-4-0.5-0.3, 1.2+2.4*0.3) -- (-4-0.5+0.07, 1.2-2.4*0.07);
+	\draw[triangle 90-, shorten <= 5, very thin]
+		(-4+0.5-0.07, -1.2+2.4*0.07) -- (-4+0.5+0.3, -1.2-2.4*0.3);
+	\DRAWBIGARROW{(-2.5, 0) -- (-1.5, 0)}
+	\draw[*-*] (-0.5, 1.2) -- (0.5, -1.2);
+	\DRAWBIGARROW{(2.5, 0) -- (1.5, 0)}
+	\draw[*-*] (4-0.5+0.3, 1.2-2.4*0.3) -- (4-0.5, 1.2);
+	\draw[*-*] (4+0.5, -1.2) -- (4+0.5-0.3, -1.2+2.4*0.3);
+	\draw[-triangle 90, shorten >= 5, very thin]
+		(4-0.5+0.3, 1.2-2.4*0.3) -- (4-0.5, 1.2);
+	\draw[triangle 90-, shorten <= 5, very thin]
+		(4+0.5, -1.2) -- (4+0.5-0.3, -1.2+2.4*0.3);
 }
 
 The pseudo-code for satisfying the constraint \EQN{eqn:bilacons} is
@@ -449,9 +468,183 @@ x2 -= delta*0.5*diff;
 
 %%%%%
 
+Note that \texttt{delta} is a vector so \texttt{delta*delta} is actually
+a dot product. With \texttt{restlength=100} the above pseudo-code will
+push apart or pull together the particles such that they once more attain
+the correct distance of 100 between them. Again we may think of the
+situation as if a very stiff spring with rest length 100 has been inserted
+between the particles such that they are instantly placed correctly.
+
+Now assume that we still want the particles to satisfy the cube
+constraints. By satisfying the stick constraint, however, we may have
+invalidated one or more of the cube constraints by pushing a particle out
+of the cube. This situation can be remedied by immediately projecting
+the offending particle position back onto the cube surface once more ---
+but then we end up invalidating the stick constraint again.
+
+Really, what we should do is solve for all constraints at once, both
+\EQN{eqn:cubecons} and \EQN{eqn:bilacons}. This would be a matter of
+solving a system of equations. However, we choose to proceed indirectly
+by local iteration. We simply repeat the two pieces of pseudo-code a
+number of times after each other in the hope that the result is useful.
+This yields the following code:
+
+\begin{lstlisting}
+// Implements simulation of a stick in a box
+void ParticleSystem::SatisfyConstraints() {
+	for(int j=0; j<NUM_ITERATIONS; j++) {
+		// First satisfy (C1)
+		for(int i=0; i<NUM_PARTICLES; i++) { // For all particles
+			Vector3& x = m_x[i];
+			x = vmin(vmax(x, Vector3(0,0,0)), Vector3(1000,1000,1000));
+		}
+		// Then satisfy (C2)
+		Vector3& x1 = m_x[0];
+		Vector3& x2 = m_x[1];
+		Vector3 delta = x2-x1;
+		float deltalength = sqrt(delta*delta);
+		float diff = (deltalength-restlength) / deltalength;
+		x1 += delta*0.5*diff;
+		x2 -= delta*0.5*diff;
+	}
+}
+\end{lstlisting}
+
+(Initialization of the two particles has been omitted.) While this
+approach of pure repetition might appear somewhat na\"ive, it turns out
+that it actually converges to the solution that we are looking for! The
+method is called relaxation (or Jacobi or Gauss-Seidel iteration
+depending on how you do it exactly, see \cite{Press}). It works by
+consecutively satisfying various local constraints and then repeating;
+if the conditions are right, this will converge to a global configuration
+that satisfies all constraints at the same time. It is useful in many
+other situations where several interdependent constraints have to be
+satisfied at the same time.
+
+The number of necessary iterations varies depending on the physical
+system simulated and the amount of motion. It can be made adaptive by
+measuring the change from last iteration. If we stop the iterations
+early, the result might not end up being quite valid but because of the
+Verlet scheme, in next frame it will probably be better, next frame even
+more so etc. This means that stopping early will not ruin everything
+although the resulting animation might appear somewhat sloppier.
+
+%%%%%
+
 
 \subsection{Cloth Simulation}
 \label{subsec:cloth}
+
+The fact that a stick constraint can be thought of as a really hard
+spring should make apparent its usefulness for cloth simulation as
+sketched in the beginning of this section. Assume, for example, that a
+hexagonal mesh of triangles describing the cloth has been constructed.
+For each vertex a particle is initialized and for each edge a stick
+constraint between the two corresponding particles is initialized (with
+the constraint's ``rest length'' simply being the initial distance
+between the two vertices).
+
+The function \texttt{HandleConstraints()} then uses relaxation over all
+constraints. The relaxation loop could be iterated several times.
+However, to obtain nicely looking animation, actually for most pieces of
+cloth only one iteration is necessary! This means that the time usage in
+the cloth simulation depends mostly on the N square root operations and
+the N divisions performed (where N denotes the number of edges in the
+cloth mesh). As we shall see, a clever trick makes it possible to reduce
+this to N divisions per frame update --- this is really fast and one
+might argue that it probably can't get much faster.
+
+\begin{lstlisting}
+// Implements cloth simulation
+struct Constraint {
+	int particleA, particleB;
+	float restlength;
+};
+// Assume that an array of constraints, m_constraints, exists
+void ParticleSystem::SatisfyConstraints() {
+	for(int j=0; j<NUM_ITERATIONS; j++) {
+		for(int i=0; i<NUM_CONSTRAINTS; i++) {
+			Constraint& c = m_constraints[i];
+			Vector3& x1 = m_x[c.particleA];
+			Vector3& x2 = m_x[c.particleB];
+			Vector3 delta = x2-x1;
+			float deltalength = sqrt(delta*delta);
+			float diff=(deltalength-c.restlength) / deltalength;
+			x1 += delta*0.5*diff;
+			x2 -= delta*0.5*diff;
+		}
+		// Constrain one particle of the cloth to origo
+		m_x[0] = Vector3(0,0,0);
+	}
+}
+\end{lstlisting}
+
+We now discuss how to get rid of the square root operation. If the
+constraints are all satisfied (which they should be at least almost), we
+already know what the result of the square root operation in a particular
+constraint expression ought to be, namely the rest length $r$ of the
+corresponding stick. We can use this fact to approximate the square root
+function. Mathematically, what we do is approximate the square root
+function by its 1st order Taylor-expansion at a neighborhood of the
+squared rest length $r^{2}$ (this is equivalent to one Newton-Raphson
+iteration with initial guess $r$). After some rewriting, we obtain the
+following pseudo-code:
+
+\begin{lstlisting}
+// Pseudo-code using sqrt approximation
+delta  = x2-x1;
+delta *= restlength*restlength /
+		(delta*delta+restlength*restlength) - 0.5;
+x1 += delta;
+x2 -= delta;
+\end{lstlisting}
+
+Notice that if the distance is already correct (that is, if
+$|\texttt{delta}|=\texttt{restlength}$), then one gets
+$\texttt{delta}=(0,0,0)$ and no change is going to happen.
+
+Per constraint we now use zero square roots, one division only, and the
+squared value \texttt{restlength*restlength} can even be precalculated!
+The usage of time consuming operations is now down to N divisions per
+frame (and the corresponding memory accesses) --- it can't be done much
+faster than that and the result even looks quite nice. Actually, in
+\texttt{Hitman}, the overall speed of the cloth simulation was limited
+mostly by how many triangles it was possible to push through the
+rendering system.
+
+The constraints are not guaranteed to be satisfied after one iteration
+only, but because of the Verlet integration scheme, the system will
+quickly converge to the correct state over some frames. In fact, using
+only one iteration and approximating the square root removes the
+stiffness that appears otherwise when the sticks are perfectly stiff.
+
+By placing support sticks between strategically chosen couples of
+vertices sharing a neighbor, the cloth algorithm can be extended to
+simulate plants. Again, in \texttt{Hitman} only one pass through the
+relaxation loop was enough (in fact, the low number gave the plants
+exactly the right amount of bending behavior).
+
+The code and the equations covered in this section assume that all
+particles have identical mass. Of course, it is possible to model
+particles with different masses, the equations only get a little more
+complex.
+
+To satisfy \EQN{eqn:bilacons} while respecting particle masses, use the
+following code:
+
+\begin{lstlisting}
+delta = x2-x1;
+deltalength = sqrt(delta*delta);
+diff = (deltalength-restlength) / (deltalength*(invmass1+invmass2));
+x1 += invmass1*delta*diff;
+x2 -= invmass2*delta*diff;
+\end{lstlisting}
+
+Here \texttt{invmass1} and \texttt{invmass2} are the numerical inverses
+of the two masses. If we want a particle to be immovable, simply set
+invmass=0 for that particle (corresponding to an infinite mass). Of
+course in the above case, the square root can also be approximated for a
+speed-up.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
