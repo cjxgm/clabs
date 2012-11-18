@@ -1,0 +1,7 @@
+#!/bin/bash
+
+source gtk
+
+gtk_init
+gtk_end
+

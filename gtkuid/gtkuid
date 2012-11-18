@@ -1,0 +1,35 @@
+#!/usr/bin/perl
+
+@ARGV == 2 or &help;
+
+sysopen FCTRL, $ARGV[0], O_RDONLY;
+sysopen FDATA, $ARGV[1], O_WRONLY;
+#open FCTRL, "< $ARGV[0]";
+#open FDATA, "> $ARGV[1]";
+
+while (1) {
+	$_ = <FCTRL> or die $?;
+	/^ready\?$/ and do {
+		print FDATA "ok";
+	};
+	/^end$/ and do {
+		print "!!!\n";
+		print FDATA "ok";
+		close FCTRL;
+		close FDATA;
+		exit;
+	};
+}
+print;
+# should never arrive here
+die $!;
+
+sub help
+{
+	print "Please run me with 2 parameters: <control_fifo> <data_fifo>\n";
+	print "You can create fifos by mkfifo.\n";
+	close FCTRL;
+	close FDATA;
+	exit 1;
+}
+

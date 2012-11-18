@@ -1,0 +1,29 @@
+#!/bin/bash
+
+gtk_init()
+{
+	rm -f ctrl
+	rm -f data
+	mkfifo ctrl
+	mkfifo data
+	./gtkuid ctrl data &
+	echo "ready?" > ctrl
+	read rv < data
+	[ "$rv" != "ok" ] && gtk_error "Initialization failed."
+}
+
+gtk_end()
+{
+	echo "end" > ctrl
+	read rv < data
+	[ "$rv" != "ok" ] && gtk_error "End failed."
+	rm -f ctrl
+	rm -f data
+}
+
+gtk_error()
+{
+	echo $*
+	exit 1
+}
+

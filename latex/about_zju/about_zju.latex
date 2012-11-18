@@ -1,0 +1,331 @@
+% compile with xelatex
+\documentclass[mathserif]{beamer}
+\usepackage[BoldFont,SlantFont]{xeCJK}
+\usepackage{color}
+\usepackage{graphicx}
+
+\setCJKmainfont[BoldFont=WenQuanYi Micro Hei]{WenQuanYi Micro Hei}
+\setCJKmonofont{WenQuanYi Micro Hei Mono}
+%\parindent 2em
+
+\usetheme{Warsaw}
+\usecolortheme{default}
+
+\title{我理想的大学}
+\subtitle{------浙江大学}
+\author{eXerigumo Clanjor\\（哆啦比猫/兰威举）}
+
+\AtBeginSection[]{
+	\begin{frame}
+		\frametitle{内容}
+		\tableofcontents[currentsection]
+	\end{frame}
+}
+\AtBeginSubsection[]{
+	\begin{frame}
+		\frametitle{内容}
+		\tableofcontents[currentsection,currentsubsection]
+	\end{frame}
+}
+
+\newcommand{\EM}[1]{{\color{black!20!blue}#1}}
+\newcommand{\FOC}[1]{{\color{black!20!red}#1}}
+
+\begin{document}
+\frame{\titlepage}
+
+\section{关于浙大}
+\subsection{简介}
+\begin{frame}
+\frametitle{校徽}
+	\begin{figure}[h!]
+		\centering
+		\includegraphics{zjulogo.pdf}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{前生今世}
+浙江大学的前身：\pause
+\begin{itemize}[<+->]
+	\item \EM{求是书院}(1897)
+	\item 中国近代史上最早创办的新式高等学校\pause之一
+\end{itemize}
+\pause
+一百多年后的今天：\pause
+\begin{itemize}[<+->]
+	\item 居于国内\EM{一流水平}
+	\item \EM{首批}进入国家“\EM{211工程}”和“\EM{985计划}”的大学之一
+	\item 校训：\EM{实事求是，严谨踏实，奋发进取，开拓创新}
+	\item 简述为“\EM{求是$\cdot$创新}”
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{地理环境}
+\begin{itemize}[<+->]
+	\item \EM{五}个校区：\EM{玉泉}、\EM{西溪}、\EM{华家池}、
+			\EM{之江}、\EM{紫金港}，分布于杭州市区不同方位
+	\item 占地面积：\EM{$5.33km^2$}
+	\item \EM{依山傍水}，\EM{花木繁茂}，\EM{碧草如茵}，\EM{景色宜人}
+	\item 与西湖美景交相辉映，相得益彰，是\EM{读书治学的理想园地}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{基本设施}
+综合办学条件优良，基本设施齐备：\pause
+\begin{itemize}[<+->]
+	\item 校舍总建筑面积\EM{$\ >2,000,000m^2$}
+	\item 先进的教学科研机构：\EM{计算中心}、\EM{分析测试中心}、
+			\EM{现代教育技术中心}等
+	\item 公共服务设施：\EM{科学馆}（楼）、\EM{体育馆}（场）、
+			\EM{活动中心}、\EM{游泳池}等
+	\item 各校区图书馆总建筑面积\EM{$\ >59,000m^2$}，
+			总藏书量\EM{$\ >6,180,000$册}
+	\item 6家设备先进、水平一流的\EM{省级附属医院}
+	\item 1家\EM{出版社}
+	\item 总长达\EM{$120km$}的\EM{高速计算机骨干网络}
+	\item 特设的\EM{公交线路}
+\end{itemize}
+\end{frame}
+
+\subsection{招生情况}
+\begin{frame}
+\frametitle{历年录取分数线}
+浙江大学在浙江的综合录取分数线（理科本科，2006--2010）：
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{| l || c | c | r | c |}      \hline
+		年份 & 最高分 & 最低分 & 人数 &  批次  \\\hline
+		2010 &  638   &  582   &  354 & 提前批 \\\hline
+		2010 &  681   &  615   & 1868 & 第一批 \\\hline
+		2009 &  669   &  605   & 2243 & 第一批 \\\hline
+		2008 &  625   &  425   &  264 & 提前批 \\\hline
+		2008 &  666   &  603   & 1976 & 第一批 \\\hline
+		2007 &  642   &  596   &  258 & 提前批 \\\hline
+		2007 &  677   &  621   & 1724 & 第一批 \\\hline
+		2006 &  637   &  604   &   29 & 提前批 \\\hline
+		2006 &  670   &  570   & 2327 & 第一批 \\\hline
+	\end{tabular}
+\end{table}
+\pause
+在我校，\EM{年级排名前200的}有希望进浙大。
+\end{frame}
+
+\section{关于我}
+\subsection{专业选择}
+\begin{frame}
+\frametitle{浙大计算机科技院简介}
+毫无悬念，我肯定要去\EM{浙江大学计算机科学与技术学院}。\\\pause
+有\EM{五个}可选的\EM{本科}专业：\pause
+\begin{itemize}
+	\item {\em计算机科学与技术专业}
+	\item {\em软件工程专业}
+	\item {\em数字媒体技术专业}
+	\item {\em工业设计专业}
+	\item {\em艺术设计（工业设计方向）专业}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{浙大计算机科技院简介}
+\begin{itemize}
+	\item {计算机科学与技术专业}
+	\begin{itemize}[<+->]
+		\item \EM{系统软件}、\EM{计算机网络}、\EM{计算机系统结构及应用}等
+		\item \EM{计算机科学理论}、\EM{计算机系统}、
+				\EM{计算机软件技术}和\EM{可视计算}四个方向
+		\item $90\%$以上专业主干课程\EM{使用优秀英文教材}，
+				采用\EM{双语}或\EM{英语}教学
+	\end{itemize}
+	\item {\em软件工程专业}
+	\item {\em数字媒体技术专业}
+	\item {\em工业设计专业}
+	\item {\em艺术设计（工业设计方向）专业}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{浙大计算机科技院简介}
+\begin{itemize}
+	\item {计算机科学与技术专业}
+	\begin{itemize}
+		\item \FOC{系统软件}、\EM{计算机网络}、\EM{计算机系统结构及应用}等
+		\item \EM{计算机科学理论}、\FOC{计算机系统}、
+				\FOC{计算机软件技术}和\FOC{可视计算}四个方向
+		\item $90\%$以上专业主干课程\FOC{使用优秀英文教材}，
+				采用\EM{双语}或\FOC{英语}教学
+	\end{itemize}
+	\item {\em软件工程专业}
+	\item {\em数字媒体技术专业}
+	\item {\em工业设计专业}
+	\item {\em艺术设计（工业设计方向）专业}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{浙大计算机科技院简介}
+\begin{itemize}
+	\item {\em计算机科学与技术专业}
+	\item {软件工程专业}
+	\begin{itemize}[<+->]
+		\item \EM{系统设计与分析}以及\EM{工程技术与管理}并重
+		\item \EM{软件开发技术}、\EM{金融信息技术}、
+				\EM{服务科学与技术}三个方向
+		\item $90\%$的专业主干课程采用\EM{双语}或\EM{英语}教学
+		\item 学业及格的学生$100\%$保证有在\EM{本科阶段赴国外名校
+				或世界500强及重点企业交流学习}的机会
+	\end{itemize}
+	\item {\em数字媒体技术专业}
+	\item {\em工业设计专业}
+	\item {\em艺术设计（工业设计方向）专业}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{浙大计算机科技院简介}
+\begin{itemize}
+	\item {\em计算机科学与技术专业}
+	\item {软件工程专业}
+	\begin{itemize}
+		\item \EM{系统设计与分析}以及\EM{工程技术与管理}并重
+		\item \FOC{软件开发技术}、\EM{金融信息技术}、
+				\EM{服务科学与技术}三个方向
+		\item $90\%$的专业主干课程采用\EM{双语}或\FOC{英语}教学
+		\item 学业及格的学生$100\%$保证有在\EM{\FOC{本科阶段赴国外名校}或
+				世界500强及重点企业\FOC{交流学习}}的机会
+	\end{itemize}
+	\item {\em数字媒体技术专业}
+	\item {\em工业设计专业}
+	\item {\em艺术设计（工业设计方向）专业}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{浙大计算机科技院简介}
+\begin{itemize}
+	\item {\em计算机科学与技术专业}
+	\item {\em软件工程专业}
+	\item {数字媒体技术专业}
+	\begin{itemize}[<+->]
+		\item \EM{数字媒体设计、开发与制作}
+		\item \EM{\texttt{CAD\&CG}国家重点实验室}、
+				\EM{国家动画教学研究基地}
+		\item 要求考生具有出色的\EM{审美能力}和\EM{创新思维}
+		\item 毕业生一般选择\EM{影视}、\EM{数字娱乐}、\EM{出版}、
+				\EM{图书}、\EM{新闻}等媒体行业，以及国家机关、
+				高校和其它相关的设计制作企业
+	\end{itemize}
+	\item {\em工业设计专业}
+	\item {\em艺术设计（工业设计方向）专业}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{浙大计算机科技院简介}
+\begin{itemize}
+	\item {\em计算机科学与技术专业}
+	\item {\em软件工程专业}
+	\item {数字媒体技术专业}
+	\begin{itemize}
+		\item \EM{数字媒体设计、开发与制作}
+		\item \EM{\texttt{CAD\&\FOC{CG}}\ 国家重点实验室}、
+				\EM{国家\FOC{动画}教学研究基地}
+		\item 要求考生具有出色的\EM{审美能力}和\EM{创新思维}
+		\item 毕业生一般选择\EM{影视}、\FOC{数字娱乐}、\EM{出版}、
+				\EM{图书}、\EM{新闻}等媒体行业，以及国家机关、
+				高校和其它相关的设计制作企业
+	\end{itemize}
+	\item {\em工业设计专业}
+	\item {\em艺术设计（工业设计方向）专业}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{浙大计算机科技院简介}
+\begin{itemize}
+	\item {\em计算机科学与技术专业}
+	\item {\em软件工程专业}
+	\item {\em数字媒体技术专业}
+	\item {工业设计专业}
+	\item {艺术设计（工业设计方向）专业}
+	\begin{itemize}[<+->]
+		\item 这两个专业没弄懂是干什么的
+		\item 而且仅看专业名称不感兴趣
+		\item \FOC{就不介绍了}
+	\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{我的选择}
+我在这两个专业里徘徊了很久：
+\begin{itemize}
+	\item 计算机科学与技术专业
+	\item 软件工程专业
+\end{itemize}
+\pause
+如果可以选双专业，那肯定两个都要。
+\end{frame}
+
+\begin{frame}
+\frametitle{我的选择}
+如果不能\pause，我还是选择实践性强一点的好了：
+\begin{itemize}
+	\item \FOC{软件工程专业}
+\end{itemize}
+\end{frame}
+
+\subsection{为什么选浙大}
+\begin{frame}
+\frametitle{为什么选浙大}
+选择浙大，并不是因为它的计算机专业有多优秀\pause（\EM{吐槽：国内
+		\FOC{没有}优秀的计算机专业}），而是因为：\pause
+\begin{itemize}[<+->]
+	\item 本省的大学要\EM{好考}一点
+	\item 离衢州\EM{近}，而且都在南方，不会水土不服
+	\item 不喜欢辛辣的食物
+	\item \EM{天高皇帝远}，\FOC{远离方教授}（我们伟大的\EM{专门
+			屏蔽\FOC{国外优秀资源}}的\EM{中国国家防火长城}的发明者），
+			这样学习国外优秀资源会方便得多
+	\item 从\EM{软件自由日}时\EM{浙大Linux用户组}发布的活动公告看，
+			浙大有较多的\EM{\ ArchLinux用户}
+\end{itemize}
+\end{frame}
+
+\section{结尾}
+\subsection{有句话……}
+\begin{frame}
+\frametitle{还有句话要说}
+\pause
+\EM{要想潜心研究}\pause，\FOC{出国才是王道}！\\\pause
+先考上一所国内大学再说……
+\end{frame}
+
+\subsection{最后……}
+\begin{frame}
+\frametitle{最后……}
+本幻灯片\pause可能\pause比较\pause有点\pause\EM{朴素}\pause，
+但还是比较\EM{清爽}的。\\\pause
+\begin{itemize}
+	\item 感谢{\em专业的自动排版软件}：\EM{\textrm{\LaTeXe}}
+	\item 感谢{\em纯文本编辑器之神}：\EM{\texttt{Vim}}
+\end{itemize}
+\pause
+本幻灯片成片(\texttt{pdf})以及源文件(\textrm{\LaTeXe})
+在我的网站有提供下载：
+\begin{itemize}
+	\item \texttt{\color{black!50!green}http://cjprods.org/slides/}
+\end{itemize}
+\pause
+我一直坚信：“\EM{自由就是没有任何限制。}”鉴于此，
+\begin{itemize}
+	\item 本幻灯片\EM{隶属公共领域，\FOC{不}保留任何权利}。
+	\item Contributed to \EM{the Public Domain, \FOC{No} Right Reserved}.
+\end{itemize}
+{\color{black!20!orange}谢谢！}
+\end{frame}
+
+\end{document}
+
