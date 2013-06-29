@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Idemolino -O3 -Wall
 LDFLAGS = -s
-LIBS = -Ldemolino -ldemolino -L. -lminifmod -lpthread -lglut
+LIBS = -Ldemolino -ldemolino -L. -lminifmod -lpthread -lglut -lGL -lm -lGLU
 
 .PHONY: all clean
 
