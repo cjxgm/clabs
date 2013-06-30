@@ -9,6 +9,8 @@
 	object:set_method	parameters(which will be directly copied into c)
 	object::get_method	parameters(which will be directly copied into c)
 	object:-event_name	parameters(which will be directly copied into c)
+	object:=object_type
+	object_type:*object
 
 
 	check <object_type>, if has, do it;

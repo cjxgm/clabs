@@ -1,0 +1,229 @@
+#!/usr/bin/perl -w
+#use diagnostics;
+use Data::Dumper;
+
+my %conf;
+my %objs;
+my %types;
+
+my $id = '[^\W0-9]\w*';
+
+sub trim
+{
+	chomp;
+	s/^\s+ | \s+$//gx;
+	$_;
+}
+
+sub read_config
+{
+	open my $CONFIG, "< elm_ui.conf" or die "failed to open file.";
+	while (<$CONFIG>) {
+		trim;
+		next if $_ eq '';
+
+		# prefix$1 <space> type$2 (<space> add$4)?
+		/^($id)\s+($id)(\s+($id))?$/ or die "expect: prefix type";
+		my $object = { prefix => $1, type => $2, add => $4, methods => {} };
+		$conf{$2} = $object;
+
+		# methods
+		while (<$CONFIG>) {
+			trim;
+			last if $_ eq '';
+
+			# method$1
+			/^($id)$/ or die "expect: id";
+			my $method = { subs => {} };
+			$object->{methods}{$1} = $method;
+
+			$method->{set} = trim($_ = <$CONFIG>) or die "expect: set";
+			$method->{get} = trim($_ = <$CONFIG>) or die "expect: get";
+			$method->{set} = undef if $method->{set} eq '/';
+			$method->{get} = undef if $method->{get} eq '/';
+
+			while (<$CONFIG>) {
+				trim;
+				last if $_ eq '';
+
+				# what$1 <space> replacement$2
+				/^($id)\s+($id)$/ or die "expect: what replacement";
+				$method->{subs}{$1} = $2;
+			}
+		}
+	}
+	close $CONFIG;
+}
+
+read_config;
+#print Dumper(\%conf);
+
+sub no_paren
+{
+	my $s = shift;
+	$s =~ s/^\(//;
+	$s =~ s/\)$//;
+	$s;
+}
+
+my $work = 0;
+while (<>) {
+	if    (s/<{4,}//g) { $work = 1 }
+	elsif (s/>{4,}//g) { $work = 0 }
+	if    (!$work)   { print; next }
+
+	# object add
+	s{
+		($id)					# object name $1
+		\s*						# blanks
+		:\+						# ":+"
+		\s*						# blanks
+		($id)					# object type $2
+		\s*						# blanks
+		(\(						# nested "(...)"
+			([^()]++ | (?-2))*
+		\))?					# parameters $3
+	}{
+		my $name = $1;
+		my $type = $2;
+		my $para = $3 || '()';
+		my $pref = $conf{$type} ? $conf{$type}->{prefix} : 'elm';
+		my $obj  = $conf{$type} || $conf{object};
+		my $add  = $obj->{add} || 'add';
+		$objs{$name}  = $obj;
+		$types{$name} = $type;
+		"Evas_Object * $name = ${pref}_${type}_$add$para";
+	}xeg;
+
+	# object smart event
+	s{
+		($id)					# object name $1
+		\s*						# blanks
+		:-						# ":-"
+		\s*						# blanks
+		(\S+)				# event name $2
+		\s*						# blanks
+		(\(						# nested "(...)"
+			([^()]++ | (?-2))*
+		\))						# parameters $3
+	}{
+		my $name = $1;
+		my $evnt = $2;
+		my $para = no_paren($3);
+		"evas_object_smart_callback_add($name, \"$evnt\", $para)";
+	}xeg;
+
+	# object declare
+	s{
+		($id)					# object type $1
+		\s*						# blanks
+		:\*						# ":*"
+		\s*						# blanks
+		($id)					# object name $2
+	}{
+		my $type = $1;
+		my $name = $2;
+		my $obj  = $conf{$type} || $conf{object};
+		$objs{$name}  = $obj;
+		$types{$name} = $type;
+		"Evas_Object * $name";
+	}xeg;
+
+	# object type cast
+	s{
+		($id)					# object name $1
+		\s*						# blanks
+		:=						# ":="
+		\s*						# blanks
+		($id)					# object type $2
+		\s*						# blanks
+		;						# ";"
+	}{
+		my $name = $1;
+		my $type = $2;
+		my $obj  = $conf{$type} || $conf{object};
+		$objs{$name}  = $obj;
+		$types{$name} = $type;
+		"";
+	}xeg;
+
+	# object get
+	s{
+		($id)					# object name $1
+		\s*						# blanks
+		::						# "::"
+		\s*						# blanks
+		($id)					# method name $2
+		\s*						# blanks
+		(\(						# nested "(...)"
+			([^()]++ | (?-2))*
+		\))?					# parameters $3
+	}{
+		my $name = $1;
+		my $meth = $2;
+		my $para = $3 ? ', ' . no_paren($3) : '';
+		my $obj  = $objs{$name} or die "[get] undeclared object: $name.";
+		my $type = $types{$name};
+		my %subs;
+
+		# find the function name
+		my $m = $obj->{methods}{$meth};
+		if ($m) {
+			%subs = %{$m->{subs}};
+			$m = "$obj->{prefix}_$obj->{type}_$m->{get}"
+					or die "[get] no such method as $meth.";
+		}
+		elsif (($m = $conf{object}->{methods}{$meth})) {
+			%subs = %{$m->{subs}};
+			$m = "evas_object_$m->{get}"
+					or die "[get] no such method as $meth.";
+		}
+		else { $m = "elm_${type}_${meth}_get" }
+
+		# substitution
+		$para =~ s/\Q$_\E/$subs{$_}/g for keys %subs;
+
+		"$m($name$para)";
+	}xeg;
+
+	# object set
+	s{
+		($id)					# object name $1
+		\s*						# blanks
+		:						# ":"
+		\s*						# blanks
+		($id)					# method name $2
+		\s*						# blanks
+		(\(						# nested "(...)"
+			([^()]++ | (?-2))*
+		\))?					# parameters $3
+	}{
+		my $name = $1;
+		my $meth = $2;
+		my $para = $3 ? ', ' . no_paren($3) : '';
+		my $obj  = $objs{$name} or die "[set] undeclared object: $name.";
+		my $type = $types{$name};
+		my %subs;
+
+		# find the function name
+		my $m = $obj->{methods}{$meth};
+		if ($m) {
+			%subs = %{$m->{subs}};
+			$m = "$obj->{prefix}_$obj->{type}_$m->{set}"
+					or die "[set] no such method as $meth.";
+		}
+		elsif (($m = $conf{object}->{methods}{$meth})) {
+			%subs = %{$m->{subs}};
+			$m = "evas_object_$m->{set}"
+					or die "[set] no such method as $meth.";
+		}
+		else { $m = "elm_${type}_${meth}_set" }
+
+		# substitution
+		$para =~ s/\Q$_\E/$subs{$_}/g for keys %subs;
+
+		"$m($name$para)";
+	}xeg;
+
+	print;
+}
