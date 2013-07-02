@@ -114,7 +114,7 @@ int main(int argc, const char * argv[])
 	printf(CLR_VALUE_INFO"press RETURN to continue...");
 	getchar();
 
-	//---------------- read amd dump file block's headers
+	//---------------- read and dump file block's headers
 	while (1) {
 		CREATE(FileBlock, fblock);
 		READ(fblock->block, fp);
@@ -157,7 +157,7 @@ int main(int argc, const char * argv[])
 	printf(CLR_VALUE_INFO"press RETURN to continue...");
 	getchar();
 
-	//---------------- read amd dump the sDNA
+	//---------------- read and dump the sDNA
 	FB_find_and_goto("DNA1", 0, fp);
 	char identifier[4];
 	size_t i, j;
