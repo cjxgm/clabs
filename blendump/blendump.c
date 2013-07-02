@@ -127,7 +127,8 @@ int main(int argc, const char * argv[])
 
 		Block * b = &fblock->block;
 		if (strncmp(b->code, "DATA", 4)) {
-			printf("\n"CLR_NAME"BLOCK HEADER: "CLR_VALUE"[%d] at %Xh"EOL, nblock, fblock->pos);
+			printf("\n"CLR_NAME"BLOCK HEADER: "CLR_VALUE"[%d] at %Xh"EOL,
+					nblock, fblock->pos);
 			printf("\t"CLR_NAME_SUB"code:    "CLR_VALUE_SUB"%.4s"EOL, b->code);
 			printf("\t"CLR_NAME_SUB"size:    "CLR_VALUE_SUB"%Xh"EOL, b->size);
 			printf("\t"CLR_NAME_SUB"old ptr: "CLR_VALUE_SUB"%p"EOL, b->oldptr);
@@ -217,14 +218,19 @@ int main(int argc, const char * argv[])
 		s->field_types = calloc(sizeof(*s->field_types), s->nfield);
 		s->field_names = calloc(sizeof(*s->field_names), s->nfield);
 
-		printf("\t"CLR_NAME_SUB"[%u] "CLR_VALUE_SUB"%s"CLR_NAME_SUB":%hd"EOL, i, DNA_types[s->type], DNA_tlens[s->type]);
+		printf("\t"CLR_NAME_SUB"[%u] "CLR_VALUE_SUB"%s"CLR_NAME_SUB":%hd"EOL, i,
+				DNA_types[s->type],
+				DNA_tlens[s->type]);
 		for (j=0; j<s->nfield; j++) {
 			READ(s->field_types[j], fp);
 			READ(s->field_names[j], fp);
-			printf("\t\t"CLR_NAME_PR"%s "CLR_VALUE_PR"%s"CLR_NAME_PR":%hd"EOL, DNA_types[s->field_types[j]], DNA_names[s->field_names[j]], DNA_tlens[s->field_types[j]]);
+			printf("\t\t"CLR_NAME_PR"%s "CLR_VALUE_PR"%s"CLR_NAME_PR":%hd"EOL,
+					DNA_types[s->field_types[j]],
+					DNA_names[s->field_names[j]],
+					DNA_tlens[s->field_types[j]]);
 		}
 		if (i % 5 == 4) {
-			printf("\n"CLR_VALUE_INFO"press RETURN to continue...");
+			printf(CLR_VALUE_INFO"press RETURN to continue...");
 			getchar();
 		}
 	}
