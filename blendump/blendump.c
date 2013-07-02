@@ -34,6 +34,33 @@ exit 0
 
 
 
+typedef struct Block
+{
+	char   code[4];
+	size_t size;
+	void * oldptr;
+	size_t sdna_id;
+	size_t nstruct;
+}
+Block;
+
+typedef struct FileBlock
+{
+	size_t pos;
+	struct FileBlock * next;
+	Block block;
+}
+FileBlock;
+
+FileBlock * file_blocks;
+size_t nblock;
+
+FileBlock * FB_find(const char code[4], size_t nth);
+FileBlock * FB_find_by_id(size_t id);
+FileBlock * FB_find_and_goto(const char code[4], size_t nth, FILE * fp);
+
+
+
 
 static void error(const char * msg);
 static void warn (const char * msg);
@@ -63,29 +90,14 @@ int main(int argc, const char * argv[])
 	warn("DATA blocks are represented as dot(.).");
 
 	//---------------- file blocks
-	struct FileBlock
-	{
-		struct Block
-		{
-			char   code[4];
-			size_t size;
-			void * oldptr;
-			size_t sdna_id;
-			size_t nstruct;
-		} block;
-		size_t pos;
-		struct FileBlock * next;
-	} * file_blocks = NULL;
-	size_t nblock = 0;
-
 	while (1) {
-		CREATE(struct FileBlock, fblock);
+		CREATE(FileBlock, fblock);
 		fblock->pos  = ftell(fp);
 		fblock->next = file_blocks;
 		file_blocks  = fblock;
 
 		READ(fblock->block, fp);
-		struct Block * b = &fblock->block;
+		Block * b = &fblock->block;
 		if (strncmp(b->code, "DATA", 4)) {
 			printf("\n"CLR_NAME"BLOCK HEADER: "CLR_VALUE"[%d] at %Xh"EOL, nblock, fblock->pos);
 			printf("\t"CLR_NAME_SUB"code:    "CLR_VALUE_SUB"%.4s"EOL, b->code);
@@ -98,11 +110,26 @@ int main(int argc, const char * argv[])
 			printf(".");
 		}
 
-		if (!strncmp(b->code, "ENDB", 4)) break;
-
-		fseek(fp, b->size, SEEK_CUR);
 		nblock++;
+
+		if (!strncmp(b->code, "ENDB", 4)) break;
+		fseek(fp, b->size, SEEK_CUR);
 	}
+
+	// reverse the block list so that the index is correct.
+	{
+		FileBlock * fblock = file_blocks;
+		file_blocks = NULL;
+
+		while (fblock) {
+			FileBlock * next = fblock->next;
+			fblock->next = file_blocks;
+			file_blocks = fblock;
+			fblock = next;
+		}
+	}
+
+	printf("%p %p %p %p", FB_find("DNA1", 0), FB_find("DATA", 0), FB_find("DATA", 1), FB_find("DATA", 2));
 
 	warn("TODO: print sDNA.");
 	warn("TODO: print data structure internals.");
@@ -122,6 +149,39 @@ static void error(const char * msg)
 static void warn(const char * msg)
 {
 	fprintf(stderr, CLR_NAME_WARN"warning: "CLR_VALUE_WARN"%s"EOL, msg);
+}
+
+
+
+
+FileBlock * FB_find(const char code[4], size_t nth)
+{
+	FileBlock * fblock = file_blocks;
+	size_t n = 0;
+	while (fblock) {
+		Block * b = &fblock->block;
+		if (!strncmp(b->code, code, 4)) {
+			if (n == nth) return fblock;
+			n++;
+		}
+		fblock = fblock->next;
+	}
+	return NULL;
+}
+
+FileBlock * FB_find_by_id(size_t id)
+{
+	FileBlock * fblock = file_blocks;
+	while (id-- && fblock) fblock = fblock->next;
+	return fblock;
+}
+
+
+FileBlock * FB_find_and_goto(const char code[4], size_t nth, FILE * fp)
+{
+	FileBlock * fblock = FB_find(code, nth);
+	if (fblock) fseek(fp, fblock->pos, SEEK_SET);
+	return fblock;
 }
 
 
