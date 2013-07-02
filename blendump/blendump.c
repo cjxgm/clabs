@@ -104,9 +104,12 @@ int main(int argc, const char * argv[])
 
 	if (strncmp(header, "BLENDER", 7)) error("not a blender file.");
 	printf("\t"CLR_NAME_SUB"identifier:   "CLR_VALUE_SUB"%.7s"EOL, header);
-	printf("\t"CLR_NAME_SUB"pointer size: "CLR_VALUE_SUB"%d bits"EOL, (header[7] == '_' ? 32 : 64));
-	printf("\t"CLR_NAME_SUB"endianness:   "CLR_VALUE_SUB"%s endian"EOL, (header[8] == 'v' ? "little" : "big"));
-	printf("\t"CLR_NAME_SUB"version:      "CLR_VALUE_SUB"%c.%.2s"EOL, header[9], &header[10]);
+	printf("\t"CLR_NAME_SUB"pointer size: "CLR_VALUE_SUB"%d bits"EOL,
+			(header[7] == '_' ? 32 : 64));
+	printf("\t"CLR_NAME_SUB"endianness:   "CLR_VALUE_SUB"%s endian"EOL,
+			(header[8] == 'v' ? "little" : "big"));
+	printf("\t"CLR_NAME_SUB"version:      "CLR_VALUE_SUB"%c.%.2s"EOL,
+			header[9], &header[10]);
 	if (header[7] != '_') error("only support 32 bits.");
 	if (header[8] != 'v') error("only support little endian.");
 	warn("DATA blocks are represented as dot(.).");
@@ -166,10 +169,6 @@ int main(int argc, const char * argv[])
 	READ(identifier, fp);
 	printf(CLR_NAME"sDNA identifier: "CLR_VALUE"%.4s"EOL, identifier);
 
-	warn("one dot(.) represents 100 items.");
-	printf(CLR_VALUE_INFO"press RETURN to continue...");
-	getchar();
-
 	// names
 	READ(identifier, fp);
 	READ(DNA_nname, fp);
@@ -198,6 +197,13 @@ int main(int argc, const char * argv[])
 	for (i=0; i<DNA_ntype; i++)
 		READ(DNA_tlens[i], fp);
 
+	// dump the above info
+	printf("\t"CLR_NAME_SUB"nname: "CLR_VALUE_SUB"%u"EOL, DNA_nname);
+	printf("\t"CLR_NAME_SUB"ntype: "CLR_VALUE_SUB"%u"EOL, DNA_ntype);
+
+	printf(CLR_VALUE_INFO"press RETURN to continue...");
+	getchar();
+
 	// structures
 	fseek(fp, 4 - (ftell(fp) & 0b11), SEEK_CUR);	// 4-byte align
 	READ(identifier, fp);
@@ -217,7 +223,7 @@ int main(int argc, const char * argv[])
 			READ(s->field_names[j], fp);
 			printf("\t\t"CLR_NAME_PR"%s "CLR_VALUE_PR"%s"CLR_NAME_PR":%hd"EOL, DNA_types[s->field_types[j]], DNA_names[s->field_names[j]], DNA_tlens[s->field_types[j]]);
 		}
-		if (i % 10 == 9) {
+		if (i % 5 == 4) {
 			printf("\n"CLR_VALUE_INFO"press RETURN to continue...");
 			getchar();
 		}
