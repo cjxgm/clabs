@@ -84,16 +84,18 @@ AV_Frame * AV_read_frame(AV * av)
 						av->rgb->data, av->rgb->linesize);
 
 				// convert RGB to ARGB.
-
 				AV_ARGB * argb = av->f->argb;
-				for (int i=0; i<av->f->w*av->f->h; i++) {
-					argb[i].a = 255;
-					argb[i].r = av->rgb->data[0][i*3 + 0];
-					argb[i].g = av->rgb->data[0][i*3 + 1];
-					argb[i].b = av->rgb->data[0][i*3 + 2];
-				}
-//				SaveFrame(pFrameRGB, pCodecCtx->width, pCodecCtx->height, 
-//						i);
+				for (int y=0; y<av->f->h; y++)
+					for (int x=0; x<av->f->w; x++) {
+						int i = y * av->f->w + x;
+						unsigned char * line =
+								av->rgb->data[0] + y*av->rgb->linesize[0];
+						argb[i].a = 255;
+						argb[i].r = line[x*3 + 0];
+						argb[i].g = line[x*3 + 1];
+						argb[i].b = line[x*3 + 2];
+					}
+
 				av_free_packet(&packet);
 				return av->f;
 			}
