@@ -1,0 +1,223 @@
+#!/usr/bin/perl -w
+
+# enlightenment foundation library elementary UI preprocessor
+# by eXeigumo Clanjor (哆啦比猫/兰威举) <cjxgm@126.com>
+# Licensed under the MIT License.
+
+
+
+
+# regex constant
+$ID = '[^\W0-9][^\W.]*';
+
+
+
+
+# init databases
+my $funcs  = &read_db('lpp-elm-ui.func.db' );
+my $consts = &read_db('lpp-elm-ui.const.db');
+
+
+
+
+# main
+print "#define LPP_ELM_UI_SET(VAR, F) typeof(F) VAR = F\n";
+
+my $work = 0;
+while (<>) {
+	if    (s/<{4,}//g) { $work = 1 }
+	elsif (s/>{4,}//g) { $work = 0 }
+	if    (!$work)   { print; next }
+
+	# object add
+	s/
+		($ID)					# object name $1
+		\s*						# blanks
+		:\+						# ":+"
+		\s*						# blanks
+		($ID)					# object type $2
+		\s*						# blanks
+		(\(						# nested "(...)"
+			([^()]++ | (?-2))*
+		\))?					# parameters $3
+	/
+		my $name = $1;
+		my $type = $2;
+		my $para = $3 ? &subspara($type, $3) : '()';
+		&cast_object_type($name, $type);
+		"LPP_ELM_UI_SET($name, elm_${type}_add$para)";
+	/xeg;
+
+	# object smart event
+	s/
+		($ID)					# object name $1
+		\s*						# blanks
+		:-						# ":-"
+		\s*						# blanks
+		([^\s(]+)				# event name $2
+		\s*						# blanks
+		(\(						# nested "(...)"
+			([^()]++ | (?-2))*
+		\))						# parameters $3
+	/
+		my $name = $1;
+		my $evnt = $2;
+		my $para = &remove_parentheses($3);
+		"evas_object_smart_callback_add($name, \"$evnt\", $para)";
+	/xeg;
+
+	# object declare
+	s/
+		($ID)					# object type $1
+		\s*						# blanks
+		:\*						# ":*"
+		\s*						# blanks
+		($ID)					# object name $2
+	/
+		my $type = $1;
+		my $name = $2;
+		&cast_object_type($name, $type);
+		"Evas_Object * $name";
+	/xeg;
+
+	# object type cast
+	s/
+		($ID)					# object name $1
+		\s*						# blanks
+		:=						# ":="
+		\s*						# blanks
+		($ID)					# object type $2
+		\s*						# blanks
+		;?						# ";"
+	/
+		my $name = $1;
+		my $type = $2;
+		&cast_object_type($name, $type);
+		'';
+	/xeg;
+
+	# object get
+	s/
+		($ID)					# object name $1
+		\s*						# blanks
+		::						# "::"
+		\s*						# blanks
+		($ID)					# function name $2
+		\s*						# blanks
+		(\(						# nested "(...)"
+			([^()]++ | (?-2))*
+		\))?					# parameters $3
+	/
+		my $name = $1;
+		my $type = &get_object_type($name)
+					or die "[get] undeclared object: $name.";
+		my $func = &realfunc('g', $type, $2)
+					or die "[get] no such function ${name}::$2.";
+		my $para = $3 ? ', ' . &subspara($type, &remove_parentheses($3)) : '';
+		"$func($name$para)";
+	/xeg;
+
+	# object set
+	s/
+		($ID)					# object name $1
+		\s*						# blanks
+		:						# ":"
+		\s*						# blanks
+		($ID)					# function name $2
+		\s*						# blanks
+		(\(						# nested "(...)"
+			([^()]++ | (?-2))*
+		\))?					# parameters $3
+	/
+		my $name = $1;
+		my $type = &get_object_type($name)
+					or die "[set] undeclared object: $name.";
+		my $func = &realfunc('s', $type, $2)
+					or die "[set] no such function ${name}:$2.";
+		my $para = $3 ? ', ' . &subspara($type, &remove_parentheses($3)) : '';
+		"$func($name$para)";
+	/xeg;
+
+	print;
+}
+
+
+
+
+# helper functions
+sub read_db
+{
+	my @db;
+	open my $DB, '<', shift or die "failed to open file.";
+	while (<$DB>) { chomp; unshift @db, $_ }
+	close $DB;
+	\@db;
+}
+
+sub remove_parentheses
+{
+	my $s = shift;
+	$s =~ s/^\(//;
+	$s =~ s/\)$//;
+	$s;
+}
+
+sub realfunc
+{
+	# Abbreviations:
+	#	gos = Get Or Set
+	#	rf  = Real Func
+	my ($gos, $type, $func) = @_;
+	for (@$funcs) {
+		/^(elm|evas)_(${type}|object)_${func}(_${gos}et|_add)?$/
+				and return $_;
+	}
+	for (@$funcs) {
+		/^(elm|evas)_(${type}|object)_[a-z0-9_]+_${func}(_${gos}et|_add)?$/
+				and return $_;
+	}
+	undef;
+}
+
+sub subspara
+{
+	our ($type, $para) = @_;
+	$type = uc $type;
+
+	$para =~ s/::([A-Z0-9_]+)/
+		&subs($1);
+	/xeg;
+
+	sub subs
+	{
+		my ($name) = @_;
+		for (@$consts) {
+			/^(ELM|EVAS)_(${type}|OBJECT)_$name$/ and return $_;
+		}
+		for (@$consts) {
+			/^(ELM|EVAS)_([A-Z0-9]+_)*$name$/ and return $_;
+		}
+		$name;
+	}
+
+	$para;
+}
+
+
+
+
+# type management
+my %type_of;
+
+sub cast_object_type
+{
+	my ($name, $type) = @_;
+	$type_of{$name} = $type;
+}
+
+sub get_object_type
+{
+	my ($name) = @_;
+	$type_of{$name};
+}
+

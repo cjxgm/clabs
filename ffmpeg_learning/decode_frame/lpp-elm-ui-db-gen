@@ -1,0 +1,41 @@
+#!/usr/bin/perl -w
+
+# lpp-elm-ui database generator
+# by eXeigumo Clanjor (哆啦比猫/兰威举) <cjxgm@126.com>
+# Licensed under the MIT License.
+
+my @ds = map {
+	undef;
+	$1 if /^-I(.*(elementary|evas).*)$/;
+} split /\s+/, `pkg-config --cflags elementary`;
+
+my @funcs;
+my @consts;
+for (@ds) {
+	for (<$_/*.h>) {
+		open my $F, '<', $_ or die $!;
+		while (<$F>) {
+			/EAPI.*?((elm|evas)_[^()\s]+)\s*\(.*/ and unshift @funcs, $1;
+			/#define\s+?((elm|evas)_[a-z0-9_]+)/  and unshift @funcs, $1;
+			/_H$/ and next;
+			/(ELM|EVAS)_[A-Z0-9_]+/ and unshift @consts, $&;
+		}
+		close $F;
+	}
+}
+
+open F, '> lpp-elm-ui.func.db' or die $!;
+print F join("\n", &uniq(@funcs));
+close F;
+
+open F, '> lpp-elm-ui.const.db' or die $!;
+print F join("\n", &uniq(@consts));
+close F;
+
+
+sub uniq
+{
+	my %seen;
+	grep { !$seen{$_}++ } @_;
+}
+

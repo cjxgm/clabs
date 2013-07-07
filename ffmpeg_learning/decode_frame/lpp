@@ -1,0 +1,46 @@
+#!/usr/bin/perl -w
+
+# lpp launcher
+# by eXeigumo Clanjor (哆啦比猫/兰威举) <cjxgm@126.com>
+# Licensed under the MIT License.
+
+@ARGV >= 2 or die "parameter error.";
+
+# parse parameters
+my $pps = join ' | ', map { "./lpp-$_" } split /\s+/, shift@ARGV;
+my $srcs = shift @ARGV;
+my $ppflags = '-dD ';
+my $ccflags = '-x cpp-output - ';
+my $next_to_cc = 0;
+for (@ARGV) {
+	if ($next_to_cc) {
+		$ccflags .= "$_ ";
+		$next_to_cc = 0;
+		next;
+	}
+
+	/^-o$/ and do {
+		$next_to_cc = 1;
+		$ccflags .= "$_ ";
+		next;
+	};
+
+	/^-o/ and do {
+		$ccflags .= "$_ ";
+		next;
+	};
+
+	/^-c$/ and do {
+		$ccflags .= "$_ ";
+		next;
+	};
+
+	$ppflags .= "$_ ";
+	$ccflags .= "$_ ";
+}
+$ppflags .= $srcs;
+
+# do the job!
+print "cpp $ppflags | sed '/__STDC/d' | $pps | cpp | gcc $ccflags\n";
+system "cpp $ppflags | sed '/__STDC/d' | $pps | cpp | gcc $ccflags";
+

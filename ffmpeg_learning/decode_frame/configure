@@ -1,0 +1,86 @@
+#!/bin/bash
+# vim: ft=sh noet ts=4 sw=4 sts=0
+
+main()
+{
+	local OBJS=""
+	local CCFLAGS="-std=gnu11 -Ilibcrude"
+	local LDFLAGS="-Llibcrude -lcrude -lm"
+	echo "# vim: ft=make noet ts=4 sw=4 sts=0" > makefile
+	gen
+	gen "CC = ./lpp elm-ui"
+	gen "LD = gcc"
+	gen "CCFLAGS = -march=native -Ofast -Wall -Wno-main $CCFLAGS"
+	gen "LDFLAGS = $LDFLAGS"
+	gen
+	gen "CCFLAGS += \`(pkg-config --cflags elementary)\`"
+	gen "CCFLAGS += \`(pkg-config --cflags libavformat)\`"
+	gen "CCFLAGS += \`(pkg-config --cflags libavcodec)\`"
+	gen "CCFLAGS += \`(pkg-config --cflags libswscale)\`"
+	gen "CCFLAGS += \`(pkg-config --cflags libavutil)\`"
+	gen "LDFLAGS += \`(pkg-config --libs elementary)\`"
+	gen "LDFLAGS += \`(pkg-config --libs libavformat)\`"
+	gen "LDFLAGS += \`(pkg-config --libs libavcodec)\`"
+	gen "LDFLAGS += \`(pkg-config --libs libswscale)\`"
+	gen "LDFLAGS += \`(pkg-config --libs libavutil)\`"
+	gen
+	gen ".PHONY: all clean cleanall rebuild reconf test commit"
+	gen
+	gen "all: init build/decode_frame"
+	gen "clean:"
+	gen -e "\trm -f lpp-elm-ui.*.db"
+	gen -e "\trm -rf build"
+	gen "cleanall: clean"
+	gen -e "\trm -f makefile"
+	gen "rebuild: clean all"
+	gen "reconf:"
+	gen -e "\t./configure"
+	gen "test: all"
+	gen -e "\t./build/decode_frame"
+	gen "commit: cleanall"
+	gen -e "\tgit add ."
+	gen -e "\tgit diff --cached"
+	gen -e "\tenv LANG=C git commit -a || true"
+	gen -e "\t./configure"
+	gen
+	gen "init: build build/objects lpp-elm-ui.func.db"
+	gen "build:"
+	gen -e "\tmkdir build"
+	gen "build/objects:"
+	gen -e "\tmkdir build/objects"
+	gen "lpp-elm-ui.func.db:"
+	gen -e "\t./lpp-elm-ui-db-gen"
+	gen
+
+	for f in src/*.c; do
+		echo -e "\e[0;32mprocessing \e[1;35m$f\e[m"
+		echo -ne "\e[1;31m"
+		gcc $CCFLAGS -MM "$f" > .dep || error
+		local target=build/objects/$(cut -d: -f1 .dep | head -n 1)
+		OBJS="$OBJS $target";
+		gen -n "build/objects/"
+		cat .dep >> makefile
+		gen -e "\t\$(CC) \$< -c -o \$@ \$(CCFLAGS)"
+	done
+	echo -ne "\e[m"
+	rm -f .dep
+	gen "build/decode_frame:$OBJS"
+	gen -e "\t\$(LD) -o \$@ \$^ \$(LDFLAGS)"
+	gen
+}
+
+gen()
+{
+	echo $* >> makefile
+}
+
+error()
+{
+	echo -ne "\e[m"
+	rm -f .dep
+	exit 1
+}
+
+
+main $*
+
