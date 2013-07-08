@@ -99,12 +99,14 @@ AV_Frame * AV_read_frame(AV * av)
 						argb[i].b = line[x*3 + 2];
 					}
 				*/
+				// FIXME: can the following code replace the above one?
+				const uint8_t * data = av->rgb->data[0];
 				for (int i=0; i<av->f->w*av->f->h; i++)
 					argb[i] = (AV_ARGB){
 						.a = 255,
-						.r = av->rgb->data[0][i*3 + 0],
-						.g = av->rgb->data[0][i*3 + 1],
-						.b = av->rgb->data[0][i*3 + 2],
+						.r = data[i*3 + 0],
+						.g = data[i*3 + 1],
+						.b = data[i*3 + 2],
 					};
 
 				av_free_packet(&packet);

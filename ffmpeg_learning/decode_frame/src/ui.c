@@ -70,11 +70,6 @@ EAPI_MAIN int elm_main(int argc, char * argv[])
 	void next_frame()
 	{
 		AV_Frame * fr = AV_read_frame(av);
-		AV_ARGB a = { .a = 255, .r = 255, .g = 255, .b = 255 };
-		img: colorspace(::COLORSPACE_ARGB8888);
-		img: image_data(fr->argb);
-		for (int i=100; i<200; i++)
-			fr->argb[i * fr->w + i] = a;
 		img: image_data_update_add(0, 0, fr->w, fr->h);
 	}
 	btn :- clicked(ANY next_frame, NULL);
