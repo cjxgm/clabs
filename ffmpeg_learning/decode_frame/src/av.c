@@ -34,11 +34,12 @@ AV * AV_open(const char * file)
 	AVDictionary * options_dict = NULL;
 	assert(avcodec_open2(av->codec_ctx, av->codec, &options_dict) >= 0);
 
+	// prepare to convert YUV to RGB
 	#define sws_get_context(args...) sws_getContext(args);
 	av->sws_ctx = sws_get_context(av->codec_ctx->width,
 			av->codec_ctx->height, av->codec_ctx->pix_fmt,
 			av->codec_ctx->width, av->codec_ctx->height,
-			PIX_FMT_RGB24, SWS_BILINEAR, NULL, NULL, NULL);
+			PIX_FMT_RGB24, SWS_BICUBIC, NULL, NULL, NULL);
 
 	av->frame = avcodec_alloc_frame();
 	av->rgb   = avcodec_alloc_frame();
@@ -48,6 +49,7 @@ AV * AV_open(const char * file)
 	avpicture_fill(ANY av->rgb, av->buffer, PIX_FMT_RGB24,
 			av->codec_ctx->width, av->codec_ctx->height);
 
+	// prepare buffer
 	av->f = malloc(sizeof(AV_Frame));
 	av->f->w = av->codec_ctx->width;
 	av->f->h = av->codec_ctx->height;
@@ -79,12 +81,13 @@ AV_Frame * AV_read_frame(AV * av)
 			if (frame_done) {
 				// convert the image from its native format to RGB
 				sws_scale(av->sws_ctx,
-						(uint8_t const * const *)av->frame->data,
+						ANY av->frame->data,
 						av->frame->linesize, 0, av->codec_ctx->height,
 						av->rgb->data, av->rgb->linesize);
 
 				// convert RGB to ARGB.
 				AV_ARGB * argb = av->f->argb;
+				/*
 				for (int y=0; y<av->f->h; y++)
 					for (int x=0; x<av->f->w; x++) {
 						int i = y * av->f->w + x;
@@ -95,6 +98,14 @@ AV_Frame * AV_read_frame(AV * av)
 						argb[i].g = line[x*3 + 1];
 						argb[i].b = line[x*3 + 2];
 					}
+				*/
+				for (int i=0; i<av->f->w*av->f->h; i++)
+					argb[i] = (AV_ARGB){
+						.a = 255,
+						.r = av->rgb->data[0][i*3 + 0],
+						.g = av->rgb->data[0][i*3 + 1],
+						.b = av->rgb->data[0][i*3 + 2],
+					};
 
 				av_free_packet(&packet);
 				return av->f;

@@ -8,7 +8,7 @@
 #include <libswscale/swscale.h>
 
 
-typedef struct AV_ARGB
+typedef union AV_ARGB
 {
 	unsigned long argb;
 	struct {
