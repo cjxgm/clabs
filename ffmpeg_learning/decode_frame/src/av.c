@@ -1,5 +1,4 @@
 #include "av.h"
-#include "util.h"
 #include <assert.h>
 
 #define ANY		(void *)
@@ -35,7 +34,7 @@ AV * AV_open(const char * file)
 	assert(avcodec_open2(av->codec_ctx, av->codec, &options_dict) >= 0);
 
 	// prepare to convert YUV to RGB
-	#define sws_get_context(args...) sws_getContext(args);
+#define sws_get_context(args...) sws_getContext(args);
 	av->sws_ctx = sws_get_context(av->codec_ctx->width,
 			av->codec_ctx->height, av->codec_ctx->pix_fmt,
 			av->codec_ctx->width, av->codec_ctx->height,
@@ -70,7 +69,7 @@ void AV_close(AV * av)
 	free(av);
 }
 
-AV_Frame * AV_read_frame(AV * av)
+void AV_read_frame(AV * av)
 {
 	AVPacket packet;
 	int frame_done;
@@ -88,34 +87,42 @@ AV_Frame * AV_read_frame(AV * av)
 				// convert RGB to ARGB.
 				AV_ARGB * argb = av->f->argb;
 				/*
-				for (int y=0; y<av->f->h; y++)
-					for (int x=0; x<av->f->w; x++) {
-						int i = y * av->f->w + x;
-						unsigned char * line =
-								av->rgb->data[0] + y*av->rgb->linesize[0];
-						argb[i].a = 255;
-						argb[i].r = line[x*3 + 0];
-						argb[i].g = line[x*3 + 1];
-						argb[i].b = line[x*3 + 2];
-					}
-				*/
+				   for (int y=0; y<av->f->h; y++)
+				   for (int x=0; x<av->f->w; x++) {
+				   int i = y * av->f->w + x;
+				   unsigned char * line =
+				   av->rgb->data[0] + y*av->rgb->linesize[0];
+				   argb[i].a = 255;
+				   argb[i].r = line[x*3 + 0];
+				   argb[i].g = line[x*3 + 1];
+				   argb[i].b = line[x*3 + 2];
+				   }
+				   */
 				// FIXME: can the following code replace the above one?
 				const uint8_t * data = av->rgb->data[0];
 				for (int i=0; i<av->f->w*av->f->h; i++)
 					argb[i] = (AV_ARGB){
 						.a = 255,
-						.r = data[i*3 + 0],
-						.g = data[i*3 + 1],
-						.b = data[i*3 + 2],
+							.r = data[i*3 + 0],
+							.g = data[i*3 + 1],
+							.b = data[i*3 + 2],
 					};
 
+				av->frame_id = packet.dts;
 				av_free_packet(&packet);
-				return av->f;
+				return;
 			}
 		}
 		av_free_packet(&packet);
 	}
+}
 
-	return NULL;
+void AV_seek(AV * av, size_t frame)
+{
+	int frame_delta = frame - av->frame_id;
+	if (frame_delta < 0 || frame_delta > 5)
+		av_seek_frame(av->fmt_ctx, av->video_stream_id, frame, AVSEEK_FLAG_BACKWARD);
+	while (av->frame_id != frame)
+		AV_read_frame(av);
 }
 
