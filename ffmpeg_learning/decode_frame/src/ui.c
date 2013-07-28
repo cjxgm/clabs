@@ -8,11 +8,6 @@
 
 
 
-#define ANY		(void *)
-
-
-
-
 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 static win          :* win;
 static object_image :* img;
@@ -52,7 +47,7 @@ EAPI_MAIN int elm_main(int argc, char * argv[])
 	img: colorspace(::COLORSPACE_ARGB8888);
 	img :  move(0, 30);
 
-	av = AV_open("logo.h264");
+	av = AV_open("video");
 
 	AV_read_frame(av);
 	AV_Frame * fr = AV_get_frame(av);

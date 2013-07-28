@@ -1,8 +1,6 @@
 #include "av.h"
 #include <assert.h>
 
-#define ANY		(void *)
-
 void AV_init()
 {
 	av_register_all();
@@ -86,19 +84,6 @@ void AV_read_frame(AV * av)
 
 				// convert RGB to ARGB.
 				AV_ARGB * argb = av->f->argb;
-				/*
-				   for (int y=0; y<av->f->h; y++)
-				   for (int x=0; x<av->f->w; x++) {
-				   int i = y * av->f->w + x;
-				   unsigned char * line =
-				   av->rgb->data[0] + y*av->rgb->linesize[0];
-				   argb[i].a = 255;
-				   argb[i].r = line[x*3 + 0];
-				   argb[i].g = line[x*3 + 1];
-				   argb[i].b = line[x*3 + 2];
-				   }
-				   */
-				// FIXME: can the following code replace the above one?
 				const uint8_t * data = av->rgb->data[0];
 				for (int i=0; i<av->f->w*av->f->h; i++)
 					argb[i] = (AV_ARGB){

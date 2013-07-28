@@ -1,7 +1,6 @@
 // vim: noet ts=4 sw=4 sts=0
 // decoder
-#ifndef __AV__
-#define __AV__
+#pragma once
 
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
@@ -45,7 +44,7 @@ typedef struct AV
 }
 AV;
 
-void AV_init();
+void AV_init() CONSTRUCTOR;
 
 AV * AV_open(const char * file);
 void AV_close(AV * av);
@@ -55,7 +54,4 @@ static inline AV_Frame * AV_get_frame(AV * av) { return av->f;        }
 static inline size_t  AV_get_frame_id(AV * av) { return av->frame_id; }
 
 void AV_seek(AV * av, size_t frame);
-
-
-#endif
 

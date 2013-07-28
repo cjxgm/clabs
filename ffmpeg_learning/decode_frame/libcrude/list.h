@@ -1,7 +1,6 @@
 // vim: noet ts=4 sw=4 sts=0
 // double-ended in-structure list data structure manipulation
-#ifndef __CRUDE$LIST__
-#define __CRUDE$LIST__
+#pragma once
 
 #include <stddef.h>
 
@@ -39,6 +38,4 @@ struct List
 		size_t list_length(List * list);
 		void list_remove(void * data);
 		void list_delete(void * data);
-
-#endif
 
