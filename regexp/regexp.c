@@ -55,13 +55,13 @@ RE_Regexp RE_compile(const char * regexp)
 {
 	RE_Regexp re;
 	RE_State * s_tail = re.state;
+	void append(unsigned short c, char g, char ng)
+	{
+		*s_tail++ = (RE_State){ c, g, ng };
+	}
 	void expr(RE_State * s, int group)
 	{
 		RE_State * s_head = s;
-		void append(unsigned short c, char g, char ng)
-		{
-			*s_tail++ = (RE_State){ c, g, ng };
-		}
 		void prepend(unsigned short c, char g, char ng)
 		{
 			RE_State * s = s_tail++;
@@ -69,19 +69,44 @@ RE_Regexp RE_compile(const char * regexp)
 				*(s+1) = *s;
 			*s_head = (RE_State){ c, g, ng };
 		}
-		append('a', 0, 0);
-		append(RE_GROUP_START, 0, 0);
-		append(RE_SPLIT, 1, 5);
-		append(RE_SPLIT, 1, 3);
-		append('b', 0, 0);
-		append(RE_JUMP, 2, 0);
-		append('c', 0, 0);
-		append('d', 0, 0);
-		append(RE_SPLIT, -6, 1);
-		append(RE_GROUP_END, 0, 0);
-		append(RE_MATCH, 0, 0);
+		for (; *regexp; regexp++) {
+			switch (*regexp) {
+				case '(':
+					regexp++;
+					s_head = s_tail;
+					append(RE_GROUP_START, group, 0);
+					expr(s_tail, group+1);
+					if (*regexp != ')') err(1, "missing ).");
+					append(RE_GROUP_END, group, 0);
+					break;
+				case ')': return;
+				case '?': prepend(RE_SPLIT, 1, s_tail-s_head+1); break;
+				case '+':  append(RE_SPLIT, s_head-s_tail, 1); break;
+				case '*': prepend(RE_SPLIT, 1, s_tail-s_head+2);
+						   append(RE_SPLIT, s_head-s_tail+1, 1);
+						  break;
+				case '|':
+					s_head = s;
+					prepend(RE_SPLIT, 1, s_tail-s_head+2);
+					s = s_tail;
+					append(RE_JUMP, 0, 0);
+					regexp++;
+					expr(s_tail, group);
+					s->g = s_tail-s;
+					regexp--;
+					break;
+				case '.':
+					s_head = s_tail;
+					append(RE_ANY, 0, 0);
+					break;
+				default:
+					s_head = s_tail;
+					append(*regexp, 0, 0);
+			}
+		}
 	}
-	expr(re.state, -1);
+	expr(re.state, 0);
+	append(RE_MATCH, 0, 0);
 	return re;
 }
 
@@ -90,10 +115,10 @@ int RE_match(RE_Regexp * re, const char * str)
 	RE_Match * m = re->match;
 	int match(RE_State * s, const char * p)
 	{
-		for (; *p; p++, s++) {
+		for (; ; p+=(*p!=0), s++) {
 			//printf(">> @%d(%x)\t[%d]%c(%2.2X)\n", s-re->state, s->c, p-str, *p, *p);
 			switch (s->c) {
-				case RE_ANY: continue;
+				case RE_ANY: if (!*p) return 0; continue;
 				case RE_SPLIT:
 					if (match(s+s-> g, p)) return 1;
 					if (match(s+s->ng, p)) return 1;
@@ -105,6 +130,7 @@ int RE_match(RE_Regexp * re, const char * str)
 				default: if (*p != s->c) return 0;
 			}
 		}
+#if 0
 		for (;; s++) {
 			//printf(">> @%d(%x)\t[%d]%c(%2.2X)\n", s-re->state, s->c, p-str, *p, *p);
 			switch (s->c) {
@@ -119,6 +145,7 @@ int RE_match(RE_Regexp * re, const char * str)
 				default: return 0;
 			}
 		}
+#endif
 		return 0;
 	}
 	return match(re->state, str);
@@ -126,7 +153,8 @@ int RE_match(RE_Regexp * re, const char * str)
 
 int main()
 {
-	RE_Regexp re = RE_compile("a((b|c)?d)+");
+	//RE_Regexp re = RE_compile("ab(c|def).*");
+	RE_Regexp re = RE_compile("a(((b|c)?d)+).*");
 	RE_dump_states(re.state);
 	{
 		char str[] = "ad";
@@ -161,7 +189,7 @@ int main()
 		else printf("!\n");
 	}
 	{
-		char str[] = "abddcddda";
+		char str[] = "adddbdbcd";
 		if (RE_match(&re, str)) {
 			str[re.match[0].e] = 0;
 			printf("M%4d%4d -> %s\n", re.match[0].s, re.match[0].e, &str[re.match[0].s]);
