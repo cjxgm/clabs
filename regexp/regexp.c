@@ -115,33 +115,32 @@ int RE_match(RE_Regexp * re, const char * str)
 
 
 
-void RE_dump_state(RE_State * s, int i)
-{
-#define NR	printf("%.3d  ", i)
-	switch (s->c) {
-		case RE_MATCH      : NR; printf(" M \n"); break;
-		case RE_ANY        : NR; printf(" A \n"); break;
-		case RE_SPLIT: NR; printf(" S%c%+4d[%.3d]%+4d[%.3d]\n", (s->is_ng ? '?' : ' '), s->g, i+s->g, s->ng, i+s->ng); break;
-		case RE_JUMP       : NR; printf(" J %+4d[%.3d]\n", s->g, i+s->g); break;
-		case RE_GROUP_START: NR; printf(" ( %4d\n", s->g); break;
-		case RE_GROUP_END  : NR; printf(" ) %4d\n", s->g); break;
-		default            : NR; printf("'%c'\n"   , s->c); break;
-	}
-#undef NR
-}
-
-void RE_dump_states(RE_State * s)
-{
-	for (int i=0; ; s++, i++) {
-		RE_dump_state(s, i);
-		if (s->c == RE_MATCH) break;
-	}
-}
-
 int main()
 {
-	RE_Regexp re = RE_compile("(.*?)(<.*?>)(.*?)(</.*>)(.*)");
-	RE_dump_states(re.state);
+	void dump_state(RE_State * s, int i)
+	{
+#define NR	printf("\e[0;33m%.3d  ", i)
+		switch (s->c) {
+			case RE_MATCH      : NR; printf("\e[1;32m M \n"); break;
+			case RE_ANY        : NR; printf("\e[0;34m A \n"); break;
+			case RE_SPLIT: NR; printf("\e[1;35m S\e[1;31m%c\e[0;35m%+4d[\e[0;33m%.3d\e[0;35m]%+4d[\e[0;33m%.3d\e[0;35m]\n", (s->is_ng ? '?' : ' '), s->g, i+s->g, s->ng, i+s->ng); break;
+			case RE_JUMP       : NR; printf("\e[1;35m J \e[0;35m%+4d[\e[0;33m%.3d\e[0;35m]\n", s->g, i+s->g); break;
+			case RE_GROUP_START: NR; printf("\e[1;36m ( \e[0;36m%4d\n", s->g); break;
+			case RE_GROUP_END  : NR; printf("\e[1;36m ) \e[0;36m%4d\n", s->g); break;
+			default            : NR; printf("\e[0m'\e[1m%c\e[0m'\n"   , s->c); break;
+		}
+		printf("\e[0m");
+#undef NR
+	}
+
+	void dump_states(RE_State * s)
+	{
+		for (int i=0; ; s++, i++) {
+			dump_state(s, i);
+			if (s->c == RE_MATCH) break;
+		}
+	}
+
 	void dump_match(RE_Match * m, const char * str)
 	{
 		int len = m->e - m->s;
@@ -150,10 +149,14 @@ int main()
 		buf[len] = 0;
 		printf("%s", buf);
 	}
+
+
+	RE_Regexp re = RE_compile("(.*?)(<.*?>)(.*?)(</.*>)(.*)");
+	dump_states(re.state);
 	{
 		char str[] = "ad<a>so</a><html>that</html>yes";
 		if (RE_match(&re, str)) {
-			printf("M -> ");
+			printf("matched -> ");
 			dump_match(&re.match[0], str);
 			printf(" | ");
 			dump_match(&re.match[1], str);
@@ -165,39 +168,7 @@ int main()
 			dump_match(&re.match[4], str);
 			printf("\n");
 		}
-		else printf("!\n");
-	}
-	{
-		char str[] = "abd";
-		if (RE_match(&re, str)) {
-			str[re.match[0].e] = 0;
-			printf("M%4d%4d -> %s\n", re.match[0].s, re.match[0].e, &str[re.match[0].s]);
-		}
-		else printf("!\n");
-	}
-	{
-		char str[] = "acd";
-		if (RE_match(&re, str)) {
-			str[re.match[0].e] = 0;
-			printf("M%4d%4d -> %s\n", re.match[0].s, re.match[0].e, &str[re.match[0].s]);
-		}
-		else printf("!\n");
-	}
-	{
-		char str[] = "abddcddd";
-		if (RE_match(&re, str)) {
-			str[re.match[0].e] = 0;
-			printf("M%4d%4d -> %s\n", re.match[0].s, re.match[0].e, &str[re.match[0].s]);
-		}
-		else printf("!\n");
-	}
-	{
-		char str[] = "adddbdbcd";
-		if (RE_match(&re, str)) {
-			str[re.match[0].e] = 0;
-			printf("M%4d%4d -> %s\n", re.match[0].s, re.match[0].e, &str[re.match[0].s]);
-		}
-		else printf("!\n");
+		else printf("unmatched\n");
 	}
 	return 0;
 }
