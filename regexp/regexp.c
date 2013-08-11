@@ -1,3 +1,11 @@
+// vim: noet ts=4 sw=4 sts=0
+// compile: gcc -std=gnu11 -march=native -O3 -o regexp regexp.c
+// 			strip -s regexp
+// or, for a smaller executable, install rld(https://github.com/stfsux/rld)
+// and run (you will get a 1~2KB sized file.):
+// 			gcc -c -std=gnu11 -march=native -O3 -o regexp.o regexp.c
+// 			rlds --compress -lc -o regexp regexp.o
+// 			rm -f regexp.o
 #include <stdio.h>
 #include <string.h>
 #include <err.h>
@@ -139,8 +147,10 @@ int main()
 	void dump_match(RE_Match * m, const char * str)
 	{
 		int len = m->e - m->s;
-		char buf[len + 1];
-		strncpy(buf, &str[m->s], len);
+		char buf[len+1];
+		// you can use strncpy
+		for (int i=0; i<len; i++)
+			buf[i] = str[i + m->s];
 		buf[len] = 0;
 		printf("%s", buf);
 	}
@@ -150,6 +160,7 @@ int main()
 	dump_states(re.state);
 	{
 		char str[] = "ad<a>so</a><html>that</html>yes";
+		printf("%s\n", str);
 		if (RE_match(&re, str)) {
 			printf("matched -> ");
 			dump_match(&re.match[0], str);
