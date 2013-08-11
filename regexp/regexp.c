@@ -8,7 +8,6 @@ typedef struct RE_State
 {
 	unsigned short c;	// 0x0000-0x00FF: match literal; RE_* for specials
 	char g, ng;			// greedy/non-greedy jump
-	char is_ng;			// is non-greedy?
 } RE_State;
 typedef struct RE_Match { unsigned short s, e; } RE_Match;
 typedef struct RE_Regexp
@@ -30,9 +29,10 @@ RE_Regexp RE_compile(const char * regexp)
 		}
 		return 0;
 	}
+#define STATE	(is_ng ? (RE_State){ c, ng, g } : (RE_State){ c, g, ng })
 	void append(unsigned short c, char g, char ng, char is_ng)
 	{
-		*s_tail++ = (RE_State){ c, g, ng, is_ng };
+		*s_tail++ = STATE;
 	}
 	void expr(RE_State * s, int group)
 	{
@@ -41,8 +41,9 @@ RE_Regexp RE_compile(const char * regexp)
 		{
 			RE_State * s = s_tail++;
 			for (; s != s_head-1; s--) *(s+1) = *s;
-			*s_head = (RE_State){ c, g, ng, is_ng };
+			*s_head = STATE;
 		}
+#undef STATE
 		for (; *regexp; regexp++) {
 			switch (*regexp) {
 				case '(':
@@ -70,7 +71,7 @@ RE_Regexp RE_compile(const char * regexp)
 					s->g = s_tail-s;
 					regexp--;
 					break;
-				case '.': s_head = s_tail; append(RE_ANY, 0, 0, 0); break;
+				case '.': s_head = s_tail; append(RE_ANY , 0, 0, 0); break;
 				default : s_head = s_tail; append(*regexp, 0, 0, 0);
 			}
 		}
@@ -86,19 +87,13 @@ int RE_match(RE_Regexp * re, const char * str)
 	int len = strlen(str);
 	int match(RE_State * s, const char * p)
 	{
-		for (; ; p+=(p-str < len), s++) {
+		for (; ; p += (p-str < len), s++) {
 			//printf(">> @%d(%x)\t[%d]%c(%2.2X)\n", s-re->state, s->c, p-str, *p, *p);
 			switch (s->c) {
-				case RE_ANY: if (!*p) return 0; continue;
+				case RE_ANY: if (!*p || *p == '\n') return 0; continue;
 				case RE_SPLIT:
-					if (s->is_ng) {
-						if (match(s+s->ng, p)) return 1;
-						if (match(s+s-> g, p)) return 1;
-					}
-					else {
-						if (match(s+s-> g, p)) return 1;
-						if (match(s+s->ng, p)) return 1;
-					}
+					if (match(s+s-> g, p)) return 1;
+					if (match(s+s->ng, p)) return 1;
 					return 0;
 				case RE_JUMP: s += s->g-1; p--; break;
 				case RE_MATCH: return !*p;
@@ -123,7 +118,7 @@ int main()
 		switch (s->c) {
 			case RE_MATCH      : NR; printf("\e[1;32m M \n"); break;
 			case RE_ANY        : NR; printf("\e[0;34m A \n"); break;
-			case RE_SPLIT: NR; printf("\e[1;35m S\e[1;31m%c\e[0;35m%+4d[\e[0;33m%.3d\e[0;35m]%+4d[\e[0;33m%.3d\e[0;35m]\n", (s->is_ng ? '?' : ' '), s->g, i+s->g, s->ng, i+s->ng); break;
+			case RE_SPLIT: NR; printf("\e[1;35m S \e[0;35m%+4d[\e[0;33m%.3d\e[0;35m]%+4d[\e[0;33m%.3d\e[0;35m]\n", s->g, i+s->g, s->ng, i+s->ng); break;
 			case RE_JUMP       : NR; printf("\e[1;35m J \e[0;35m%+4d[\e[0;33m%.3d\e[0;35m]\n", s->g, i+s->g); break;
 			case RE_GROUP_START: NR; printf("\e[1;36m ( \e[0;36m%4d\n", s->g); break;
 			case RE_GROUP_END  : NR; printf("\e[1;36m ) \e[0;36m%4d\n", s->g); break;
