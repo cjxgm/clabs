@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 2.8)
+ADD_DEFINITIONS(-std=gnu++0x -Wall -O3)
+project(dispimg)
+find_package(OpenCV REQUIRED)
+add_executable(dispimg dispimg.cc)
+target_link_libraries(dispimg ${OpenCV_LIBS})
